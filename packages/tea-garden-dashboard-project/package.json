@@ -1,0 +1,22 @@
+{
+  "name": "tea-garden-dashboard",
+  "version": "1.0.0",
+  "description": "茶园数据中枢仪表盘",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chart.js": "^4.4.8",
+    "chartjs-chart-matrix": "^1.2.0",
+    "echarts": "^5.4.3",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.4.5"
+  }
+}
