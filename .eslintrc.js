@@ -13,6 +13,8 @@ module.exports = {
   rules: {
     // 可根据需要添加自定义规则，例如关闭某些严格检查
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    "no-unused-vars": "warn"  // 改为警告级别
   }
+
 }
