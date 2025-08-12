@@ -15,6 +15,7 @@
       <li><RouterLink class="nav-link" to="/solutions">设备与任务</RouterLink></li>
       <li><RouterLink class="nav-link" to="/solutions">用户与系统</RouterLink></li>
       <li><RouterLink class="nav-link" to="/solutions">系统设置</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/person">个人中心</RouterLink></li>
     </ul>
     <div class="user-actions">
       <RouterLink class="login-btn" to="/">登录</RouterLink>

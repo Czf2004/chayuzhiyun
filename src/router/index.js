@@ -5,6 +5,7 @@ import AuthView from '../views/AuthView.vue'
 import ManageView from '../views/ManageView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import MonitorView from '../views/MonitorView.vue' // 可选
+import PersonView from '../components/personalCenter/PersonView.vue'
 
 const routes = [
   {
@@ -38,6 +39,12 @@ const routes = [
     path: '/monitor',
     name: 'monitor',
     component: MonitorView,
+    meta: { showNavbar: true }
+  },
+  {
+    path: '/person',
+    name: 'person',
+    component: PersonView,
     meta: { showNavbar: true }
   },
   // 404路由
