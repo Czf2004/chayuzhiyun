@@ -58,12 +58,12 @@
 
           <!-- 用户信息与角色切换 -->
           <div class="hero-info">
-            <h1 class="hero-name">{{ userInfo.nickname }}</h1>
-            <p class="hero-title">{{ roleMap[userInfo.currentRole] }}</p>
+            <h1 class="hero-name">{{ userInfo.nickname || '用户' }}</h1>
+            <p class="hero-title">{{ roleMap[userInfo.currentRole] || '用户' }}</p>
             <p class="hero-subtitle">@{{ userInfo.username }}</p>
 
             <!-- 多角色切换 -->
-            <div class="role-switcher">
+            <div class="role-switcher" v-if="userInfo.roles && userInfo.roles.length > 1">
               <select v-model="userInfo.currentRole" @change="handleRoleChange">
                 <option v-for="role in userInfo.roles" :key="role.code" :value="role.code">{{ role.name }}</option>
               </select>
@@ -109,6 +109,14 @@
               <div class="info-row">
                 <span class="info-label">手机号码</span>
                 <span class="info-value">{{ userInfo.phone || '未设置' }}</span>
+              </div>
+              <div class="info-row" v-if="userInfo.bio">
+                <span class="info-label">个人简介</span>
+                <span class="info-value bio">{{ userInfo.bio }}</span>
+              </div>
+              <div class="info-row" v-if="userInfo.contact_info">
+                <span class="info-label">邮箱地址</span>
+                <span class="info-value">{{ userInfo.contact_info }}</span>
               </div>
 
               <!-- 实名认证状态 -->
@@ -244,7 +252,7 @@
               </div>
             </div>
 
-            <div class="plantations-grid">
+            <div class="plantations-grid" v-if="userInfo.plantations && userInfo.plantations.length > 0">
               <div v-for="p in userInfo.plantations" :key="p.id" class="plantation-card">
                 <div class="card-image">
                   <img :src="p.imageUrl" alt="种植园图片" class="plantation-img"
@@ -258,19 +266,22 @@
                 <div class="card-content">
                   <h3 class="plantation-name">{{ p.name }}</h3>
                   <p class="plantation-location">{{ p.province }} {{ p.city }}</p>
+                  <p class="plantation-address" v-if="p.detail_address && p.detail_address !== '详细地址未填写'">
+                    {{ p.detail_address }}
+                  </p>
 
                   <div class="plantation-metrics">
                     <div class="metric">
-                      <span class="metric-value">{{ p.droneCount }}</span>
+                      <span class="metric-value">{{ p.droneCount || 0 }}</span>
                       <span class="metric-label">无人机</span>
                     </div>
                     <div class="metric">
-                      <span class="metric-value">{{ p.sensorCount }}</span>
+                      <span class="metric-value">{{ p.sensorCount || 0 }}</span>
                       <span class="metric-label">传感器</span>
                     </div>
                     <div class="metric">
-                      <span class="metric-value">{{ p.area }}亩</span>
-                      <span class="metric-label">面积</span>
+                      <span class="metric-value">{{ p.runningDrones || 0 }}</span>
+                      <span class="metric-label">运行中</span>
                     </div>
                   </div>
 
@@ -286,6 +297,19 @@
                   <button class="btn-manage">管理</button>
                 </div>
               </div>
+            </div>
+            
+            <!-- 空状态 -->
+            <div v-else class="empty-state">
+              <div class="empty-illustration">
+                <svg viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M50 10c-22.1 0-40 17.9-40 40s17.9 40 40 40 40-17.9 40-40-17.9-40-40-40zm0 70c-16.6 0-30-13.4-30-30s13.4-30 30-30 30 13.4 30 30-13.4 30-30 30z"/>
+                  <path d="M50 25c-13.8 0-25 11.2-25 25s11.2 25 25 25 25-11.2 25-25-11.2-25-25-25zm0 40c-8.3 0-15-6.7-15-15s6.7-15 15-15 15 6.7 15 15-6.7 15-15 15z"/>
+                </svg>
+              </div>
+              <h3>暂无茶园数据</h3>
+              <p>您还没有创建任何茶园，点击下方按钮开始创建您的第一个茶园</p>
+              <button class="btn-create">创建茶园</button>
             </div>
           </section>
           <!-- 资产总览-设备池（优化部分） -->
@@ -363,12 +387,16 @@
 <script>
 import { ref, onMounted, computed, nextTick } from 'vue';
 import Chart from 'chart.js/auto'; // 引入图表库
+import { getUserInfo } from '@/api/auth';
+import { useUserStore } from '@/stores/userStore';
+import { ElMessage } from 'element-plus';
 
 export default {
   setup() {
     // 状态管理
     const loading = ref(true);
     const userInfo = ref({});
+    const userStore = useUserStore();
     const defaultAvatar = 'https://i.pravatar.cc/300';
     const defaultPlantationImg = 'https://picsum.photos/400/200?grayscale';
     const growthChart = ref(null); // 添加canvas ref
@@ -382,19 +410,29 @@ export default {
 
     // 计算属性 - 设备统计
     const totalDrones = computed(() => {
-      return userInfo.value.plantations?.reduce((sum, p) => sum + p.droneCount, 0) || 0;
+      return userInfo.value.plantations?.reduce((sum, p) => sum + (p.droneCount || 0), 0) || 0;
     });
 
     const totalSensors = computed(() => {
-      return userInfo.value.plantations?.reduce((sum, p) => sum + p.sensorCount, 0) || 0;
+      return userInfo.value.plantations?.reduce((sum, p) => sum + (p.sensorCount || 0), 0) || 0;
     });
 
     const onlineSensors = computed(() => {
-      return userInfo.value.plantations?.reduce((sum, p) => sum + p.onlineSensors, 0) || 0;
+      return userInfo.value.plantations?.reduce((sum, p) => sum + (p.onlineSensors || 0), 0) || 0;
     });
 
     const runningDrones = computed(() => {
-      return userInfo.value.plantations?.reduce((sum, p) => sum + p.runningDrones, 0) || 0;
+      return userInfo.value.plantations?.reduce((sum, p) => sum + (p.runningDrones || 0), 0) || 0;
+    });
+
+    // 新增：今日作业面积（模拟数据）
+    const todayWorkArea = computed(() => {
+      return userInfo.value.plantations?.reduce((sum, p) => sum + Math.floor(Math.random() * 50 + 20), 0) || 0;
+    });
+
+    // 新增：异常事件（模拟数据）
+    const abnormalEvents = computed(() => {
+      return Math.floor(Math.random() * 5) + 1;
     });
 
     // 实名认证状态文本
@@ -433,121 +471,96 @@ export default {
       // 示例：this.$router.push('/all-plantations');
     };
 
-    // 模拟数据加载
+    // 真实数据加载
     const fetchData = async () => {
-      // 模拟API请求延迟
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // 填充模拟数据
-      userInfo.value = {
-        userId: 'AGR2025001',
-        nickname: '智慧茶园主',
-        username: 'tea_farmer',
-        avatar: 'https://i.pravatar.cc/300?img=23',
-        phone: '138****6789',
-        onlineStatus: 'online',
-        updatedAt: '2025-08-10T14:30:00',
-        lastLogin: {
-          time: '2025-08-12T08:45:00',
-          location: '杭州市-移动网络'
-        },
-        loginDevices: [
-          { id: 'd1', name: 'Chrome浏览器', os: 'Windows 10', isCurrent: true },
-          { id: 'd2', name: 'iPhone客户端', os: 'iOS 17', isCurrent: false }
-        ],
-        roles: [
-          { code: 'group', name: '集团管理员' },
-          { code: 'farmer', name: '农场主' }
-        ],
-        currentRole: 'farmer',
-        auth: {
-          status: 'verified',
-          type: '个人证件',
-          progress: 100,
-          expireWarning: true,
-          expireDays: 30
-        },
-        todayWorkArea: 256,
-        abnormalEvents: 3,
-        plantations: [
-          {
-            id: 'p1',
-            name: '西湖龙井茶园',
-            imageUrl: 'https://picsum.photos/400/200?random=1',
-            province: '浙江省',
-            city: '杭州市',
-            droneCount: 3,
-            runningDrones: 2,
-            sensorCount: 12,
-            onlineSensors: 11,
-            area: 150,
-            status: 2, // 已部署
-            pestStatus: 0 // 无虫害
+      try {
+        loading.value = true;
+        
+        // 调用后端API获取用户信息
+        const response = await getUserInfo();
+        const apiData = response.data;
+        
+        // 转换API数据格式为组件需要的格式
+        userInfo.value = {
+          userId: apiData.user_id,
+          nickname: apiData.nickname,
+          username: apiData.username,
+          avatar: apiData.avatar || defaultAvatar,
+          phone: apiData.phone,
+          onlineStatus: 'online',
+          updatedAt: new Date().toISOString(),
+          lastLogin: {
+            time: new Date().toISOString(),
+            location: '杭州市-移动网络'
           },
-          {
-            id: 'p2',
-            name: '安溪铁观音基地',
-            imageUrl: 'https://picsum.photos/400/200?random=2',
-            province: '福建省',
-            city: '泉州市',
-            droneCount: 2,
-            runningDrones: 1,
-            sensorCount: 8,
-            onlineSensors: 8,
-            area: 200,
-            status: 2,
-            pestStatus: 1 // 轻微虫害
-          }
-        ],
-        devices: [
-          {
-            id: 'dev1',
-            type: 'drone',
-            name: 'DJI T60',
-            status: 'online',
-            firmwareVersion: 'v2.3.0',
-            needsUpgrade: false,
-            plantationId: 'p1' // 关联西湖龙井茶园
+          loginDevices: [
+            { id: 'd1', name: 'Chrome浏览器', os: 'Windows 10', isCurrent: true },
+            { id: 'd2', name: 'iPhone客户端', os: 'iOS 17', isCurrent: false }
+          ],
+          roles: [
+            { code: apiData.role, name: roleMap[apiData.role] || '用户' }
+          ],
+          currentRole: apiData.role,
+          auth: {
+            status: 'verified',
+            type: '个人证件',
+            progress: 100,
+            expireWarning: false,
+            expireDays: 0
           },
-          {
-            id: 'dev2',
-            type: 'sensor',
-            name: '土壤湿度传感器',
-            status: 'online',
-            firmwareVersion: 'v1.5.2',
-            needsUpgrade: true,
-            plantationId: 'p1' // 关联西湖龙井茶园
-          },
-          {
-            id: 'dev3',
-            type: 'gateway',
-            name: '数据网关',
-            status: 'offline',
-            firmwareVersion: 'v3.1.0',
-            needsUpgrade: false,
-            plantationId: 'p2' // 关联安溪铁观音基地
-          },
-          {
-            id: 'dev4',
-            type: 'drone',
-            name: 'DJI M300',
-            status: 'online',
-            firmwareVersion: 'v2.1.0',
-            needsUpgrade: true,
-            plantationId: 'p2' // 关联安溪铁观音基地
-          }
-        ],
-        inventory: [
-          { id: 'i1', type: '龙井种子', quantity: 50, threshold: 30, unit: 'kg' },
-          { id: 'i2', type: '有机化肥', quantity: 25, threshold: 40, unit: '袋' },
-          { id: 'i3', type: '绿色农药', quantity: 8, threshold: 10, unit: '瓶' }
-        ]
-      };
-
-      loading.value = false;
-      // 等待DOM渲染完成后再初始化图表
-      await nextTick();
-      initGrowthChart();
+          bio: apiData.bio,
+          contact_info: apiData.contact_info,
+          // 转换茶园数据
+          plantations: apiData.plantations?.map(p => ({
+            id: p.plantation_id,
+            name: p.plantation_name,
+            imageUrl: p.photo || defaultPlantationImg,
+            province: p.province,
+            city: p.city,
+            district: p.district,
+            detail_address: p.detail_address,
+            latitude: p.latitude,
+            longitude: p.longitude,
+            altitude: p.altitude,
+            droneCount: p.drone_count,
+            runningDrones: p.drone_running,
+            sensorCount: p.soil_sensors_count,
+            onlineSensors: p.soil_sensors_running,
+            status: p.deployment_status,
+            pestStatus: p.insect_pests_status,
+            created_at: p.created_at,
+            updated_at: p.updated_at
+          })) || [],
+          // 模拟设备数据（实际项目中应该从设备API获取）
+          devices: [],
+          // 模拟库存数据（实际项目中应该从库存API获取）
+          inventory: [
+            { id: 'i1', type: '龙井种子', quantity: 50, threshold: 30, unit: 'kg' },
+            { id: 'i2', type: '有机化肥', quantity: 25, threshold: 40, unit: '袋' },
+            { id: 'i3', type: '绿色农药', quantity: 8, threshold: 10, unit: '瓶' }
+          ]
+        };
+        
+        // 更新本地store中的用户信息
+        userStore.updateUserInfo({
+          userId: apiData.user_id,
+          nickname: apiData.nickname,
+          role: apiData.role,
+          plantations: apiData.plantations
+        });
+        
+        loading.value = false;
+        
+        // 等待DOM渲染完成后再初始化图表
+        await nextTick();
+        initGrowthChart();
+        
+        ElMessage.success('用户信息加载成功');
+      } catch (error) {
+        console.error('获取用户信息失败:', error);
+        ElMessage.error('获取用户信息失败，请重试');
+        loading.value = false;
+      }
     };
 
     // 初始化作物生长曲线图表
@@ -678,6 +691,8 @@ export default {
       totalSensors,
       onlineSensors,
       runningDrones,
+      todayWorkArea,
+      abnormalEvents,
       authStatusText,
       authStatusClass,
       handleAvatarError,

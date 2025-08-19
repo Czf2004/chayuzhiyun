@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="hero-image">
-        <img src="https://placeholder-for-hero-image.jpg" alt="智能茶园系统展示" />
+        <img :src="images.hero.main" alt="智能茶园系统展示" />
       </div>
     </section>
 
@@ -25,7 +25,7 @@
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon">
-            <img src="https://placeholder-for-sensing-icon.png" alt="智能感知" />
+            <img :src="images.features.sensing" alt="智能感知" />
           </div>
           <h3>智能环境感知</h3>
           <p>24小时监测温度、湿度、光照、土壤养分等关键参数，数据精度达98%以上</p>
@@ -33,7 +33,7 @@
         
         <div class="feature-card">
           <div class="feature-icon">
-            <img src="https://placeholder-for-ai-icon.png" alt="AI分析" />
+            <img :src="images.features.ai" alt="AI分析" />
           </div>
           <h3>AI生长分析</h3>
           <p>基于机器学习的作物生长模型，精准预测生长周期，提前预警病虫害风险</p>
@@ -41,7 +41,7 @@
         
         <div class="feature-card">
           <div class="feature-icon">
-            <img src="https://placeholder-for-auto-icon.png" alt="自动控制" />
+            <img :src="images.features.automation" alt="自动控制" />
           </div>
           <h3>自动化管理</h3>
           <p>根据环境数据自动调节灌溉、施肥和遮阳，减少人工成本达70%以上</p>
@@ -49,7 +49,7 @@
         
         <div class="feature-card">
           <div class="feature-icon">
-            <img src="https://placeholder-for-data-icon.png" alt="数据管理" />
+            <img :src="images.features.data" alt="数据管理" />
           </div>
           <h3>全周期数据管理</h3>
           <p>记录从种植到收获的全过程数据，生成生长报告和优化建议</p>
@@ -138,7 +138,7 @@
       
       <div class="cases-grid">
         <div class="case-card">
-          <img src="https://placeholder-for-case1.jpg" alt="案例图片" class="case-image" />
+          <img :src="images.cases.longjing" alt="案例图片" class="case-image" />
           <div class="case-content">
             <h3>西湖龙井茶园</h3>
             <p>应用智能监测系统后，茶叶品质提升15%，用水量减少30%，人力成本降低60%</p>
@@ -147,7 +147,7 @@
         </div>
         
         <div class="case-card">
-          <img src="https://placeholder-for-case2.jpg" alt="案例图片" class="case-image" />
+          <img :src="images.cases.tieguanyin" alt="案例图片" class="case-image" />
           <div class="case-content">
             <h3>安溪铁观音基地</h3>
             <p>全系列产品应用，实现亩产提升20%，病虫害发生率下降80%，能源消耗降低40%</p>
@@ -170,7 +170,7 @@
             "茶语智韵的智能系统彻底改变了我们的管理方式，现在即使不在茶园，也能实时掌握所有情况，决策更精准。"
           </div>
           <div class="testimonial-author">
-            <img src="https://placeholder-for-user1.jpg" alt="用户头像" />
+            <img :src="images.avatars.user1" alt="用户头像" />
             <div>
               <h4>张经理</h4>
               <p>黄山毛峰茶园</p>
@@ -183,7 +183,7 @@
             "精准灌溉设备帮我们节省了大量水资源，同时茶叶品质更加稳定，客户反馈非常好，值得投资。"
           </div>
           <div class="testimonial-author">
-            <img src="https://placeholder-for-user2.jpg" alt="用户头像" />
+            <img :src="images.avatars.user2" alt="用户头像" />
             <div>
               <h4>李老板</h4>
               <p>武夷岩茶合作社</p>
@@ -196,7 +196,7 @@
             "生长模型预测非常准确，让我们能够提前安排采摘和销售计划，经济效益提升明显。"
           </div>
           <div class="testimonial-author">
-            <img src="https://placeholder-for-user3.jpg" alt="用户头像" />
+            <img :src="images.avatars.user3" alt="用户头像" />
             <div>
               <h4>王教授</h4>
               <p>茶叶研究所</p>
@@ -232,7 +232,7 @@
         </form>
       </div>
       <div class="contact-image">
-        <img src="https://placeholder-for-contact-image.jpg" alt="专业咨询" />
+        <img :src="images.contact" alt="专业咨询" />
       </div>
     </section>
 
@@ -243,9 +243,9 @@
           <h3>关于我们</h3>
           <p>致力于发展智慧茶园，为茶叶产业提供全方位的智能化解决方案，推动传统农业向现代农业转型。</p>
           <div class="social-links">
-            <a href="#"><img src="https://placeholder-for-weixin.png" alt="微信" /></a>
-            <a href="#"><img src="https://placeholder-for-weibo.png" alt="微博" /></a>
-            <a href="#"><img src="https://placeholder-for-youtube.png" alt="YouTube" /></a>
+            <a href="#"><img :src="images.social.weixin" alt="微信" /></a>
+            <a href="#"><img :src="images.social.weibo" alt="微博" /></a>
+            <a href="#"><img :src="images.social.youtube" alt="YouTube" /></a>
           </div>
         </div>
         
@@ -292,6 +292,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { images } from '@/assets/images'
 
 // 响应式数据
 const isAuthenticated = ref(false)
@@ -305,7 +306,7 @@ const products = ref([
     name: '智能监测系统',
     description: '实时监控茶园环境参数，为茶叶生长提供科学依据',
     color: '#8BC34A',
-    imageUrl: 'https://placeholder-for-product1.jpg',
+    imageUrl: images.products.monitoring,
     features: [
       '多参数同步监测',
       '低功耗设计',
@@ -318,7 +319,7 @@ const products = ref([
     name: '精准灌溉设备',
     description: '根据土壤湿度自动调节灌溉，节约用水提高效率',
     color: '#2196F3',
-    imageUrl: 'https://placeholder-for-product2.jpg',
+    imageUrl: images.products.irrigation,
     features: [
       '智能流量控制',
       '分区独立管理',
@@ -331,7 +332,7 @@ const products = ref([
     name: '作物生长模型',
     description: '预测作物生长周期和产量，优化种植计划',
     color: '#FF9800',
-    imageUrl: 'https://placeholder-for-product3.jpg',
+    imageUrl: images.products.growth,
     features: [
       'AI产量预测',
       '病虫害预警',
@@ -344,7 +345,7 @@ const products = ref([
     name: '茶园管理平台',
     description: '整合所有设备数据，一站式管理茶园生产',
     color: '#9C27B0',
-    imageUrl: 'https://placeholder-for-product4.jpg',
+    imageUrl: images.products.platform,
     features: [
       '数据可视化仪表盘',
       '多设备集中控制',
@@ -550,7 +551,7 @@ const handleLogout = () => {
 }
 
 .features-grid {
-  display: grid;: grid;
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 3rem;
   margin-top: 4rem;

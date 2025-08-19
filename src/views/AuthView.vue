@@ -77,9 +77,61 @@
             >
           </div>
           
-          <button type="submit" class="submit-btn">
-            <span class="btn-text">{{ isLogin ? '登 录' : '注 册' }}</span>
-            <span class="btn-arrow">→</span>
+          <!-- 注册时的额外字段 -->
+          <div class="form-group" v-if="!isLogin">
+            <div class="input-icon">
+              <i class="icon-user"></i>
+            </div>
+            <input 
+              type="text" 
+              v-model="formData.nickname" 
+              placeholder="请输入昵称"
+              required
+              class="form-input"
+            >
+          </div>
+          
+          <div class="form-group" v-if="!isLogin">
+            <div class="input-icon">
+              <i class="icon-phone"></i>
+            </div>
+            <input 
+              type="tel" 
+              v-model="formData.phone" 
+              placeholder="请输入手机号"
+              required
+              class="form-input"
+            >
+          </div>
+          
+          <div class="form-group" v-if="!isLogin">
+            <div class="input-icon">
+              <i class="icon-info"></i>
+            </div>
+            <input 
+              type="text" 
+              v-model="formData.bio" 
+              placeholder="个人简介（可选）"
+              class="form-input"
+            >
+          </div>
+          
+          <div class="form-group" v-if="!isLogin">
+            <div class="input-icon">
+              <i class="icon-email"></i>
+            </div>
+            <input 
+              type="email" 
+              v-model="formData.contact_info" 
+              placeholder="邮箱地址（可选）"
+              class="form-input"
+            >
+          </div>
+          
+          <button type="submit" class="submit-btn" :disabled="loading">
+            <span class="btn-text">{{ loading ? (isLogin ? '登录中...' : '注册中...') : (isLogin ? '登 录' : '注 册') }}</span>
+            <span class="btn-arrow" v-if="!loading">→</span>
+            <span class="loading-spinner" v-if="loading">⏳</span>
           </button>
         </form>
         
@@ -111,17 +163,26 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+import { login, register } from '@/api/auth'
+import { ElMessage, ElLoading } from 'element-plus'
 
 const route = useRoute()
 const router = useRouter()
+const userStore = useUserStore()
 const isLogin = ref(true)
 const showPassword = ref(false)
 const errorMessage = ref('')
+const loading = ref(false)
 
 const formData = ref({
   username: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  nickname: '',
+  phone: '',
+  bio: '',
+  contact_info: ''
 })
 
 onMounted(() => {
@@ -133,7 +194,7 @@ onMounted(() => {
   document.body.classList.add('page-loaded')
 })
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   errorMessage.value = ''
   
   // 验证逻辑
@@ -163,27 +224,90 @@ const handleSubmit = () => {
       errorMessage.value = '密码长度必须在6-16位之间'
       return
     }
+    
+    // 注册时的额外验证
+    if (!formData.value.nickname) {
+      errorMessage.value = '请输入昵称'
+      return
+    }
+    
+    if (!formData.value.phone) {
+      errorMessage.value = '请输入手机号'
+      return
+    }
+    
+    // 手机号格式验证
+    const phoneRegex = /^1[3-9]\d{9}$/
+    if (!phoneRegex.test(formData.value.phone)) {
+      errorMessage.value = '请输入正确的手机号格式'
+      return
+    }
   }
   
-  // 模拟登录/注册成功
-  if (isLogin.value) {
-    // 登录成功动画
-    const authBox = document.querySelector('.auth-box')
-    authBox.classList.add('success-animation')
-    
-    setTimeout(() => {
-      router.push('/home')
-    }, 800)
-  } else {
-    isLogin.value = true
-    errorMessage.value = '注册成功，请登录'
-    
-    // 清空表单
-    formData.value = {
-      username: formData.value.username,
-      password: '',
-      confirmPassword: ''
+  loading.value = true
+  
+  try {
+    if (isLogin.value) {
+      // 真实登录
+      const response = await login({
+        username: formData.value.username,
+        password: formData.value.password
+      })
+      
+      // 登录成功，保存用户信息到store
+      userStore.login(response.data)
+      
+      // 登录成功动画
+      const authBox = document.querySelector('.auth-box')
+      authBox.classList.add('success-animation')
+      
+      ElMessage.success('登录成功')
+      
+      setTimeout(() => {
+        router.push('/home')
+      }, 800)
+    } else {
+      // 真实注册
+      try {
+        const response = await register({
+          username: formData.value.username,
+          nickname: formData.value.nickname,
+          password: formData.value.password,
+          phone: formData.value.phone,
+          bio: formData.value.bio || '这是一个新用户',
+          contact_info: formData.value.contact_info || '',
+          plantations: [
+            {
+              plantation_name: '默认茶园'
+            }
+          ],
+          role: 'user'
+        })
+        
+        // 注册成功
+        ElMessage.success('注册成功，请登录')
+        isLogin.value = true
+        
+        // 清空表单，保留用户名
+        formData.value = {
+          username: formData.value.username,
+          password: '',
+          confirmPassword: '',
+          nickname: '',
+          phone: '',
+          bio: '',
+          contact_info: ''
+        }
+      } catch (error) {
+        console.error('注册失败:', error)
+        errorMessage.value = error.message || '注册失败，请重试'
+      }
     }
+  } catch (error) {
+    console.error('登录失败:', error)
+    errorMessage.value = error.message || '登录失败，请检查用户名和密码'
+  } finally {
+    loading.value = false
   }
 }
 </script>
@@ -561,6 +685,62 @@ body.page-loaded {
   background-color: currentColor;
 }
 
+.icon-phone::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-radius: 8px;
+  position: relative;
+}
+
+.icon-phone::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+}
+
+.icon-info::before {
+  content: 'i';
+  display: block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.icon-email::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+  position: relative;
+}
+
+.icon-email::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+}
+
 /* 密码隐藏状态的图标 */
 .eye-icon:not(.show) .icon-eye::after {
   content: '';
@@ -660,6 +840,26 @@ body.page-loaded {
 
 .submit-btn:hover .btn-arrow {
   transform: translateX(4px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submit-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* 切换文本 */

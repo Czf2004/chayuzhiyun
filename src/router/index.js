@@ -6,46 +6,61 @@ import ManageView from '../views/ManageView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import MonitorView from '../views/MonitorView.vue' // 可选
 import PersonView from '../components/personalCenter/PersonView.vue'
+import UserManagementView from '../views/UserManagementView.vue'
+import { useUserStore } from '@/stores/userStore'
+import { ElMessage } from 'element-plus'
 
 const routes = [
   {
     path: '/',
     name: 'auth',
     component: AuthView,
-    meta: { showNavbar: false }
+    meta: { showNavbar: false, requiresAuth: false }
+  },
+  {
+    path: '/auth',
+    name: 'auth-alias',
+    component: AuthView,
+    meta: { showNavbar: false, requiresAuth: false }
   },
   {
     path: '/home',
     name: 'home',
     component: HomeView,
-    meta: { showNavbar: true }
+    meta: { showNavbar: true, requiresAuth: true }
   },
   // 添加茶园管理路由
   {
     path: '/manage',
     name: 'manage',
     component: ManageView,
-    meta: { showNavbar: true } // 显示导航栏
+    meta: { showNavbar: true, requiresAuth: true } // 显示导航栏
   },
   // 添加数据中枢路由
   {
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardView,
-    meta: { showNavbar: true }
+    meta: { showNavbar: true, requiresAuth: true }
   },
   // 可选：添加历史监控路由
   {
     path: '/monitor',
     name: 'monitor',
     component: MonitorView,
-    meta: { showNavbar: true }
+    meta: { showNavbar: true, requiresAuth: true }
   },
   {
     path: '/person',
     name: 'person',
     component: PersonView,
-    meta: { showNavbar: true }
+    meta: { showNavbar: true, requiresAuth: true }
+  },
+  {
+    path: '/user-management',
+    name: 'user-management',
+    component: UserManagementView,
+    meta: { showNavbar: true, requiresAuth: true, requiresAdmin: true }
   },
   // 404路由
   {
@@ -57,6 +72,37 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
+  const isLoggedIn = userStore.isLoggedIn
+  const userRole = userStore.getUserInfo.role
+  
+  // 如果路由需要认证
+  if (to.meta.requiresAuth) {
+    // 如果未登录，重定向到登录页
+    if (!isLoggedIn) {
+      next('/auth')
+      return
+    }
+    
+    // 如果路由需要管理员权限
+    if (to.meta.requiresAdmin && userRole !== 'admin') {
+      ElMessage.error('您没有权限访问此页面')
+      next('/home')
+      return
+    }
+  }
+  
+  // 如果已登录且访问登录页，重定向到首页
+  if (to.name === 'auth' && isLoggedIn) {
+    next('/home')
+    return
+  }
+  
+  next()
 })
 
 export default router

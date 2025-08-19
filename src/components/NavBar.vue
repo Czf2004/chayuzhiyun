@@ -13,19 +13,84 @@
       <li><RouterLink class="nav-link" to="/solutions">AI Agent 智能体</RouterLink></li>
       <li><RouterLink class="nav-link" to="/solutions">茶园运营</RouterLink></li>
       <li><RouterLink class="nav-link" to="/solutions">设备与任务</RouterLink></li>
-      <li><RouterLink class="nav-link" to="/solutions">用户与系统</RouterLink></li>
+      <li v-if="userStore.getUserInfo.role === 'admin'">
+        <RouterLink class="nav-link" to="/user-management">用户管理</RouterLink>
+      </li>
       <li><RouterLink class="nav-link" to="/solutions">系统设置</RouterLink></li>
       <li><RouterLink class="nav-link" to="/person">个人中心</RouterLink></li>
     </ul>
-    <div class="user-actions">
-      <RouterLink class="login-btn" to="/">登录</RouterLink>
-      <RouterLink class="register-btn" to="/?register=true">注册</RouterLink>
+    
+    <!-- 未登录状态 -->
+    <div class="user-actions" v-if="!userStore.isLoggedIn">
+      <RouterLink class="login-btn" to="/auth">登录</RouterLink>
+      <RouterLink class="register-btn" to="/auth?register=true">注册</RouterLink>
+    </div>
+    
+    <!-- 已登录状态 -->
+    <div class="user-actions" v-else>
+      <div class="user-info">
+        <span class="user-name">{{ userStore.getUserInfo.nickname || '用户' }}</span>
+        <span class="user-role">{{ userStore.getUserInfo.role || 'user' }}</span>
+      </div>
+      <el-dropdown @command="handleCommand">
+        <span class="user-avatar">
+          <el-avatar :size="32" :src="userAvatar">
+            {{ userStore.getUserInfo.nickname?.charAt(0) || 'U' }}
+          </el-avatar>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="profile">个人资料</el-dropdown-item>
+            <el-dropdown-item command="settings">设置</el-dropdown-item>
+            <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+import { ElMessage, ElMessageBox } from 'element-plus'
+
+const router = useRouter()
+const userStore = useUserStore()
+
+// 用户头像（可以根据需要设置）
+const userAvatar = ''
+
+const handleCommand = async (command) => {
+  switch (command) {
+    case 'profile':
+      router.push('/person')
+      break
+    case 'settings':
+      // 跳转到设置页面
+      break
+    case 'logout':
+      try {
+        await ElMessageBox.confirm(
+          '确定要退出登录吗？',
+          '提示',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+        )
+        
+        // 清除用户信息
+        userStore.logout()
+        ElMessage.success('已退出登录')
+        router.push('/auth')
+      } catch {
+        // 用户取消
+      }
+      break
+  }
+}
 </script>
 
 <style scoped>
@@ -119,5 +184,34 @@ import { RouterLink } from 'vue-router'
 
 .register-btn:hover {
   background-color: #3d8b40;
+}
+
+/* 用户信息样式 */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 0.5rem;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.user-avatar {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
 }
 </style>
