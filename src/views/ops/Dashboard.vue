@@ -234,7 +234,7 @@ import Chart from 'chart.js/auto'
 
 const store = useOpsStore()
 const chartRef = ref(null)
-const chartInstance = ref(null)
+let chartInstance = null
 const chartTimeRange = ref('6')
 
 // 模拟趋势数据（实际项目中可从接口获取）
@@ -283,17 +283,17 @@ const updateChart = () => {
   const labels = (store.dashboardData.profitTrend || []).map(i => i.month)
   const values = (store.dashboardData.profitTrend || []).map(i => i.profit)
   
-  if (chartInstance.value) {
-    chartInstance.value.data.labels = labels
-    chartInstance.value.data.datasets[0].data = values
-    chartInstance.value.update()
+  if (chartInstance) {
+    chartInstance.data.labels = labels
+    chartInstance.data.datasets[0].data = values
+    chartInstance.update()
     return
   }
 
   const canvas = chartRef.value
   if (!canvas) return
   const ctx = canvas.getContext('2d')
-  chartInstance.value = new Chart(ctx, {
+  chartInstance = new Chart(ctx, {
     type: 'line',
     data: { 
       labels, 
@@ -314,6 +314,7 @@ const updateChart = () => {
     options: { 
       responsive: true,
       maintainAspectRatio: false,
+      parsing: false,
       // 显式指定事件，避免 undefined.includes 异常
       events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove', 'touchend'],
       interaction: {
@@ -373,9 +374,9 @@ watch(() => store.dashboardData.profitTrend, () => {
 })
 
 onUnmounted(() => {
-  if (chartInstance.value) {
-    chartInstance.value.destroy()
-    chartInstance.value = null
+  if (chartInstance) {
+    chartInstance.destroy()
+    chartInstance = null
   }
 })
 </script>
