@@ -10,6 +10,9 @@ import UserManagementView from '../views/UserManagementView.vue'
 import DeviceManagementView from '../views/DeviceManagementView.vue'
 import { useUserStore } from '@/stores/userStore'
 import SystemSettingsView from '../views/SystemSettingsView.vue'
+import OpsDashboard from '../views/ops/Dashboard.vue'
+import ProductManagement from '../views/ops/ProductManagement.vue'
+import QuotationCreation from '../views/ops/QuotationCreation.vue'
 import { ElMessage } from 'element-plus'
 
 const routes = [
@@ -18,6 +21,24 @@ const routes = [
     name: 'auth',
     component: AuthView,
     meta: { showNavbar: false, requiresAuth: false }
+  },
+  {
+    path: '/ops',
+    name: 'ops-dashboard',
+    component: OpsDashboard,
+    meta: { showNavbar: true, requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: '/ops/products',
+    name: 'ops-products',
+    component: ProductManagement,
+    meta: { showNavbar: true, requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: '/ops/quotations',
+    name: 'ops-quotations',
+    component: QuotationCreation,
+    meta: { showNavbar: true, requiresAuth: true, requiresAdmin: true }
   },
   {
     path: '/auth',

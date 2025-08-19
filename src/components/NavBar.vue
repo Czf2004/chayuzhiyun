@@ -11,7 +11,7 @@
       <li><RouterLink class="nav-link" to="/dashboard">数据中枢</RouterLink></li>
       <li><RouterLink class="nav-link" to="/monitor">历史查询</RouterLink></li>
       <li><RouterLink class="nav-link" to="/solutions">AI Agent 智能体</RouterLink></li>
-      <li><RouterLink class="nav-link" to="/solutions">茶园运营</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/ops">茶园运营</RouterLink></li>
       <li><RouterLink class="nav-link" to="/solutions">设备与任务</RouterLink></li>
       <li v-if="userStore.getUserInfo.role === 'admin'">
         <RouterLink class="nav-link" to="/user-management">用户管理</RouterLink>
