@@ -605,7 +605,7 @@ onUnmounted(() => {
 }
 
 /* 响应式调整 */
-@media (max-width: 768px) {
+@media (max-width:1000px) {
   .app-container {
     padding: 16px;
   }

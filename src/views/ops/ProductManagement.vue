@@ -1,35 +1,68 @@
 <template>
   <div class="app-container">
+    <!-- 页面头：品牌感强化 -->
     <div class="page-header">
-      <h1 class="page-title">产品管理</h1>
-      <p class="page-subtitle">管理产品信息、价格与溯源数据</p>
+      <div class="header-inner">
+        <h1 class="page-title">产品管理系统</h1>
+        <p class="page-subtitle">全生命周期管理 | 溯源数据追踪</p>
+      </div>
     </div>
 
-    <el-row :gutter="24" class="main-content">
-      <!-- 产品列表区域（16列） -->
-      <el-col :span="16" :xs="24" class="list-column">
-        <el-card class="content-card">
-          <template #header>
-            <div class="card-header">
+    <!-- 主容器：双栏布局 + 响应式适配 -->
+    <div class="main-layout">
+      <!-- 左侧：产品列表区（16列） -->
+      <div class="layout-column list-column">
+        <el-card class="content-card list-card">
+          <!-- 头部：搜索+筛选+操作 -->
+          <div class="card-header">
+            <div class="header-title-group">
               <span class="card-title">产品列表</span>
-              <div style="display:flex; gap:12px; align-items:center;">
-                <el-input v-model="query.keyword" placeholder="搜索名称/描述/产地" clearable style="width: 260px" />
-                <el-select v-model="query.sort" placeholder="排序" style="width: 160px">
-                  <el-option label="按创建时间" value="createdAt" />
-                  <el-option label="按基础价" value="basePrice" />
-                  <el-option label="按成本价" value="costPrice" />
-                </el-select>
-                <el-button type="primary" @click="applyQuery" class="add-button">
-                  <el-icon><Refresh /></el-icon> 筛选
-                </el-button>
-                <el-button type="primary" @click="startCreate" class="add-button">
-                  <el-icon><Plus /></el-icon> 新增产品
-                </el-button>
-              </div>
+              <div class="divider"></div>
+              <p class="header-meta">当前展示 {{ filteredProducts.length }} 条结果</p>
             </div>
-          </template>
-          
-          <div class="table-container">
+
+            <div class="header-actions">
+              <!-- 搜索 -->
+              <el-input 
+                v-model="query.keyword" 
+                placeholder="搜索名称/描述/产地" 
+                clearable 
+                class="search-input"
+              />
+              
+              <!-- 筛选 -->
+              <el-select 
+                v-model="query.sort" 
+                placeholder="排序方式" 
+                class="sort-select"
+              >
+                <el-option label="创建时间" value="createdAt" />
+                <el-option label="基础价" value="basePrice" />
+                <el-option label="成本价" value="costPrice" />
+              </el-select>
+              
+              <!-- 操作按钮 -->
+              <el-button 
+                type="primary" 
+                @click="applyQuery"
+                class="action-btn"
+              >
+                <el-icon :size="16"><Refresh /></el-icon>
+                筛选
+              </el-button>
+              <el-button 
+                type="primary" 
+                @click="startCreate"
+                class="action-btn"
+              >
+                <el-icon :size="16"><Plus /></el-icon>
+                新增产品
+              </el-button>
+            </div>
+          </div>
+
+          <!-- 表格区：滚动容器 + 空状态 -->
+          <div class="table-wrapper">
             <el-table 
               :data="pagedProducts" 
               class="products-table"
@@ -94,20 +127,22 @@
                 </template>
               </el-table-column>
             </el-table>
+
+            <!-- 空状态：独立容器，视觉更突出 -->
+            <div v-if="filteredProducts.length === 0 && !tableLoading" class="empty-state">
+              <el-empty 
+                description="暂无产品数据"
+                image-size="100"
+              >
+                <el-button type="primary" @click="startCreate">
+                  <el-icon><Plus /></el-icon> 立即添加
+                </el-button>
+              </el-empty>
+            </div>
           </div>
-          
-          <!-- 空状态 -->
-          <div v-if="allProducts.length === 0 && !tableLoading" class="empty-state">
-            <el-empty 
-              description="暂无产品数据"
-              image-size="100"
-            >
-              <el-button type="primary" @click="startCreate">
-                <el-icon><Plus /></el-icon> 立即添加
-              </el-button>
-            </el-empty>
-          </div>
-          <div style="display:flex; justify-content:flex-end; padding: 12px 0 4px;">
+
+          <!-- 分页器：固定在卡片底部 -->
+          <div class="pagination-bar">
             <el-pagination
               background
               layout="total, prev, pager, next"
@@ -117,15 +152,18 @@
             />
           </div>
         </el-card>
-      </el-col>
+      </div>
 
-      <!-- 产品表单区域（8列） -->
-      <el-col :span="8" :xs="24" class="form-column">
+      <!-- 右侧：产品表单区（8列） -->
+      <div class="layout-column form-column">
         <el-card class="content-card form-card">
           <template #header>
-            <span class="card-title">{{ editingId ? '编辑产品' : '新增产品' }}</span>
+            <span class="card-title">
+              {{ editingId ? '编辑产品' : '新增产品' }}
+            </span>
           </template>
 
+          <!-- 表单核心：和原有逻辑一致，强化布局 -->
           <el-form 
             :model="form" 
             label-width="100px" 
@@ -240,10 +278,10 @@
             </el-form-item>
           </el-form>
         </el-card>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
 
-    <!-- 溯源二维码弹窗 -->
+    <!-- 溯源弹窗：保持原有逻辑，强化样式 -->
     <el-dialog 
       v-model="traceVisible" 
       title="产品溯源二维码" 
@@ -279,52 +317,79 @@
           <el-icon :size="16"><CopyDocument /></el-icon> 复制链接
         </el-button>
       </div>
+      
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="traceVisible = false">关闭</el-button>
+        </div>
+      </template>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ElMessage, ElLoading, ElMessageBox } from 'element-plus'
 import QrcodeVue from 'qrcode.vue'
 import { useOpsStore } from '@/stores/opsStore'
-import { Plus, Edit, Delete, Ticket, Picture, Close, CopyDocument } from '@element-plus/icons-vue'
+import { Plus, Edit, Delete, Ticket, Picture, Close, CopyDocument, Refresh } from '@element-plus/icons-vue'
 
-// 引入默认产品图片
+// 静态配置
 const defaultProductImage = 'https://picsum.photos/seed/tea-default/120/90'
+const pageSize = ref(10)
 
+// 状态管理
 const opsStore = useOpsStore()
 const { allProducts } = storeToRefs(opsStore)
-const query = reactive({ keyword: '', sort: 'createdAt' })
-const page = ref(1)
-const pageSize = 10
 
+// 查询参数
+const query = reactive({ 
+  keyword: '', 
+  sort: 'createdAt' 
+})
+const page = ref(1)
+
+// 数据过滤 & 分页
 const filteredProducts = computed(() => {
   const kw = (query.keyword || '').trim().toLowerCase()
   let list = allProducts.value.slice()
+  
+  // 搜索过滤
   if (kw) {
-    list = list.filter(p =>
-      String(p.name || '').toLowerCase().includes(kw) ||
-      String(p.description || '').toLowerCase().includes(kw) ||
-      String(p.origin || '').toLowerCase().includes(kw)
+    list = list.filter(p => 
+      (p.name || '').toLowerCase().includes(kw) ||
+      (p.description || '').toLowerCase().includes(kw) ||
+      (p.origin || '').toLowerCase().includes(kw)
     )
   }
-  if (query.sort === 'basePrice') list.sort((a,b)=> (a.basePrice||0)-(b.basePrice||0))
-  else if (query.sort === 'costPrice') list.sort((a,b)=> (a.costPrice||0)-(b.costPrice||0))
+  
+  // 排序
+  if (query.sort === 'basePrice') list.sort((a,b) => (a.basePrice || 0) - (b.basePrice || 0))
+  else if (query.sort === 'costPrice') list.sort((a,b) => (a.costPrice || 0) - (b.costPrice || 0))
+  
   return list
 })
 
 const pagedProducts = computed(() => {
-  const start = (page.value - 1) * pageSize
-  return filteredProducts.value.slice(start, start + pageSize)
+  const start = (page.value - 1) * pageSize.value
+  return filteredProducts.value.slice(start, start + pageSize.value)
 })
 
-const applyQuery = () => { page.value = 1 }
-const tableLoading = ref(false)
+// 表单 & 交互逻辑
 const formRef = ref(null)
+const editingId = ref(null)
+const currentProduct = ref({})
+const form = reactive({
+  name: '',
+  description: '',
+  basePrice: 0,
+  costPrice: 0,
+  origin: '',
+  harvestTime: '',
+  imageUrl: ''
+})
 
-// 表单验证规则
 const formRules = reactive({
   name: [
     { required: true, message: '请输入产品名称', trigger: 'blur' },
@@ -340,26 +405,11 @@ const formRules = reactive({
   ]
 })
 
-// 表单状态
-const editingId = ref(null)
-const currentProduct = ref({})
-const form = reactive({
-  name: '',
-  description: '',
-  basePrice: 0,
-  costPrice: 0,
-  origin: '',
-  harvestTime: '',
-  imageUrl: ''
-})
-
-// 列表操作
 const startCreate = () => {
   editingId.value = null
   reset()
-  // 在移动设备上自动滚动到表单区域
   if (window.innerWidth < 768) {
-    document.querySelector('.form-column').scrollIntoView({ behavior: 'smooth' })
+    document.querySelector('.form-column')?.scrollIntoView({ behavior: 'smooth' })
   }
 }
 
@@ -376,9 +426,8 @@ const startEdit = (row) => {
     imageUrl: row.imageUrl
   })
   
-  // 在移动设备上自动滚动到表单区域
   if (window.innerWidth < 768) {
-    document.querySelector('.form-column').scrollIntoView({ behavior: 'smooth' })
+    document.querySelector('.form-column')?.scrollIntoView({ behavior: 'smooth' })
   }
 }
 
@@ -393,7 +442,6 @@ const remove = (row) => {
     }
   ).then(() => {
     tableLoading.value = true
-    // 模拟API请求延迟
     setTimeout(() => {
       opsStore.deleteProduct(row.id)
       ElMessage.success('产品已删除')
@@ -404,9 +452,7 @@ const remove = (row) => {
   })
 }
 
-// 上传预览
 const handleImage = (file) => {
-  // 验证文件类型和大小
   const isImage = file.type.startsWith('image/')
   const isLt2M = file.size / 1024 / 1024 < 2
 
@@ -428,7 +474,6 @@ const handleImage = (file) => {
   return false
 }
 
-// 提交表单
 const submit = () => {
   formRef.value.validate((valid) => {
     if (valid) {
@@ -438,7 +483,6 @@ const submit = () => {
         background: 'rgba(255, 255, 255, 0.7)' 
       })
 
-      // 模拟API请求延迟
       setTimeout(() => {
         if (editingId.value) {
           opsStore.updateProduct(editingId.value, { ...form })
@@ -446,7 +490,7 @@ const submit = () => {
         } else {
           opsStore.addProduct({ ...form })
           ElMessage.success('产品已新增')
-          reset() // 新增成功后重置表单
+          reset()
         }
         loading.close()
       }, 800)
@@ -455,7 +499,7 @@ const submit = () => {
 }
 
 const reset = () => {
-  formRef.value.resetFields()
+  formRef.value?.resetFields()
   form.imageUrl = ''
 }
 
@@ -480,351 +524,262 @@ const copy = async (text) => {
   }
 }
 
-// 初始化加载
+// 加载态 & 初始化
+const tableLoading = ref(false)
+const applyQuery = () => { page.value = 1 }
+
 onMounted(() => {
-  // 模拟数据加载
+  if (window.innerWidth < 768) {
+    pageSize.value = 6
+  }
   tableLoading.value = true
-  setTimeout(() => {
-    tableLoading.value = false
-  }, 800)
+  setTimeout(() => (tableLoading.value = false), 800)
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+// 变量定义：统一风格
+$primary-color: #3b82f6;
+$radius-base: 12px;
+$shadow-base: 0 4px 12px rgba(0,0,0,0.05);
+
 .app-container {
   padding: 32px;
-  background-color: #f9fafb;
+  background: #f9fafb;
   min-height: 100vh;
+  width: 100%;
 }
 
-/* 页面标题 */
+/* 页面头：品牌级展示 */
 .page-header {
-  margin-bottom: 32px;
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e7eb;
+    
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+    }
+    .page-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 4px 0 0;
+    }
+  }
 }
 
-.page-title {
-  font-size: 28px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 8px 0;
-}
-
-.page-subtitle {
-  font-size: 16px;
-  color: #6b7280;
-  margin: 0;
-}
-
-/* 主内容区域 */
-.main-content {
+/* 主布局：双栏弹性布局 */
+.main-layout {
   display: flex;
   flex-wrap: wrap;
+  gap: 24px;
+  max-width: 1440px;
+  margin: 24px auto 0;
+  
+  .layout-column {
+    flex: 1;
+    min-width: 320px;
+  }
+  .list-column { flex: 2 1 0; }
+  .form-column { flex: 1 1 0; }
 }
 
-/* 卡片样式 */
+/* 卡片统一样式：强化层次 */
 .content-card {
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  background-color: #fff;
+  border-radius: $radius-base;
+  box-shadow: $shadow-base;
+  background: #fff;
   overflow: hidden;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
 }
 
-.content-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+/* 列表卡片：头部操作区 */
+.list-card {
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #f3f4f6;
+    
+    .header-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+      }
+      .divider {
+        width: 1px;
+        height: 20px;
+        background: #e5e7eb;
+      }
+      .header-meta {
+        font-size: 14px;
+        color: #6b7280;
+        margin: 0;
+      }
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      .search-input {
+        width: 240px;
+        border-radius: 8px;
+      }
+      .sort-select {
+        width: 160px;
+        border-radius: 8px;
+      }
+      .action-btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        &.is-icon {
+          i { margin-right: 6px; }
+        }
+      }
+    }
+  }
+  
+  .table-wrapper {
+    max-height: 600px;
+    overflow: auto;
+    padding: 16px;
+    position: relative;
+  }
+  /* 表头吸顶 */
+  .products-table {
+    .el-table__header-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: #f9fafb;
+    }
+  }
+  
+  .pagination-bar {
+    padding: 16px 20px;
+    border-top: 1px solid #f3f4f6;
+    background: #f9fafb;
+    text-align: right;
+  }
 }
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
+/* 表单卡片： sticky 优化 + 响应式 */
+.form-card {
+  position: sticky;
+  top: 32px;
+  padding: 20px;
+  
+  @media (max-width: 768px) {
+    position: static;
+  }
+  
+  .product-form {
+    .form-input {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .upload-button {
+      border-radius: 8px;
+    }
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      
+      .btn-reset, .btn-submit {
+        flex: 1;
+        border-radius: 8px;
+      }
+    }
+  }
 }
 
-.card-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #111827;
-}
-
-/* 列表区域 */
-.list-column {
-  margin-bottom: 24px;
-}
-
-.table-container {
-  overflow: auto;
-}
-
+/* 表格交互：强化 hover & 对齐 */
 .products-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #6b7280;
+  }
+  td {
+    &:hover {
+      background: #f3f4f6;
+    }
+  }
 }
 
-.products-table th {
-  background-color: #f9fafb;
-  font-weight: 600;
-  color: #6b7280;
-  font-size: 13px;
-  padding: 14px 16px;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.products-table td {
-  padding: 16px;
-  border-bottom: 1px solid #f3f4f6;
-  transition: background-color 0.2s ease;
-}
-
-.products-table .el-table__row:hover > td {
-  background-color: #f9fafb;
-}
-
+/* 图片与文本优化 */
 .product-image-container {
-  width: 72px;
-  height: 54px;
-  border-radius: 6px;
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
   overflow: hidden;
-  background-color: #f3f4f6;
-  margin: 0 auto;
+  background: #f3f4f6;
+  display: inline-block;
 }
-
 .product-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
 }
-
-.product-image-container:hover .product-image {
-  transform: scale(1.05);
-}
-
 .description-text {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  display: inline-block;
+  max-width: 100%;
   overflow: hidden;
-  color: #4b5563;
-}
-
-.add-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-}
-
-/* 按钮样式 */
-.btn-edit {
-  color: #3b82f6;
-  border-color: #dbeafe;
-  margin-right: 6px;
-}
-
-.btn-edit:hover {
-  background-color: #eff6ff;
-}
-
-.btn-delete {
-  margin-right: 6px;
-}
-
-.btn-trace {
-  color: #16a34a;
-  border-color: #dcfce7;
-}
-
-.btn-trace:hover {
-  background-color: #f0fdf4;
-}
-
-/* 表单区域 */
-.form-column {
-  margin-bottom: 24px;
-}
-
-.form-card {
-  position: sticky;
-  top: 24px;
-}
-
-.product-form {
-  padding-top: 8px;
-}
-
-.form-input {
-  width: 100%;
-  border-radius: 6px;
-}
-
-.uploader {
-  margin-bottom: 12px;
-}
-
-.upload-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.image-preview-container {
-  position: relative;
-  width: 120px;
-  height: 90px;
-  border-radius: 6px;
-  overflow: hidden;
-  background-color: #f3f4f6;
-}
-
-.image-preview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.remove-image {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  margin: 0;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.image-preview-container:hover .remove-image {
-  opacity: 1;
-}
-
-.upload-hint {
-  margin: 8px 0 0 0;
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-.form-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.btn-reset {
-  flex: 1;
-}
-
-.btn-submit {
-  flex: 1;
-}
-
-/* 空状态 */
-.empty-state {
-  padding: 48px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 溯源弹窗 */
-.trace-dialog .el-dialog__header {
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.trace-dialog .el-dialog__title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
-}
-
-.trace-dialog .el-dialog__body {
-  padding: 24px;
-}
-
-.trace-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.trace-info {
-  min-width: 240px;
-}
-
-.trace-product-name {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  color: #111827;
-}
-
-.trace-product-origin,
-.trace-product-date {
-  margin: 0 0 8px 0;
-  color: #4b5563;
-  font-size: 14px;
-}
-
-.qrcode-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.qrcode {
-  border: 8px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-}
-
-.qrcode-hint {
-  margin: 12px 0 0 0;
-  font-size: 14px;
-  color: #6b7280;
-}
-
-.trace-link-container {
-  display: flex;
-  gap: 12px;
-}
-
-.trace-link {
-  flex: 1;
-}
-
-.copy-button {
+  text-overflow: ellipsis;
   white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 }
 
-/* 响应式调整 */
-@media (max-width: 1024px) {
-  .app-container {
-    padding: 24px;
+/* 空状态：居中强化 */
+.empty-state {
+  padding: 64px 0;
+  text-align: center;
+}
+
+/* 溯源弹窗：视觉升级 */
+.trace-dialog {
+  .el-dialog__header {
+    border-bottom: 1px solid #f3f4f6;
   }
-  
-  .main-content {
-    gap: 24px;
+  .trace-content {
+    gap: 32px;
+    .trace-info {
+      .trace-product-name {
+        font-size: 20px;
+        font-weight: 600;
+      }
+    }
+    .qrcode {
+      border: 12px solid #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
   }
-  
+}
+
+/* 响应式适配：多断点覆盖 */
+@media (max-width: 1200px) {
+  .main-layout {
+    flex-direction: column;
+  }
   .list-column, .form-column {
-    margin-bottom: 0;
+    width: 100%;
   }
 }
 
@@ -832,43 +787,24 @@ onMounted(() => {
   .app-container {
     padding: 16px;
   }
-  
-  .page-title {
-    font-size: 24px;
-  }
-  
   .card-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 16px;
   }
-  
-  .add-button {
+  .header-actions {
+    flex-direction: column;
     width: 100%;
-    justify-content: center;
+    gap: 8px;
+    
+    .search-input, .sort-select, .action-btn {
+      width: 100%;
+    }
   }
-  
-  .trace-content {
-    flex-direction: column;
-  }
-  
-  .trace-link-container {
-    flex-direction: column;
-  }
-  
-  .copy-button {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .products-table .el-button--small {
-    padding: 4px 8px;
-    font-size: 12px;
-  }
-  
-  .form-actions {
-    flex-direction: column;
+  .list-card {
+    .table-wrapper {
+      max-height: 420px;
+    }
   }
 }
 </style>
