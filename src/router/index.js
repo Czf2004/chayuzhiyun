@@ -7,6 +7,7 @@ import DashboardView from '../views/DashboardView.vue'
 import MonitorView from '../views/MonitorView.vue' // 可选
 import PersonView from '../components/personalCenter/PersonView.vue'
 import UserManagementView from '../views/UserManagementView.vue'
+import DeviceManagementView from '../views/DeviceManagementView.vue'
 import { useUserStore } from '@/stores/userStore'
 import { ElMessage } from 'element-plus'
 
@@ -60,6 +61,12 @@ const routes = [
     path: '/user-management',
     name: 'user-management',
     component: UserManagementView,
+    meta: { showNavbar: true, requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: '/device-management',
+    name: 'device-management',
+    component: DeviceManagementView,
     meta: { showNavbar: true, requiresAuth: true, requiresAdmin: true }
   },
   // 404路由

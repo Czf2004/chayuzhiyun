@@ -16,6 +16,9 @@
       <li v-if="userStore.getUserInfo.role === 'admin'">
         <RouterLink class="nav-link" to="/user-management">用户管理</RouterLink>
       </li>
+      <li v-if="userStore.getUserInfo.role === 'admin'">
+        <RouterLink class="nav-link" to="/device-management">设备管理</RouterLink>
+      </li>
       <li><RouterLink class="nav-link" to="/solutions">系统设置</RouterLink></li>
       <li><RouterLink class="nav-link" to="/person">个人中心</RouterLink></li>
     </ul>
