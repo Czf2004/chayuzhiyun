@@ -1,7 +1,8 @@
 :root {
-  --app-accent: #2f7a59;
+  --app-accent: #0ea5a4; /* emerald/teal 作为主色 */
   --app-radius: 12px;
   --app-content-max: 1200px;
+  --app-bg: #f7f8fb; /* 柔和浅灰底 */
 }
 
 [data-theme="dark"] {
@@ -19,7 +20,9 @@
 
 /* optional foreign-styled gradients inspired by Icons8 aesthetic */
 body[data-gradients="1"] .gradient-bg {
-  background: linear-gradient(135deg, #f6f9ff 0%, #eefaf4 100%);
+  background: radial-gradient(1200px 600px at 10% -10%, #e6fff8 0%, transparent 60%),
+              radial-gradient(800px 400px at 110% 10%, #e8f0ff 0%, transparent 60%),
+              linear-gradient(180deg, #ffffff 0%, #f7f8fb 100%);
 }
 
 /* glassmorphism */
@@ -28,11 +31,31 @@ body[data-glass="1"] .glass {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,.5);
   border-radius: var(--app-radius);
+  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
 }
 
 /* accent utilities */
 .accent { color: var(--app-accent); }
 .btn-accent { background: var(--app-accent); color: #fff; border: none; border-radius: 999px; padding: 8px 16px; }
 .btn-accent:hover { filter: brightness(.95); }
+
+/* SaaS 风格卡片与按钮渐变 */
+.card-modern {
+  background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
+  border: 1px solid #eef1f6;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+}
+.btn-modern-primary {
+  background: linear-gradient(180deg, #12b3b1 0%, #0ea5a4 100%);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+}
+.btn-modern-primary:hover { filter: brightness(.97); }
+
+/* 细腻动画与过渡 */
+.fade-enter-active, .fade-leave-active { transition: opacity .2s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 
 
