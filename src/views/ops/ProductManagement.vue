@@ -6,25 +6,32 @@
     </div>
 
     <el-row :gutter="24" class="main-content">
-      <!-- 产品列表区域 -->
-      <el-col :span="14" :xs="24" class="list-column">
+      <!-- 产品列表区域（16列） -->
+      <el-col :span="16" :xs="24" class="list-column">
         <el-card class="content-card">
           <template #header>
             <div class="card-header">
               <span class="card-title">产品列表</span>
-              <el-button 
-                type="primary" 
-                @click="startCreate"
-                class="add-button"
-              >
-                <el-icon><Plus /></el-icon> 新增产品
-              </el-button>
+              <div style="display:flex; gap:12px; align-items:center;">
+                <el-input v-model="query.keyword" placeholder="搜索名称/描述/产地" clearable style="width: 260px" />
+                <el-select v-model="query.sort" placeholder="排序" style="width: 160px">
+                  <el-option label="按创建时间" value="createdAt" />
+                  <el-option label="按基础价" value="basePrice" />
+                  <el-option label="按成本价" value="costPrice" />
+                </el-select>
+                <el-button type="primary" @click="applyQuery" class="add-button">
+                  <el-icon><Refresh /></el-icon> 筛选
+                </el-button>
+                <el-button type="primary" @click="startCreate" class="add-button">
+                  <el-icon><Plus /></el-icon> 新增产品
+                </el-button>
+              </div>
             </div>
           </template>
           
           <div class="table-container">
             <el-table 
-              :data="allProducts" 
+              :data="pagedProducts" 
               class="products-table"
               highlight-current-row
               v-loading="tableLoading"
@@ -100,11 +107,20 @@
               </el-button>
             </el-empty>
           </div>
+          <div style="display:flex; justify-content:flex-end; padding: 12px 0 4px;">
+            <el-pagination
+              background
+              layout="total, prev, pager, next"
+              :total="filteredProducts.length"
+              :page-size="pageSize"
+              :current-page.sync="page"
+            />
+          </div>
         </el-card>
       </el-col>
 
-      <!-- 产品表单区域 -->
-      <el-col :span="10" :xs="24" class="form-column">
+      <!-- 产品表单区域（8列） -->
+      <el-col :span="8" :xs="24" class="form-column">
         <el-card class="content-card form-card">
           <template #header>
             <span class="card-title">{{ editingId ? '编辑产品' : '新增产品' }}</span>
@@ -268,7 +284,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ElMessage, ElLoading, ElMessageBox } from 'element-plus'
 import QrcodeVue from 'qrcode.vue'
@@ -280,6 +296,31 @@ const defaultProductImage = 'https://picsum.photos/seed/tea-default/120/90'
 
 const opsStore = useOpsStore()
 const { allProducts } = storeToRefs(opsStore)
+const query = reactive({ keyword: '', sort: 'createdAt' })
+const page = ref(1)
+const pageSize = 10
+
+const filteredProducts = computed(() => {
+  const kw = (query.keyword || '').trim().toLowerCase()
+  let list = allProducts.value.slice()
+  if (kw) {
+    list = list.filter(p =>
+      String(p.name || '').toLowerCase().includes(kw) ||
+      String(p.description || '').toLowerCase().includes(kw) ||
+      String(p.origin || '').toLowerCase().includes(kw)
+    )
+  }
+  if (query.sort === 'basePrice') list.sort((a,b)=> (a.basePrice||0)-(b.basePrice||0))
+  else if (query.sort === 'costPrice') list.sort((a,b)=> (a.costPrice||0)-(b.costPrice||0))
+  return list
+})
+
+const pagedProducts = computed(() => {
+  const start = (page.value - 1) * pageSize
+  return filteredProducts.value.slice(start, start + pageSize)
+})
+
+const applyQuery = () => { page.value = 1 }
 const tableLoading = ref(false)
 const formRef = ref(null)
 
