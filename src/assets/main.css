@@ -1,8 +1,17 @@
 :root {
-  --app-accent: #0ea5a4; /* emerald/teal 作为主色 */
-  --app-radius: 12px;
+  --app-accent: #0D9488; /* teal 作为主色 */
+  --app-accent-strong: #0aa096;
+  --app-radius: 12px; /* 按钮/卡片圆角 8-12px */
   --app-content-max: 1200px;
   --app-bg: #f7f8fb; /* 柔和浅灰底 */
+  --app-neutral-0: #FAFAFA;
+  --app-neutral-1: #F8F9FA;
+  --app-neutral-2: #E9ECEF;
+  --app-neutral-3: #DEE2E6;
+  --app-muted-lavender: #E0E7FF;
+  --app-muted-sage: #D1FAE5;
+  --shadow-soft: 0 4px 12px rgba(0,0,0,0.05);
+  --shadow-layered: 0 8px 24px rgba(16,24,40,0.06);
 }
 
 [data-theme="dark"] {
@@ -12,6 +21,7 @@
 .app-container {
   max-width: var(--app-content-max);
   margin: 0 auto;
+  padding: 24px; /* white-space first */
 }
 
 /* density helpers */
@@ -41,21 +51,50 @@ body[data-glass="1"] .glass {
 
 /* SaaS 风格卡片与按钮渐变 */
 .card-modern {
-  background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
   border: 1px solid #eef1f6;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
 }
 .btn-modern-primary {
-  background: linear-gradient(180deg, #12b3b1 0%, #0ea5a4 100%);
+  background: linear-gradient(180deg, var(--app-accent-strong) 0%, var(--app-accent) 100%);
   color: #fff;
   border: none;
   border-radius: 999px;
+  transform: translateZ(0);
+  transition: transform .22s ease, filter .22s ease;
 }
-.btn-modern-primary:hover { filter: brightness(.97); }
+.btn-modern-primary:hover { filter: brightness(1.05); transform: scale(1.02); }
+.btn-secondary-outline{
+  background: #fff;
+  color: var(--app-accent);
+  border: 1px solid rgba(13,148,136,0.35);
+  border-radius: 999px;
+}
 
 /* 细腻动画与过渡 */
 .fade-enter-active, .fade-leave-active { transition: opacity .2s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* 顶部导航（quiet luxury 样式） */
+.topbar {
+  position: sticky; top: 0; z-index: 1000;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.85);
+  border-bottom: 1px solid rgba(200,200,200,0.15);
+}
+.topbar-inner{ height:64px; display:flex; align-items:center; gap:16px; padding:0 24px; }
+.topbar .search{
+  flex:1; display:flex; align-items:center; gap:8px;
+  background:#fff; border:1px solid #eef1f6; border-radius: 999px; height: 36px; padding: 0 12px;
+}
+.topbar .search input{ flex:1; border:none; outline:none; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+
+/* 侧边栏 */
+.sidebar { width: 220px; border-right: 1px solid #eef1f6; padding: 16px; }
+.sidebar .group-title{ font-size:12px; letter-spacing:.04em; color:#98a2b3; margin: 16px 12px 8px; }
+.sidebar .item{ height:36px; display:flex; align-items:center; gap:10px; padding:0 10px; border-radius:8px; color:#344054; text-decoration:none; transition: background .2s ease; }
+.sidebar .item:hover{ background:#f3f5f8; }
+.sidebar .item.active{ border-left: 3px solid var(--app-accent); background:#ecfdf5; }
 
 
