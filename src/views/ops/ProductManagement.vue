@@ -113,7 +113,7 @@
               layout="total, prev, pager, next"
               :total="filteredProducts.length"
               :page-size="pageSize"
-              :current-page.sync="page"
+              v-model:current-page="page"
             />
           </div>
         </el-card>
