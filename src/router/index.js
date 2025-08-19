@@ -9,6 +9,7 @@ import PersonView from '../components/personalCenter/PersonView.vue'
 import UserManagementView from '../views/UserManagementView.vue'
 import DeviceManagementView from '../views/DeviceManagementView.vue'
 import { useUserStore } from '@/stores/userStore'
+import SystemSettingsView from '../views/SystemSettingsView.vue'
 import { ElMessage } from 'element-plus'
 
 const routes = [
@@ -55,6 +56,12 @@ const routes = [
     path: '/person',
     name: 'person',
     component: PersonView,
+    meta: { showNavbar: true, requiresAuth: true }
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: SystemSettingsView,
     meta: { showNavbar: true, requiresAuth: true }
   },
   {

@@ -1,0 +1,38 @@
+:root {
+  --app-accent: #2f7a59;
+  --app-radius: 12px;
+  --app-content-max: 1200px;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+.app-container {
+  max-width: var(--app-content-max);
+  margin: 0 auto;
+}
+
+/* density helpers */
+.density-compact .el-button, .density-compact .el-input__wrapper { --el-component-size: 30px; }
+.density-spacious .el-button, .density-spacious .el-input__wrapper { --el-component-size: 42px; }
+
+/* optional foreign-styled gradients inspired by Icons8 aesthetic */
+body[data-gradients="1"] .gradient-bg {
+  background: linear-gradient(135deg, #f6f9ff 0%, #eefaf4 100%);
+}
+
+/* glassmorphism */
+body[data-glass="1"] .glass {
+  background: rgba(255,255,255,.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: var(--app-radius);
+}
+
+/* accent utilities */
+.accent { color: var(--app-accent); }
+.btn-accent { background: var(--app-accent); color: #fff; border: none; border-radius: 999px; padding: 8px 16px; }
+.btn-accent:hover { filter: brightness(.95); }
+
+

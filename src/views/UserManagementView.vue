@@ -77,7 +77,7 @@
         <el-table-column label="用户信息" min-width="200">
           <template #default="{ row }">
             <div class="user-info">
-              <el-avatar :size="40" :src="row.avatar">
+              <el-avatar :size="40" :src="getAvatar(row)">
                 {{ row.nickname?.charAt(0) || 'U' }}
               </el-avatar>
               <div class="user-details">
@@ -248,7 +248,7 @@
     >
       <div v-if="selectedUser" class="user-detail">
         <div class="detail-header">
-          <el-avatar :size="80" :src="selectedUser.avatar">
+          <el-avatar :size="80" :src="getAvatar(selectedUser)">
             {{ selectedUser.nickname?.charAt(0) || 'U' }}
           </el-avatar>
           <div class="detail-info">
@@ -312,6 +312,7 @@ import { useUserStore } from '@/stores/userStore'
 import { getUsers, createUser, deleteUser as deleteUserApi, updateUser, resetUserPassword } from '@/api/admin'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Refresh } from '@element-plus/icons-vue'
+import { images } from '@/assets/images.js'
 
 // 状态管理
 const userStore = useUserStore()
@@ -562,6 +563,18 @@ const resetCreateForm = () => {
 const formatDate = (dateStr) => {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleString('zh-CN')
+}
+
+// 头像兜底：接口有就用接口的；否则按用户ID/用户名稳定映射到内置头像池
+const getAvatar = (user) => {
+  if (!user) return ''
+  if (user.avatar) return user.avatar
+  const arr = Object.values(images?.avatars || {})
+  if (!arr.length) return ''
+  const basis = String(user.user_id || user.username || user.nickname || 'user')
+  let sum = 0
+  for (let i = 0; i < basis.length; i++) sum = (sum + basis.charCodeAt(i)) % 997
+  return arr[sum % arr.length]
 }
 
 // 初始化

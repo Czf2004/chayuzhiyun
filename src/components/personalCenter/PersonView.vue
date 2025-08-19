@@ -43,7 +43,8 @@
     <div v-else class="profile-content">
       <!-- 头部区域 -->
       <section class="hero-section">
-        <div class="hero-background">...</div>
+        <div class="hero-background"></div>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
           <!-- 头像上传区域 -->
           <div class="hero-avatar">
@@ -86,8 +87,9 @@
           </div>
 
           <div class="hero-actions">
-            <button class="btn-primary">编辑资料</button>
-            <button class="btn-secondary">导出数据</button>
+            <button class="btn-primary" @click="handleGoDeviceManagement">设备管理</button>
+            <button class="btn-secondary">编辑资料</button>
+            <button class="btn-secondary" @click="handleExport">导出数据</button>
           </div>
         </div>
       </section>
@@ -318,9 +320,24 @@
               <h2 class="section-title">设备池</h2>
               <div class="header-actions">
                 <!-- 查看所有茶园按钮 -->
-                <button class="btn-view-all" @click="handleViewAllPlantations">
-                  查看所有茶园
-                </button>
+                <button class="btn-view-all" @click="handleViewAllPlantations">查看所有茶园</button>
+                <button class="btn-view-all" @click="handleGoDeviceManagement">设备管理</button>
+              </div>
+            </div>
+
+            <!-- 设备总览（不按茶园分组） -->
+            <div class="devices-grid" v-if="userInfo.devices && userInfo.devices.length">
+              <div v-for="device in userInfo.devices" :key="device.id" class="device-card">
+                <div class="device-type">
+                  {{ device.type === 'drone' ? '无人机' : device.type === 'sensor' ? '传感器' : '设备' }}
+                </div>
+                <div class="device-name">{{ device.name }}</div>
+                <div class="device-status" :class="device.status">
+                  {{ device.status === 'online' ? '在线' : '离线' }}
+                </div>
+                <div class="device-firmware">
+                  固件：{{ device.firmwareVersion || '-' }}
+                </div>
               </div>
             </div>
 
@@ -390,6 +407,8 @@ import Chart from 'chart.js/auto'; // 引入图表库
 import { getUserInfo } from '@/api/auth';
 import { useUserStore } from '@/stores/userStore';
 import { ElMessage } from 'element-plus';
+import { listDevices } from '@/api/devices';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
@@ -400,6 +419,7 @@ export default {
     const defaultAvatar = 'https://i.pravatar.cc/300';
     const defaultPlantationImg = 'https://picsum.photos/400/200?grayscale';
     const growthChart = ref(null); // 添加canvas ref
+    const router = useRouter();
 
     // 角色映射表
     const roleMap = {
@@ -531,7 +551,7 @@ export default {
             created_at: p.created_at,
             updated_at: p.updated_at
           })) || [],
-          // 模拟设备数据（实际项目中应该从设备API获取）
+          // 设备数据（从设备API获取用户可见设备）
           devices: [],
           // 模拟库存数据（实际项目中应该从库存API获取）
           inventory: [
@@ -540,6 +560,22 @@ export default {
             { id: 'i3', type: '绿色农药', quantity: 8, threshold: 10, unit: '瓶' }
           ]
         };
+        
+        // 拉取设备数据（参考 DeviceManagementView：直接分页读取 results）
+        try {
+          const deviceRes = await listDevices({ page: 1, per_page: 20 })
+          const list = deviceRes?.results || []
+          userInfo.value.devices = list.map(d => ({
+            id: d.device_id,
+            name: d.model || d.device_id,
+            type: d.device_type?.includes('sensor') ? 'sensor' : (d.device_type === 'drone' ? 'drone' : 'device'),
+            status: d.status === 'active' ? 'online' : 'offline',
+            firmwareVersion: d.firmware_version,
+            plantationId: d.plantation
+          }))
+        } catch (e) {
+          console.warn('获取设备失败，忽略概览区渲染')
+        }
         
         // 更新本地store中的用户信息
         userStore.updateUserInfo({
@@ -677,6 +713,14 @@ export default {
       return ['pest-none', 'pest-minor', 'pest-medium', 'pest-severe'][status] || '';
     };
 
+    const handleGoDeviceManagement = () => {
+      router.push('/device-management');
+    };
+
+    const handleExport = () => {
+      ElMessage.success('导出任务已提交');
+    };
+
     // 初始化
     onMounted(fetchData);
 
@@ -704,6 +748,8 @@ export default {
       pestStatusText,
       getDevicesByPlantation,
       handleViewAllPlantations,
+      handleGoDeviceManagement,
+      handleExport,
       badgeClass
     };
   }
@@ -713,22 +759,24 @@ export default {
 <style scoped>
 /* ======  高级感配色重制版（仅变量区） ====== */
 .profile-container {
-  /* --- 主色（低饱和靛灰） --- */
-  --primary: #727881;
+  /* --- 主色（茶园绿色系） --- */
+  --primary: #2f7a59;
   /* 主按钮、关键文字 */
-  --primary-dark: #353e4a;
+  --primary-dark: #215e44;
   /* hover/pressed */
-  --primary-light: #e7eaed;
+  --primary-light: #e6f4ef;
   /* 选中态、浅提示背景 */
 
   /* --- 功能色（莫兰迪绿、橙、红） --- */
-  --secondary: #5b826c;
+  --secondary: #3b9f6c;
   /* 成功、正向指标 */
   --secondary-dark: #3e584d;
-  --warning: #c18c5d;
+  --warning: #d97706;
   /* 警告、处理中 */
-  --danger: #b45c5c;
+  --danger: #dc2626;
   /* 危险、异常 */
+  --accent: #409eff;
+  /* 强调色/进行中 */
 
   /* --- 文字阶梯 --- */
   --text: #1f2329;
@@ -739,11 +787,11 @@ export default {
   /* 三级文字、icon */
 
   /* --- 背景色（明度分层，让模块“浮”起来） --- */
-  --bg: #fdfcfc;
+  --bg: #ffffff;
   /* 页面最底层背景 */
-  --bg-light: #f5f6f7;
+  --bg-light: #f5faf7;
   /* 卡片整体背景（Stats / Plantation 卡片） */
-  --bg-lighter: #eef0f2;
+  --bg-lighter: #eef7f1;
   /* 卡片内部按钮区、分割线背景 */
 
   /* --- 边框/分割线 --- */
@@ -753,13 +801,10 @@ export default {
   /* 内部分割线 */
 
   /* --- 阴影 --- */
-  --shadow: 0 2px 8px rgba(0, 0, 0, .06);
-  --shadow-hover: 0 4px 16px rgba(0, 0, 0, .1);
+  --shadow: 0 4px 14px rgba(0, 0, 0, .06);
+  --shadow-hover: 0 8px 20px rgba(0, 0, 0, .12);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, .16);
 
-  /* --- 其他保持原值 --- */
-  --radius: 6px;
-  --radius-lg: 8px;
-  --trans: all .2s ease;
 }
 
 /* ====== 基础样式 ====== */
@@ -1126,7 +1171,7 @@ export default {
 .btn-primary,
 .btn-secondary {
   padding: 10px 20px;
-  border-radius: var(--radius);
+  border-radius: 999px;
   font-weight: 500;
   font-size: 14px;
   border: none;
@@ -1135,23 +1180,24 @@ export default {
 }
 
 .btn-primary {
-  background: var(--bg);
+  background: #ffffff;
   color: var(--primary);
+  box-shadow: 0 2px 6px rgba(47, 122, 89, 0.15);
 }
 
 .btn-primary:hover {
-  background: var(--bg-light);
+  background: #f5f9f7;
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--bg);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* ====== Main Layout ====== */
@@ -1172,11 +1218,12 @@ export default {
 }
 
 .profile-card {
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.72);
   border-radius: var(--radius-lg);
   padding: 20px;
   box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
 }
 
 .card-header {
@@ -1347,11 +1394,12 @@ export default {
 
 /* ====== Stats Section ====== */
 .stats-section {
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.7);
   border-radius: var(--radius-lg);
   padding: 20px;
   box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
 }
 
 .stats-grid {
@@ -1361,17 +1409,19 @@ export default {
 }
 
 .stat-card {
-  background: var(--bg-light);
-  border-radius: var(--radius);
+  border-radius: 14px;
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 16px;
   transition: var(--trans);
+  background: linear-gradient(135deg, #ffffff 0%, #f3fbf7 100%);
+  border: 1px solid #eef2f1;
 }
 
 .stat-card:hover {
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
 }
 
 .stat-icon {
@@ -1381,16 +1431,17 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary-light);
-  border-radius: var(--radius);
-  color: var(--primary);
+  background: linear-gradient(135deg, #d1fae5 0%, #c7f9e9 100%);
+  border-radius: 12px;
+  color: var(--secondary);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
 }
 
 .stat-content h4 {
   font-size: 13px;
   color: var(--text-light);
   margin: 0 0 8px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .stat-number {
@@ -1424,11 +1475,12 @@ export default {
 
 /* ====== Plantations Section ====== */
 .plantations-section {
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.7);
   border-radius: var(--radius-lg);
   padding: 20px;
   box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
 }
 
 .header-actions {
@@ -1473,11 +1525,11 @@ export default {
 }
 
 .plantation-card {
-  background: var(--bg);
-  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  border: 1px solid #edf2ef;
   transition: var(--trans);
 }
 

@@ -1,8 +1,8 @@
 <template>
   <nav class="navbar">
     <div class="logo">
-      <img class="logo-img" src="http://www.chayuzhiyun.top/logo.png" alt="Logo">
-      <span class="logo-text">智能茶园系统</span>
+      <!-- <img class="logo-img" src="https://images.unsplash.com/photo-1755349687890-ea63e78612fa?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Logo"> -->
+      <span class="logo-text">智能系统</span>
     </div>
     
     <ul class="nav-links">
@@ -19,7 +19,7 @@
       <li v-if="userStore.getUserInfo.role === 'admin'">
         <RouterLink class="nav-link" to="/device-management">设备管理</RouterLink>
       </li>
-      <li><RouterLink class="nav-link" to="/solutions">系统设置</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/settings">系统设置</RouterLink></li>
       <li><RouterLink class="nav-link" to="/person">个人中心</RouterLink></li>
     </ul>
     
@@ -55,14 +55,25 @@
 
 <script setup>
 import { RouterLink, useRouter } from 'vue-router'
+import { computed } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { images } from '@/assets/images.js'
 
 const router = useRouter()
 const userStore = useUserStore()
 
-// 用户头像（可以根据需要设置）
-const userAvatar = ''
+// 用户头像（优先使用接口头像，否则用内置头像池按用户ID稳定取一张）
+const userAvatar = computed(() => {
+  const info = userStore.getUserInfo || {}
+  if (info.avatar) return info.avatar
+  const arr = Object.values(images?.avatars || {})
+  if (!arr.length) return ''
+  const basis = String(info.userId || info.username || 'user')
+  let sum = 0
+  for (let i = 0; i < basis.length; i++) sum = (sum + basis.charCodeAt(i)) % 997
+  return arr[sum % arr.length]
+})
 
 const handleCommand = async (command) => {
   switch (command) {
