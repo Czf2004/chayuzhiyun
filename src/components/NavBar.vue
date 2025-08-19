@@ -1,37 +1,58 @@
 <template>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="logo-text">智能系统</div>
-      <div class="search">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <input placeholder="搜索...">
-      </div>
-      <div style="flex:1"></div>
-      <div class="user-actions" v-if="!userStore.isLoggedIn">
-        <RouterLink class="btn-secondary-outline" to="/auth">登录</RouterLink>
-        <RouterLink class="btn-modern-primary" style="padding:8px 14px" to="/auth?register=true">注册</RouterLink>
-      </div>
-      <div class="user-actions" v-else>
-        <div class="user-info">
-          <span class="user-name">{{ userStore.getUserInfo.nickname || '用户' }}</span>
-        </div>
-        <el-dropdown @command="handleCommand">
-          <span class="user-avatar">
-            <el-avatar :size="32" :src="userAvatar">
-              {{ userStore.getUserInfo.nickname?.charAt(0) || 'U' }}
-            </el-avatar>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="profile">个人资料</el-dropdown-item>
-              <el-dropdown-item command="settings">设置</el-dropdown-item>
-              <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
+  <nav class="navbar">
+    <div class="logo">
+      <!-- <img class="logo-img" src="https://images.unsplash.com/photo-1755349687890-ea63e78612fa?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Logo"> -->
+      <span class="logo-text">智能系统</span>
     </div>
-  </header>
+    
+    <ul class="nav-links">
+      <li><RouterLink class="nav-link" to="/home">首页</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/manage">茶园管理</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/dashboard">数据中枢</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/monitor">历史查询</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/solutions">AI Agent 智能体</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/ops">茶园运营</RouterLink></li>
+      <li v-if="userStore.getUserInfo.role === 'admin'"><RouterLink class="nav-link" to="/ops/products">茶册管理</RouterLink></li>
+      <li v-if="userStore.getUserInfo.role === 'admin'"><RouterLink class="nav-link" to="/ops/quotations">专属报价</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/solutions">设备与任务</RouterLink></li>
+      <li v-if="userStore.getUserInfo.role === 'admin'">
+        <RouterLink class="nav-link" to="/user-management">用户管理</RouterLink>
+      </li>
+      <li v-if="userStore.getUserInfo.role === 'admin'">
+        <RouterLink class="nav-link" to="/device-management">设备管理</RouterLink>
+      </li>
+      <li><RouterLink class="nav-link" to="/settings">系统设置</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/person">个人中心</RouterLink></li>
+    </ul>
+    
+    <!-- 未登录状态 -->
+    <div class="user-actions" v-if="!userStore.isLoggedIn">
+      <RouterLink class="login-btn" to="/auth">登录</RouterLink>
+      <RouterLink class="register-btn" to="/auth?register=true">注册</RouterLink>
+    </div>
+    
+    <!-- 已登录状态 -->
+    <div class="user-actions" v-else>
+      <div class="user-info">
+        <span class="user-name">{{ userStore.getUserInfo.nickname || '用户' }}</span>
+        <span class="user-role">{{ userStore.getUserInfo.role || 'user' }}</span>
+      </div>
+      <el-dropdown @command="handleCommand">
+        <span class="user-avatar">
+          <el-avatar :size="32" :src="userAvatar">
+            {{ userStore.getUserInfo.nickname?.charAt(0) || 'U' }}
+          </el-avatar>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="profile">个人资料</el-dropdown-item>
+            <el-dropdown-item command="settings">设置</el-dropdown-item>
+            <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
+  </nav>
 </template>
 
 <script setup>

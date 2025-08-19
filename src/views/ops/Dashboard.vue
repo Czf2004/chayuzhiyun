@@ -83,16 +83,8 @@ onMounted(async () => {
   const values = (store.dashboardData.profitTrend || []).map(i => i.profit)
   new Chart(ctx, {
     type: 'line',
-    data: { labels, datasets:[{ label:'利润', data: values, borderColor:'var(--app-accent)', borderWidth:2, tension:0.35, pointRadius:0 }] },
-    options: {
-      responsive:true,
-      plugins:{ legend:{ display:false } },
-      scales:{
-        x:{ grid:{ color:'rgba(0,0,0,0.05)' } },
-        y:{ grid:{ color:'rgba(0,0,0,0.05)' } }
-      },
-      animation:{ duration: 280, easing: 'easeOutCubic' }
-    }
+    data: { labels, datasets:[{ label:'利润', data: values, borderColor:'#16a34a', tension:0.3 }] },
+    options: { responsive:true, plugins:{ legend:{ display:false } } }
   })
 })
 </script>
