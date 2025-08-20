@@ -121,12 +121,27 @@ export const useOpsStore = defineStore('opsStore', {
           quantity: Number(it.quantity || 1),
           unitPrice: Number(it.unitPrice || 0)
         })),
+        // 结算与条款
+        discountPercent: Number(quotationData.discountPercent || 0),
+        taxRate: Number(quotationData.taxRate || 0),
+        shippingFee: Number(quotationData.shippingFee || 0),
+        validUntil: quotationData.validUntil || '',
+        paymentTerms: quotationData.paymentTerms || '',
+        notes: quotationData.notes || '',
+        // 金额字段（可由前端传入或在此处计算）
+        subtotal: Number(quotationData.subtotal || 0),
+        discountAmount: Number(quotationData.discountAmount || 0),
+        taxAmount: Number(quotationData.taxAmount || 0),
+        grandTotal: Number(quotationData.grandTotal || (quotationData.items || []).reduce((s, it) => s + (Number(it.quantity||0) * Number(it.unitPrice||0)), 0)),
         createdAt: new Date().toISOString(),
         isViewed: false
       }
       this.quotations.unshift(q)
       // 兼容旧页面返回链接
       return { ...q, link: `${location.origin}/api/quotations/${q.uniqueCode}` }
+    },
+    findQuotationByCode(codeStr) {
+      return this.quotations.find(x => x.uniqueCode === codeStr)
     },
     markQuotationAsViewed(uniqueCode) {
       const q = this.quotations.find(x => x.uniqueCode === uniqueCode)
