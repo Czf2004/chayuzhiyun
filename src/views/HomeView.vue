@@ -142,17 +142,6 @@
               </div>
             </div>
           </div>
-          
-          <div class="solution-cta">
-            <div class="cta-content">
-              <h3>准备好让您的茶园生意更上一层楼了吗？</h3>
-              <p>立即体验茶智云，开启智能经营新时代</p>
-              <div class="cta-buttons">
-                <button class="primary-btn">免费试用</button>
-                <button class="secondary-btn">预约演示</button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1072,33 +1061,41 @@ onMounted(() => {
 
 .floating-stats {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 10px 15px;
-  border-radius: 15px;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
+  flex-direction: column;
   gap: 1rem;
-  flex-wrap: wrap;
+  min-width: 140px;
 }
 
 .stat-item {
   text-align: center;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border-radius: 12px;
+  border: 1px solid #bae6fd;
 }
 
 .stat-number {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 800;
-  color: #10b981;
+  color: #059669;
   line-height: 1;
+  margin-bottom: 0.25rem;
 }
 
 .stat-label {
-  font-size: 0.9rem;
-  color: #64748b;
-  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #475569;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .solution-cta {
@@ -2158,6 +2155,32 @@ onMounted(() => {
   .cta-buttons .primary-btn, .cta-buttons .secondary-btn {
     width: 100%;
     max-width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-stats {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    margin-top: 1rem;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    min-width: auto;
+  }
+  
+  .stat-item {
+    flex: 1;
+    max-width: 120px;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.7rem;
   }
 }
 </style>
