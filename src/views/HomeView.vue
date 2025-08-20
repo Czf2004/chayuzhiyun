@@ -7,18 +7,18 @@
         <div class="hero-content">
           <div class="hero-badge">
             <RocketLaunchIcon class="hero-badge-icon" />
-            <span>一句话，让AI替你打理茶园生意</span>
+            <span>用全网数据做决策，用AI搞推广</span>
           </div>
           <h1 class="hero-title">
             茶参谋
-            <span class="gradient-text">不是软件，是您雇来的AI运营团队</span>
+            <span class="gradient-text">一手行业数据 + 全自动私域运营</span>
           </h1>
           <p class="hero-subtitle">
-            我们把「采购、销售、库存、盈亏」四大核心模块，升级成了四个能听您指挥、自动执行的AI部门总监。您动嘴，它动手，利润翻番。
+            我们为您监控全网平台、各大渠道的精准行业数据，并基于数据，自动执行朋友圈种草、客户跟进、沉默唤醒，让您再也不愁卖货。
           </p>
           <div class="hero-buttons">
-            <button class="primary-btn">免费体验AI总监</button>
-            <button class="secondary-btn">观看AI实战视频</button>
+            <button class="primary-btn">获取我的行业数据报告</button>
+            <button class="secondary-btn">观看私域自动化演示</button>
           </div>
         </div>
       </div>
@@ -28,8 +28,8 @@
     <section class="value-section">
       <div class="container">
         <div class="value-header">
-          <h2 class="section-title">老板，您是否也曾为这些事头疼？</h2>
-          <p class="section-subtitle">传统茶业经营中的三大痛点，我们深有体会</p>
+          <h2 class="section-title">茶行业老板的新困局：有货，但卖不出利润</h2>
+          <p class="section-subtitle">不是茶不好，是打法落后了</p>
         </div>
 
         <div class="value-grid">
@@ -38,12 +38,12 @@
               <div class="value-icon-wrapper">
                 <ChartBarIcon class="value-icon" />
               </div>
-              <h3>决策像赌博，心里没底</h3>
+              <h3>闭门造车，决策失灵</h3>
             </div>
-            <p>该进什么货？进多少？该定什么价？该给谁促销？每次决策都像一场赌博，生怕押错宝，库存积压，资金周转不灵。</p>
+            <p>不知道别家什么价、什么好卖。盲目定价，要么利润流失，要么直接滞销。缺乏行业数据，决策全靠猜。</p>
             <div class="value-impact">
               <span class="impact-label">后果：</span>
-              <span class="impact-text">高买低卖，资金浪费</span>
+              <span class="impact-text">货不对路，高买低卖</span>
             </div>
           </div>
 
@@ -52,12 +52,12 @@
               <div class="value-icon-wrapper">
                 <FlagIcon class="value-icon" />
               </div>
-              <h3>客户管不住，流失严重</h3>
+              <h3>私域死寂，推广低效</h3>
             </div>
-            <p>客户买了就走，复购率低。私域不会运营，朋友圈没人看，群也死了。眼睁睁看着沉默客户越来越多，不知如何激活。</p>
+            <p>微信加了人，但朋友圈不会发，群也活跃不起来。营销全靠群发刷屏，客户反感，员工效率低下，成本极高。</p>
             <div class="value-impact">
               <span class="impact-label">后果：</span>
-              <span class="impact-text">获客成本高，利润薄如纸</span>
+              <span class="impact-text">流量浪费，复购率低</span>
             </div>
           </div>
 
@@ -66,70 +66,82 @@
               <div class="value-icon-wrapper">
                 <BoltIcon class="value-icon" />
               </div>
-              <h3>效率太低，忙到没时间赚钱</h3>
+              <h3>手工操作，规模瓶颈</h3>
             </div>
-            <p>每天时间都耗在琐事上：查数据、算利润、盯库存、写文案、发朋友圈。忙得团团转，却没空思考战略、拜访大客户。</p>
+            <p>老板个人IP无法复制，销售流程全靠人工盯。客户一多就管不过来，服务标准下降，规模永远做不大。</p>
             <div class="value-impact">
               <span class="impact-label">后果：</span>
-              <span class="impact-text">精力分散，规模做不大</span>
+              <span class="impact-text">人效低下，增长乏力</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 解决方案区域 -->
-    <section class="solution-section">
+    <!-- 数据优势区域 (新增) -->
+    <section class="data-advantage-section">
       <div class="container">
         <div class="solution-header">
-          <h2 class="section-title">「茶参谋」的解决方案：让数据替您工作</h2>
-          <p class="section-subtitle">不是复杂的软件，而是一个听懂您命令的AI商业大脑</p>
+          <h2 class="section-title">「茶参谋」解决方案：用行业数据指挥，让AI自动执行</h2>
+          <p class="section-subtitle">第一，给您一双看清行业的“天眼”。第二，给您一个自动赚钱的“私域机器”</p>
         </div>
 
-        <div class="solution-content">
-          <div class="solution-main">
-            <div class="solution-text">
-              <h3>核心价值：从“操作软件”到“享用结果”</h3>
-              <p>您无需学习复杂功能，只需像吩咐助理一样，用最自然的方式下达指令。剩下的分析、执行、监控，交给AI。</p>
-
-              <div class="solution-features">
-                <div class="solution-feature">
-                  <div class="feature-icon">
-                    <SparklesIcon class="feature-svg" />
-                  </div>
-                  <div class="feature-content">
-                    <h4>动嘴不动手</h4>
-                    <p>“茶参谋，下周一普洱该进多少？” → 它直接给你采购单和依据。</p>
-                  </div>
-                </div>
-
-                <div class="solution-feature">
-                  <div class="feature-icon">
-                    <BoltIcon class="feature-svg" />
-                  </div>
-                  <div class="feature-content">
-                    <h4>问题来找您</h4>
-                    <p>“老板，XX库存仅3天，建议促销” → 从“人找问题”变为“问题找人”。</p>
-                  </div>
-                </div>
-
-                <div class="solution-feature">
-                  <div class="feature-icon">
-                    <ArrowTrendingUpIcon class="feature-svg" />
-                  </div>
-                  <div class="feature-content">
-                    <h4>决策有依据</h4>
-                    <p>“建议定价258元，预计利润提升30%” → 数据驱动，拒绝拍脑袋。</p>
-                  </div>
+        <div class="data-sources">
+          <div class="sources-grid">
+            <div class="source-card">
+              <div class="source-icon">
+                <ShoppingCartIcon class="source-icon-svg" />
+              </div>
+              <div class="source-body">
+                <h4 class="source-title">电商平台</h4>
+                <p class="source-desc">天猫/京东/抖音 实时售价、优惠强度、套餐组合、关键词口碑</p>
+                <div class="source-badges">
+                  <span class="badge">价格带</span>
+                  <span class="badge">销量趋势</span>
+                  <span class="badge">差评机会</span>
                 </div>
               </div>
             </div>
-
-            <div class="solution-visual">
-              <!-- 这里可以放一个AI对话交互的示意图 -->
-              <div class="solution-image-container">
-                <img :src="images.solutions.aiChat" alt="AI对话交互示意图" class="solution-image" />
-                <div class="solution-overlay"></div>
+            <div class="source-card">
+              <div class="source-icon">
+                <PresentationChartBarIcon class="source-icon-svg" />
+              </div>
+              <div class="source-body">
+                <h4 class="source-title">大宗市场</h4>
+                <p class="source-desc">芳村等批发市场 开盘价/成交价/流通热度，指导进出货时机</p>
+                <div class="source-badges">
+                  <span class="badge">开盘价</span>
+                  <span class="badge">成交价</span>
+                  <span class="badge">热度</span>
+                </div>
+              </div>
+            </div>
+            <div class="source-card">
+              <div class="source-icon">
+                <MegaphoneIcon class="source-icon-svg" />
+              </div>
+              <div class="source-body">
+                <h4 class="source-title">社交平台</h4>
+                <p class="source-desc">小红书/微博/视频号 热点话题与情绪趋势，抢占营销先机</p>
+                <div class="source-badges">
+                  <span class="badge">话题热度</span>
+                  <span class="badge">情绪分析</span>
+                  <span class="badge">爆点洞察</span>
+                </div>
+              </div>
+            </div>
+            <div class="source-card">
+              <div class="source-icon">
+                <CloudIcon class="source-icon-svg" />
+              </div>
+              <div class="source-body">
+                <h4 class="source-title">产区情报</h4>
+                <p class="source-desc">核心产区 天气预警/茶青指导价/政府报告，提前锁定成本</p>
+                <div class="source-badges">
+                  <span class="badge">天气</span>
+                  <span class="badge">指导价</span>
+                  <span class="badge">政策</span>
+                </div>
               </div>
             </div>
           </div>
@@ -140,8 +152,8 @@
     <!-- 四大功能模块展示区 -->
     <section class="features-section">
       <div class="container">
-        <h2 class="section-title">您的四大AI总监，24小时为您待命</h2>
-        <p class="section-subtitle">我们不是提供了四个功能，而是为您雇了四个不要工资的专家</p>
+        <h2 class="section-title">四大系统，打通“行业数据”到“自动成交”的闭环</h2>
+        <p class="section-subtitle">数据指导策略，系统自动化执行，规模化提升业绩</p>
 
         <div class="features-nav">
           <button 
@@ -162,33 +174,103 @@
             <div class="feature-slogan">{{ features[activeFeature].slogan }}</div>
             <p class="feature-description">{{ features[activeFeature].description }}</p>
             
-            <!-- 新增：AI交互示例 -->
+            <!-- 【强化】行业数据应用 -->
+            <div class="data-application" v-if="features[activeFeature].dataApplication">
+              <h4>行业数据如何驱动本模块：</h4>
+              <ul>
+                <li v-for="(item, idx) in features[activeFeature].dataApplication" :key="idx">{{ item }}</li>
+              </ul>
+            </div>
+
+            <!-- 【保留并强化】AI交互示例 -->
             <div class="ai-command-demo">
-              <p class="command-prompt">您只需说：</p>
+              <p class="command-prompt">尝试对AI说：</p>
               <div class="command-example">“{{ features[activeFeature].aiExample.question }}”</div>
-              <p class="command-result">茶参谋立刻：</p>
+              <p class="command-result">它将立刻为您：</p>
               <ul class="command-steps">
                 <li v-for="(step, index) in features[activeFeature].aiExample.actions" :key="index">{{ step }}</li>
               </ul>
             </div>
 
-            <ul class="feature-points">
-              <li v-for="point in features[activeFeature].points" :key="point">
-                <CheckCircleIcon class="point-icon" />
-                {{ point }}
-              </li>
-            </ul>
+            <!-- 【强化】自动化流程展示 -->
+            <div class="automation-flow" v-if="features[activeFeature].automationFlow">
+              <h4>自动化执行流程：</h4>
+              <div class="flow-steps">
+                <div class="flow-step" v-for="(step, sIndex) in features[activeFeature].automationFlow" :key="sIndex">
+                  <span class="step-number">{{ sIndex + 1 }}</span>
+                  <span class="step-text">{{ step }}</span>
+                </div>
+              </div>
+            </div>
+
           </div>
           <div class="feature-visual" v-motion-slide-visible-once-right>
-            <div class="feature-image-container">
-              <img :src="features[activeFeature].image" :alt="features[activeFeature].title" />
-              <div class="feature-overlay"></div>
+            <!-- 根据模块特性展示不同的可视化内容 -->
+            <div class="visual-container">
+              <img :src="features[activeFeature].image" :alt="features[activeFeature].title" v-if="features[activeFeature].image" />
+              <div class="system-dashboard" v-if="features[activeFeature].dashboardData">
+                <div class="dashboard-header">
+                  <h4>{{ features[activeFeature].dashboardTitle }}</h4>
+                  <span class="update-time">实时更新</span>
+                </div>
+                <div class="dashboard-content">
+                  <div class="data-card" v-for="(data, dIndex) in features[activeFeature].dashboardData" :key="dIndex">
+                    <div class="data-label">{{ data.label }}</div>
+                    <div class="data-value" :class="data.trend">{{ data.value }}</div>
+                    <div class="data-trend" v-if="data.trendValue">
+                      <span class="trend-icon">{{ data.trend === 'up' ? '↗' : '↘' }}</span>
+                      <span class="trend-value">{{ data.trendValue }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- 私域自动化案例区域 (新增) -->
+    <section class="automation-case-section">
+      <div class="container">
+        <h2 class="section-title">看看您的同行如何用「茶参谋」实现私域自动化</h2>
+        <p class="section-subtitle">标准化流程，规模化复制，业绩持续增长</p>
+        
+        <div class="case-studies">
+          <div class="case-study">
+            <div class="case-content">
+              <h3>案例：武夷山岩茶品牌</h3>
+              <h4>【痛点】</h4>
+              <p>复购率低、内容单一，难以树立专业形象；沉默客户多，几乎无法唤醒。</p>
+              <h4>【茶参谋解决方案】</h4>
+              <ol>
+                <li>「朋友圈AI导演」全年剧本，自动发布品牌故事、岩茶科普、客户见证。</li>
+                <li>「企业微信SOP」新客3天破冰，老客生日自动祝福+专属券。</li>
+                <li>「沉默客户激活流水线」针对180天未购客户推送礼包，并引流直播专场。</li>
+              </ol>
+              <h4>【结果】</h4>
+              <div class="results-grid">
+                <div class="result-item">
+                  <div class="result-value">78%</div>
+                  <div class="result-label">复购率提升</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-value">2.5小时/天</div>
+                  <div class="result-label">老板节省时间</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-value">+15%</div>
+                  <div class="result-label">客单价提升</div>
+                </div>
+              </div>
+            </div>
+            <div class="case-visual">
+              <img :src="images.cases.tieguanyin" alt="私域运营案例" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- 数据驱动证明区域 -->
     <section class="stats-section">
       <div class="container">
@@ -479,7 +561,11 @@ import {
   StarIcon,
   PhoneIcon,
   EnvelopeIcon,
-  MapPinIcon
+  MapPinIcon,
+  ShoppingCartIcon,
+  PresentationChartBarIcon,
+  MegaphoneIcon,
+  CloudIcon
 } from '@heroicons/vue/24/outline'
 
 const activeFeature = ref(0)
@@ -1400,6 +1486,32 @@ onMounted(() => {
   bottom: 0;
   background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(13, 148, 136, 0.1));
 }
+
+/* 行业数据来源 */
+.data-sources { margin-top: 2rem; }
+.sources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+.source-card { display: flex; gap: 12px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
+.source-icon { width: 40px; height: 40px; border-radius: 10px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.source-icon-svg { width: 22px; height: 22px; color: #059669; }
+.source-title { font-weight: 600; color: #1f2937; margin: 0 0 4px 0; }
+.source-desc { margin: 0 0 8px 0; color: #64748b; font-size: 0.9rem; }
+.source-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge { padding: 2px 8px; font-size: 12px; border-radius: 999px; background: #ecfeff; color: #0ea5e9; border: 1px solid #e0f2fe; }
+
+/* 私域自动化案例 */
+.automation-case-section { padding: 80px 0; background: #ffffff; }
+.case-studies { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+.case-study { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center; }
+.case-content h3 { font-size: 1.5rem; color: #1e293b; margin-bottom: 1rem; }
+.case-content h4 { font-size: 1.1rem; color: #0f172a; margin: 1rem 0 0.5rem; }
+.case-content p { color: #475569; line-height: 1.6; }
+.case-content ol { padding-left: 1.1rem; color: #475569; }
+.case-content ol li { margin: 0.3rem 0; }
+.results-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.result-item { text-align: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; }
+.result-value { font-size: 1.25rem; font-weight: 800; color: #059669; }
+.result-label { font-size: 0.9rem; color: #64748b; }
+.case-visual img { width: 100%; height: 100%; max-height: 320px; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
 
 /* 数据统计区域 */
 .stats-section {
