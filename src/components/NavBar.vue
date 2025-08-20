@@ -23,6 +23,7 @@
       </li>
       <li><RouterLink class="nav-link" to="/settings">系统设置</RouterLink></li>
       <li><RouterLink class="nav-link" to="/person">个人中心</RouterLink></li>
+      <li><RouterLink class="nav-link" to="/toolkit">工具包</RouterLink></li>
     </ul>
     
     <!-- 未登录状态 -->

@@ -12,7 +12,7 @@
         <el-card class="kpi-card" hoverable>
           <div class="kpi-card__header">
             <div class="kpi-title">总销售收入</div>
-            <el-icon class="kpi-icon"><TrendingUp /></el-icon>
+            <el-icon class="kpi-icon"><TrendCharts /></el-icon>
           </div>
           <div class="kpi-card__value">¥{{ totalRevenue.toLocaleString() }}</div>
           <div class="kpi-card__trend" :class="revenueTrendClass">
@@ -26,7 +26,7 @@
         <el-card class="kpi-card" hoverable>
           <div class="kpi-card__header">
             <div class="kpi-title">总成本</div>
-            <el-icon class="kpi-icon"><TrendingDown /></el-icon>
+            <el-icon class="kpi-icon"><ArrowDown /></el-icon>
           </div>
           <div class="kpi-card__value">¥{{ totalCost.toLocaleString() }}</div>
           <div class="kpi-card__trend" :class="costTrendClass">
@@ -40,7 +40,7 @@
         <el-card class="kpi-card" hoverable>
           <div class="kpi-card__header">
             <div class="kpi-title">总利润</div>
-            <el-icon class="kpi-icon"><Dollar /></el-icon>
+            <el-icon class="kpi-icon"><Money /></el-icon>
           </div>
           <div class="kpi-card__value profit">¥{{ totalProfit.toLocaleString() }}</div>
           <div class="kpi-card__trend" :class="profitTrendClass">
@@ -54,7 +54,7 @@
         <el-card class="kpi-card" hoverable>
           <div class="kpi-card__header">
             <div class="kpi-title">平均利润率</div>
-            <el-icon class="kpi-icon"><Percentage /></el-icon>
+            <el-icon class="kpi-icon"><PieChart /></el-icon>
           </div>
           <div class="kpi-card__value">{{ avgMargin }}</div>
           <div class="kpi-card__trend" :class="marginTrendClass">
@@ -220,10 +220,11 @@
 </template>
 
 <script>
-import { TrendingUp, TrendingDown, Dollar, Percentage, ArrowUp, ArrowRight } from '@element-plus/icons-vue'
+import { TrendCharts, ArrowDown, Money, PieChart, ArrowUp, ArrowRight } from '@element-plus/icons-vue'
+
 export default { 
   name: 'OpsDashboardView',
-  components: { TrendingUp, TrendingDown, Dollar, Percentage, ArrowUp, ArrowRight }
+  components: { TrendCharts, ArrowDown, Money, PieChart, ArrowUp, ArrowRight }
 }
 </script>
 

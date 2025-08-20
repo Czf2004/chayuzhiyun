@@ -1,3 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 移除Tailwind CSS，使用自定义CSS */
+
 :root {
   --app-accent: #0ea5a4; /* emerald/teal 作为主色 */
   --app-radius: 12px;

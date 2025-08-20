@@ -6,6 +6,11 @@ export const images = {
     // 茶园全景图
   },
   
+  // 解决方案与示意图
+  solutions: {
+    aiChat: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=center'
+  },
+  
   // 功能图标
   features: {
     sensing: 'https://img.icons8.com/color/96/000000/sensor.png',

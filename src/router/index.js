@@ -14,6 +14,8 @@ import OpsDashboard from '../views/ops/Dashboard.vue'
 import ProductManagement from '../views/ops/ProductManagement.vue'
 import QuotationCreation from '../views/ops/QuotationCreation.vue'
 import { ElMessage } from 'element-plus'
+import ToolkitView from '../views/ToolkitView.vue'
+import ToolkitDocView from '../views/ToolkitDocView.vue'
 
 const routes = [
   {
@@ -21,6 +23,18 @@ const routes = [
     name: 'auth',
     component: AuthView,
     meta: { showNavbar: false, requiresAuth: false }
+  },
+  {
+    path: '/toolkit',
+    name: 'toolkit',
+    component: ToolkitView,
+    meta: { showNavbar: true, requiresAuth: true }
+  },
+  {
+    path: '/toolkit/docs/:key',
+    name: 'toolkit-docs',
+    component: ToolkitDocView,
+    meta: { showNavbar: true, requiresAuth: true }
   },
   {
     path: '/ops',
