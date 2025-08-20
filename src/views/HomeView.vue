@@ -129,16 +129,6 @@
               <div class="solution-image-container">
                 <img :src="images.hero.main" alt="茶智云解决方案" class="solution-image" />
                 <div class="solution-overlay"></div>
-                <div class="floating-stats">
-                  <div class="stat-item">
-                    <div class="stat-number">85%</div>
-                    <div class="stat-label">决策效率提升</div>
-                  </div>
-                  <div class="stat-item">
-                    <div class="stat-number">60%</div>
-                    <div class="stat-label">运营成本降低</div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -1201,6 +1191,8 @@ onMounted(() => {
   transition: all 0.3s ease;
   margin-right: 1rem;
   margin-bottom: 1rem;
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 .feature-nav-btn:hover {
@@ -1236,11 +1228,14 @@ onMounted(() => {
 .feature-badge {
   background: linear-gradient(135deg, #fef3c7, #fbbf24);
   color: #92400e;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
   margin-bottom: 1rem;
+  display: inline-block;
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 .feature-title {
@@ -1951,9 +1946,11 @@ onMounted(() => {
   }
   
   .feature-nav-btn {
-    width: 100%;
-    max-width: 300px;
+    width: auto;
+    max-width: 100%;
     margin-right: 0;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 1.25rem;
   }
 
   .features-content {
