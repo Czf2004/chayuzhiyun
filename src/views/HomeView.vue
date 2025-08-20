@@ -4,23 +4,23 @@
     <section class="hero-section">
       <div class="hero-background" :style="{ backgroundImage: `url(${images.hero.main})` }"></div>
       <div class="hero-container">
-      <div class="hero-content">
+        <div class="hero-content">
           <div class="hero-badge">
             <RocketLaunchIcon class="hero-badge-icon" />
             <span>一句话，让AI替你打理茶园生意</span>
           </div>
           <h1 class="hero-title">
-            茶智云
-            <span class="gradient-text">AI驱动增长，重塑茶业利润空间</span>
+            茶参谋
+            <span class="gradient-text">不是软件，是您雇来的AI运营团队</span>
           </h1>
           <p class="hero-subtitle">
-            一站式智能运营系统，为您的茶园注入增长基因。告别凭经验决策、客户流失、营销低效的困境。
+            我们把「采购、销售、库存、盈亏」四大核心模块，升级成了四个能听您指挥、自动执行的AI部门总监。您动嘴，它动手，利润翻番。
           </p>
-        <div class="hero-buttons">
-            <button class="primary-btn">立即体验</button>
-            <button class="secondary-btn">观看视频</button>
+          <div class="hero-buttons">
+            <button class="primary-btn">免费体验AI总监</button>
+            <button class="secondary-btn">观看AI实战视频</button>
+          </div>
         </div>
-      </div>
       </div>
     </section>
 
@@ -31,47 +31,47 @@
           <h2 class="section-title">老板，您是否也曾为这些事头疼？</h2>
           <p class="section-subtitle">传统茶业经营中的三大痛点，我们深有体会</p>
         </div>
-        
+
         <div class="value-grid">
           <div class="value-card" v-motion-slide-visible-once-bottom>
             <div class="value-card-header">
               <div class="value-icon-wrapper">
                 <ChartBarIcon class="value-icon" />
               </div>
-              <h3>报表太多看不懂</h3>
+              <h3>决策像赌博，心里没底</h3>
             </div>
-            <p>采购、销售、库存报表一大堆，数据冰冷，看不出门道，更不知道下一步该干啥。</p>
+            <p>该进什么货？进多少？该定什么价？该给谁促销？每次决策都像一场赌博，生怕押错宝，库存积压，资金周转不灵。</p>
             <div class="value-impact">
-              <span class="impact-label">影响：</span>
-              <span class="impact-text">决策滞后，错失商机</span>
+              <span class="impact-label">后果：</span>
+              <span class="impact-text">高买低卖，资金浪费</span>
             </div>
           </div>
-          
+
           <div class="value-card" v-motion-slide-visible-once-bottom>
             <div class="value-card-header">
               <div class="value-icon-wrapper">
                 <FlagIcon class="value-icon" />
               </div>
-              <h3>决策全靠拍脑袋</h3>
+              <h3>客户管不住，流失严重</h3>
             </div>
-            <p>该进什么货？进多少？该给谁促销？库存怎么处理？每次决策都像一场赌博，心里没底。</p>
+            <p>客户买了就走，复购率低。私域不会运营，朋友圈没人看，群也死了。眼睁睁看着沉默客户越来越多，不知如何激活。</p>
             <div class="value-impact">
-              <span class="impact-label">影响：</span>
-              <span class="impact-text">库存积压，资金浪费</span>
+              <span class="impact-label">后果：</span>
+              <span class="impact-text">获客成本高，利润薄如纸</span>
             </div>
           </div>
-          
+
           <div class="value-card" v-motion-slide-visible-once-bottom>
             <div class="value-card-header">
               <div class="value-icon-wrapper">
                 <BoltIcon class="value-icon" />
               </div>
-              <h3>效率太低忙不过来</h3>
+              <h3>效率太低，忙到没时间赚钱</h3>
             </div>
-            <p>每天时间都耗在琐事上：查数据、算利润、盯库存，根本没空思考发展、拜访客户。</p>
+            <p>每天时间都耗在琐事上：查数据、算利润、盯库存、写文案、发朋友圈。忙得团团转，却没空思考战略、拜访大客户。</p>
             <div class="value-impact">
-              <span class="impact-label">影响：</span>
-              <span class="impact-text">精力分散，发展受限</span>
+              <span class="impact-label">后果：</span>
+              <span class="impact-text">精力分散，规模做不大</span>
             </div>
           </div>
         </div>
@@ -82,52 +82,53 @@
     <section class="solution-section">
       <div class="container">
         <div class="solution-header">
-          <h2 class="section-title">「茶智云」如何解决？</h2>
-          <p class="section-subtitle">不是简单的工具，而是您的智能商业伙伴</p>
+          <h2 class="section-title">「茶参谋」的解决方案：让数据替您工作</h2>
+          <p class="section-subtitle">不是复杂的软件，而是一个听懂您命令的AI商业大脑</p>
         </div>
-        
+
         <div class="solution-content">
           <div class="solution-main">
             <div class="solution-text">
-              <h3>核心就一点：让数据为您工作</h3>
-              <p>把您从"操作软件"中解放出来，直接"享用结果"。您动嘴，它动手。它不是新工具，是您大脑和双手的延伸。</p>
-              
+              <h3>核心价值：从“操作软件”到“享用结果”</h3>
+              <p>您无需学习复杂功能，只需像吩咐助理一样，用最自然的方式下达指令。剩下的分析、执行、监控，交给AI。</p>
+
               <div class="solution-features">
                 <div class="solution-feature">
                   <div class="feature-icon">
                     <SparklesIcon class="feature-svg" />
                   </div>
                   <div class="feature-content">
-                    <h4>智能决策</h4>
-                    <p>AI分析海量数据，为您提供精准的商业洞察</p>
+                    <h4>动嘴不动手</h4>
+                    <p>“茶参谋，下周一普洱该进多少？” → 它直接给你采购单和依据。</p>
                   </div>
                 </div>
-                
+
                 <div class="solution-feature">
                   <div class="feature-icon">
                     <BoltIcon class="feature-svg" />
                   </div>
                   <div class="feature-content">
-                    <h4>自动化运营</h4>
-                    <p>减少重复性工作，让您专注于核心业务</p>
+                    <h4>问题来找您</h4>
+                    <p>“老板，XX库存仅3天，建议促销” → 从“人找问题”变为“问题找人”。</p>
                   </div>
                 </div>
-                
+
                 <div class="solution-feature">
                   <div class="feature-icon">
                     <ArrowTrendingUpIcon class="feature-svg" />
                   </div>
                   <div class="feature-content">
-                    <h4>持续增长</h4>
-                    <p>数据驱动的增长策略，让利润持续提升</p>
+                    <h4>决策有依据</h4>
+                    <p>“建议定价258元，预计利润提升30%” → 数据驱动，拒绝拍脑袋。</p>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <div class="solution-visual">
+              <!-- 这里可以放一个AI对话交互的示意图 -->
               <div class="solution-image-container">
-                <img :src="images.hero.main" alt="茶智云解决方案" class="solution-image" />
+                <img :src="images.solutions.aiChat" alt="AI对话交互示意图" class="solution-image" />
                 <div class="solution-overlay"></div>
               </div>
             </div>
@@ -139,9 +140,9 @@
     <!-- 四大功能模块展示区 -->
     <section class="features-section">
       <div class="container">
-        <h2 class="section-title">您的四大智能部门，全天候待命</h2>
-        <p class="section-subtitle">不是简单的功能堆砌，而是四个专业团队24小时为您服务</p>
-        
+        <h2 class="section-title">您的四大AI总监，24小时为您待命</h2>
+        <p class="section-subtitle">我们不是提供了四个功能，而是为您雇了四个不要工资的专家</p>
+
         <div class="features-nav">
           <button 
             v-for="(feature, index) in features" 
@@ -160,6 +161,17 @@
             <h3 class="feature-title">{{ features[activeFeature].title }}</h3>
             <div class="feature-slogan">{{ features[activeFeature].slogan }}</div>
             <p class="feature-description">{{ features[activeFeature].description }}</p>
+            
+            <!-- 新增：AI交互示例 -->
+            <div class="ai-command-demo">
+              <p class="command-prompt">您只需说：</p>
+              <div class="command-example">“{{ features[activeFeature].aiExample.question }}”</div>
+              <p class="command-result">茶参谋立刻：</p>
+              <ul class="command-steps">
+                <li v-for="(step, index) in features[activeFeature].aiExample.actions" :key="index">{{ step }}</li>
+              </ul>
+            </div>
+
             <ul class="feature-points">
               <li v-for="point in features[activeFeature].points" :key="point">
                 <CheckCircleIcon class="point-icon" />
@@ -185,15 +197,15 @@
           <div class="stat-card" v-motion-slide-visible-once-bottom>
             <div class="stat-number">{{ stats.growth }}%</div>
             <p>平均利润提升</p>
-      </div>
+          </div>
           <div class="stat-card" v-motion-slide-visible-once-bottom>
             <div class="stat-number">{{ stats.cost }}%</div>
-            <p>运营成本降低</p>
+            <p>决策失误减少</p>
           </div>
           <div class="stat-card" v-motion-slide-visible-once-bottom>
             <div class="stat-number">{{ stats.efficiency }}%</div>
-            <p>决策效率提升</p>
-        </div>
+            <p>管理效率提升</p>
+          </div>
           <div class="stat-card" v-motion-slide-visible-once-bottom>
             <div class="stat-number">{{ stats.satisfaction }}%</div>
             <p>客户满意度</p>
@@ -205,14 +217,14 @@
     <!-- 对比表格区域 -->
     <section class="comparison-section">
       <div class="container">
-        <h2 class="section-title">传统方式 vs 茶智云，差距一目了然</h2>
-        <p class="section-subtitle">数据不会说谎，选择决定未来</p>
+        <h2 class="section-title">传统管理 vs 茶参谋AI管理</h2>
+        <p class="section-subtitle">选择决定效率，效率决定利润</p>
         
         <div class="comparison-table">
           <div class="table-header">
-            <div class="header-cell"></div>
+            <div class="header-cell">管理场景</div>
             <div class="header-cell">传统方式</div>
-            <div class="header-cell">茶智云</div>
+            <div class="header-cell">茶参谋AI</div>
           </div>
           
           <div class="table-row" v-for="(item, index) in comparisonData" :key="index">
@@ -278,13 +290,13 @@
             <div class="cta-badge">
               <span>🎯 限时优惠</span>
             </div>
-            <h2 class="cta-title">准备好让AI为您的茶业注入增长基因了吗？</h2>
-            <p class="cta-subtitle">不再是梦想，而是现在就能实现的未来</p>
+            <h2 class="cta-title">立即雇佣您的AI运营团队！</h2>
+            <p class="cta-subtitle">第一个月，让AI总监为您免费工作</p>
             
             <div class="cta-benefits">
               <div class="benefit-item">
                 <span class="benefit-icon">🚀</span>
-                <span>7天免费试用，零风险体验</span>
+                <span>7天免费体验全部AI总监能力</span>
               </div>
               <div class="benefit-item">
                 <span class="benefit-icon">💰</span>
@@ -292,7 +304,7 @@
               </div>
               <div class="benefit-item">
                 <span class="benefit-icon">🎁</span>
-                <span>免费获得价值5000元运营方案</span>
+                <span>免费获得《2025茶业趋势与爆品预测》报告</span>
               </div>
               <div class="benefit-item">
                 <span class="benefit-icon">📞</span>
@@ -318,7 +330,7 @@
               </div>
               <div class="cta-stat">
                 <span class="stat-number">98%</span>
-                <span class="stat-label">客户满意度</span>
+                <span class="stat-label">续费率</span>
               </div>
               <div class="cta-stat">
                 <span class="stat-number">24h</span>
@@ -342,7 +354,7 @@
                   </div>
                   <div class="floating-card-text">
                     <p class="floating-title">实时咨询中</p>
-                    <p class="floating-subtitle"><span class="count-number">{{ liveConsultationCount }}</span>位客户正在咨询</p>
+                    <p class="floating-subtitle"><span class="count-number">{{ liveConsultationCount }}</span>位老板正在咨询</p>
                   </div>
                 </div>
               </div>
@@ -378,8 +390,8 @@
         <div class="footer-content">
           <div class="footer-section">
             <div class="footer-logo">
-              <h3>茶智云</h3>
-              <p>AI驱动增长，重塑茶业利润空间</p>
+              <h3>茶参谋</h3>
+              <p>您的AI茶叶生意参谋</p>
             </div>
             <div class="footer-social">
               <a href="#" class="social-link">
@@ -395,22 +407,22 @@
           </div>
           
           <div class="footer-section">
-            <h4>产品服务</h4>
+            <h4>AI部门</h4>
             <ul class="footer-links">
-              <li><a href="#">茶界天眼Pro</a></li>
-              <li><a href="#">客户印钞机</a></li>
-              <li><a href="#">利润加速器</a></li>
-              <li><a href="#">智慧茶园</a></li>
+              <li><a href="#">AI战略情报部（天眼）</a></li>
+              <li><a href="#">AI精准营销部（印钞机）</a></li>
+              <li><a href="#">AI品牌销售部（加速器）</a></li>
+              <li><a href="#">AI供应链部（智慧园）</a></li>
             </ul>
           </div>
           
           <div class="footer-section">
             <h4>解决方案</h4>
             <ul class="footer-links">
-              <li><a href="#">茶叶批发商</a></li>
-              <li><a href="#">茶企品牌</a></li>
-              <li><a href="#">茶园基地</a></li>
-              <li><a href="#">茶艺馆</a></li>
+              <li><a href="#">茶叶批发商方案</a></li>
+              <li><a href="#">茶企品牌方案</a></li>
+              <li><a href="#">茶园基地方案</a></li>
+              <li><a href="#">茶艺馆方案</a></li>
             </ul>
           </div>
           
@@ -428,7 +440,7 @@
             <h4>联系我们</h4>
             <div class="contact-info">
               <p><PhoneIcon class="contact-icon" /> 400-888-8888</p>
-              <p><EnvelopeIcon class="contact-icon" /> contact@chayuzhiyun.com</p>
+              <p><EnvelopeIcon class="contact-icon" /> contact@chacanmou.com</p>
               <p><MapPinIcon class="contact-icon" /> 杭州市西湖区文三路</p>
             </div>
           </div>
@@ -436,7 +448,7 @@
         
         <div class="footer-bottom">
           <div class="footer-bottom-content">
-            <p>&copy; 2025 茶智云. 保留所有权利.</p>
+            <p>&copy; 2025 茶参谋. 保留所有权利.</p>
             <div class="footer-bottom-links">
               <a href="#">隐私政策</a>
               <a href="#">服务条款</a>
@@ -508,61 +520,101 @@ onUnmounted(() => {
 
 const features = [
   {
-    title: "茶界天眼Pro",
-    badge: "企业战略情报部",
+    title: "AI战略情报部",
+    badge: "茶界天眼Pro",
     slogan: "一眼看穿市场，决策快人一步",
-    description: "避免决策失误，发现蓝海市场。让您比竞争对手更早发现商机，更准确把握趋势。",
+    description: "避免决策失误，发现蓝海市场。全网监控竞品动态、渠道价格、舆情热点，让您的每次决策都有数据支撑。",
     points: [
-      "全网竞品监控，竞争对手动态一目了然",
-      "渠道动态监控，掌握市场变化先机",
-      "舆情热点挖掘，抓住营销关键时机",
-      "原料行情预警，采购时机精准把控",
-      "爆品拆解报告，成功模式快速复制"
+      "全网竞品监控：天猫、京东、抖音价格与促销策略一览无余",
+      "渠道动态监控：芳村等大宗市场开盘价、成交价实时掌握",
+      "舆情热点挖掘：小红书、微博热点话题抢先布局",
+      "原料行情预警：核心产区天气、茶青价格提前预判",
+      "爆品拆解报告：AI自动生成爆款公式，复制成功模式"
     ],
+    aiExample: {
+      question: "下周一普洱该怎么进货？",
+      actions: [
+        "分析近期各平台普洱销售增速与利润率",
+        "核查当前库存及未来一周预销量",
+        "比对云南产区近期价格波动与天气预警",
+        "生成建议采购量、参考单价及总预算",
+        "询问您‘是否直接生成采购单？’"
+      ]
+    },
     image: images.products.monitoring,
     icon: EyeIcon
   },
   {
-    title: "客户印钞机",
-    badge: "企业精准营销部",
+    title: "AI精准营销部",
+    badge: "客户印钞机",
     slogan: "让每个客户都成为利润源泉",
-    description: "提升客户终身价值，低成本激活沉默客户。把一次性买家变成终身顾客。",
+    description: "提升客户终身价值，低成本激活沉默客户。AI客户画像、朋友圈自动化、企微SOP，把私域流量变成私域留量。",
     points: [
-      "AI客户画像2.0，比客户更懂客户需求",
-      "朋友圈AI导演，内容营销自动化",
-      "企业微信SOP，客户跟进标准化",
-      "利润看板，客户价值数字化",
-      "沉默客户激活流水线，唤醒沉睡资产"
+      "AI客户画像2.0：消费能力、人生阶段、兴趣偏好深度分析",
+      "朋友圈AI导演：全年剧本库，自动定时发布，树立专业人设",
+      "企业微信SOP：新客破冰、老客回购标准化流程，提升人效",
+      "利润看板：客户终身利润排名、流失风险预警一目了然",
+      "沉默客户激活流水线：全自动多渠道触达，变废为宝"
     ],
+    aiExample: {
+      question: "激活一下180天没买过的客户",
+      actions: [
+        "筛选出180天未购客户清单并分析特征",
+        "自动执行‘专属福利券’推送",
+        "3天后对未响应客户触发AI电话回访",
+        "引流至视频号直播专场",
+        "生成激活报告：已唤醒X人，预计创造Y元收益"
+      ]
+    },
     image: images.products.irrigation,
     icon: UserGroupIcon
   },
   {
-    title: "利润加速器",
-    badge: "企业品牌与销售部",
+    title: "AI品牌销售部",
+    badge: "利润加速器",
     slogan: "不只是卖茶，更是卖价值",
-    description: "打造品牌溢价，将产品卖出高价。让您的茶叶从商品变成艺术品。",
+    description: "打造品牌溢价，将产品卖出高价。区块链级溯源增加信任，AI卖点生成降低内容成本，智能报价单追踪意向。",
     points: [
-      "区块链级溯源，产品故事数字化",
-      "AI卖点生成器，产品文案自动优化",
-      "智能报价单，定价策略科学化",
-      "高客单价SOP，销售话术标准化",
-      "动态利润看板，盈利状况实时监控"
+      "区块链级溯源：物联网数据+官方认证，支撑品牌溢价",
+      "AI卖点生成器：一键生成小红书爆文、抖音脚本、详情页文案",
+      "智能报价单：带追踪的H5迷你网站，客户行为尽在掌握",
+      "高客单价SOP：复杂销售流程标准化，普通销售也能成销冠",
+      "动态利润看板：毛利率、资金周转等核心指标实时掌控"
     ],
+    aiExample: {
+      question: "给这批明前龙井生成营销文案",
+      actions: [
+        "读取产品参数：产地、等级、工艺、认证信息",
+        "分析当前社交媒体茶叶热点话题",
+        "生成3篇小红书风格文案，2个抖音视频脚本",
+        "提炼5个核心卖点话术",
+        "询问‘需要发布到预设的账号上吗？’"
+      ]
+    },
     image: images.products.growth,
     icon: ArrowTrendingUpIcon
   },
   {
-    title: "智慧茶园轻量版",
-    badge: "企业供应链优化部",
+    title: "AI供应链部",
+    badge: "智慧茶园轻量版",
     slogan: "科技种茶，品质可控",
-    description: "提升品质，稳定产量，降低成本。让传统茶园插上科技翅膀。",
+    description: "提升品质，稳定产量，降低农资浪费。无人机巡园及早发现风险，气象预警规避自然灾害，采茶规划优化人力成本。",
     points: [
-      "无人机AI巡园，茶园状况全景掌控",
-      "气象与灾情预警，风险管理自动化",
-      "采茶最优规划，人力成本最小化",
-      "农资成本分析，投入产出比优化"
+      "无人机AI巡园：替代人工，早期发现病虫害、干旱缺肥",
+      "气象与灾情预警：精准局地天气预报，提前采取防护措施",
+      "采茶最优规划：基于茶叶成熟度分布，规划最优采摘路径",
+      "农资成本分析：记录使用量与区域，优化投入产出比"
     ],
+    aiExample: {
+      question: "检查一下茶园最近有什么问题",
+      actions: [
+        "调取最近一次无人机巡园影像与AI分析报告",
+        "核查近期气象预警历史",
+        "生成茶园健康报告：东北区发现早期叶蝉危害迹象",
+        "给出处理建议：建议三天内喷洒X药剂，用量Y升/亩",
+        "询问‘需要联系合作的植保服务上门吗？’"
+      ]
+    },
     image: images.products.platform,
     icon: CpuChipIcon
   }
@@ -578,34 +630,29 @@ const stats = ref({
 // 对比表格数据
 const comparisonData = [
   {
-    feature: "决策方式",
-    traditional: "凭经验拍脑袋",
-    modern: "AI数据分析驱动"
+    feature: "市场决策",
+    traditional: "凭经验感觉，打听小道消息",
+    modern: "全网数据支撑，AI给出建议采购单"
   },
   {
     feature: "客户管理",
-    traditional: "手动记录，容易遗漏",
-    modern: "AI智能画像，精准营销"
+    traditional: "Excel表格记录，朋友圈随缘发",
+    modern: "AI自动画像，全年剧本自动化营销"
   },
   {
-    feature: "库存管理",
-    traditional: "人工盘点，误差大",
-    modern: "智能预警，自动补货"
+    feature: "销售过程",
+    traditional: "老板亲自盯，销售各自为战",
+    modern: "SOP标准化，智能报价单追踪意向"
   },
   {
-    feature: "营销效果",
-    traditional: "广撒网，转化率低",
-    modern: "精准投放，ROI提升300%"
+    feature: "茶园管理",
+    traditional: "老师傅凭经验，发现问题已晚",
+    modern: "无人机AI巡园，及早预警风险"
   },
   {
-    feature: "数据分析",
-    traditional: "Excel表格，耗时费力",
-    modern: "实时看板，一目了然"
-  },
-  {
-    feature: "成本控制",
-    traditional: "事后发现，损失已定",
-    modern: "事前预警，主动优化"
+    feature: "利润分析",
+    traditional: "月末看报表，发现亏损已晚",
+    modern: "动态利润看板，实时监控及时调整"
   }
 ]
 
@@ -615,7 +662,7 @@ const testimonials = [
     name: "张总",
     title: "西湖龙井茶业 CEO",
     avatar: images.avatars.user1,
-    content: "茶智云让我们的决策从拍脑袋变成了数据驱动，利润提升了45%，员工效率也大幅提升。",
+    content: "茶参谋的天眼Pro让我再也不怕进货压错宝了，去年光避免决策失误就省了30多万，利润提升了45%。",
     profit: 45,
     efficiency: 60
   },
@@ -623,7 +670,7 @@ const testimonials = [
     name: "李女士",
     title: "碧螺春茶庄 创始人",
     avatar: images.avatars.user2,
-    content: "客户印钞机功能太棒了！我们的复购率从30%提升到了78%，客户满意度也达到了98%。",
+    content: "客户印钞机功能太棒了！我们的复购率从30%提升到了78%，朋友圈自动化让我每天省下2小时，客户满意度98%。",
     profit: 52,
     efficiency: 75
   },
@@ -631,21 +678,19 @@ const testimonials = [
     name: "王老板",
     title: "铁观音批发商",
     avatar: images.avatars.user3,
-    content: "茶界天眼Pro帮我发现了新的市场机会，库存周转率提升了3倍，资金利用率大幅提高。",
+    content: "以前最头疼库存，现在茶参谋主动预警，库存周转率提升了3倍，资金利用率大幅提高，利润率增加了38%。",
     profit: 38,
     efficiency: 85
   }
 ]
 
-// 模拟动态计数效果（当前模板中直接显示数值）
-
 // 组件挂载后启动动画
 onMounted(() => {
-  // 滚动触发动画（实际项目中建议结合IntersectionObserver）
+  // 滚动触发动画
   setTimeout(() => {
     stats.value = {
       growth: 47,
-      cost: 28,
+      cost: 62, // 决策失误减少
       efficiency: 65,
       satisfaction: 96
     }
@@ -654,6 +699,53 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* 新增AI交互示例样式 */
+.ai-command-demo {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid #8b5cf6;
+}
+
+.command-prompt {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.command-example {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  color: #7c3aed;
+}
+
+.command-result {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.command-steps {
+  list-style-type: none;
+  padding: 0;
+}
+
+.command-steps li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.command-steps li:last-child {
+  border-bottom: none;
+}
+
 /* 全局样式 */
 .home-view {
   min-height: 100vh;
