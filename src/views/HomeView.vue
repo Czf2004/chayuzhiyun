@@ -27,33 +27,64 @@
     <!-- 价值主张区域 -->
     <section class="value-section">
       <div class="container">
-        <h2 class="section-title">老板，您是否也曾为这些事头疼？</h2>
+        <div class="value-header">
+          <h2 class="section-title">老板，您是否也曾为这些事头疼？</h2>
+          <p class="section-subtitle">传统茶业经营中的三大痛点，我们深有体会</p>
+        </div>
+        
         <div class="value-grid">
           <div class="value-card" v-motion-slide-visible-once-bottom>
-            <h3>
-              <ChartBarIcon class="value-title-icon" />
-              报表太多看不懂
-            </h3>
+            <div class="value-card-header">
+              <div class="value-icon-wrapper">
+                <ChartBarIcon class="value-icon" />
+              </div>
+              <h3>报表太多看不懂</h3>
+            </div>
             <p>采购、销售、库存报表一大堆，数据冰冷，看不出门道，更不知道下一步该干啥。</p>
-      </div>
+            <div class="value-impact">
+              <span class="impact-label">影响：</span>
+              <span class="impact-text">决策滞后，错失商机</span>
+            </div>
+          </div>
+          
           <div class="value-card" v-motion-slide-visible-once-bottom>
-            <h3>
-              <FlagIcon class="value-title-icon" />
-              决策全靠拍脑袋
-            </h3>
+            <div class="value-card-header">
+              <div class="value-icon-wrapper">
+                <FlagIcon class="value-icon" />
+              </div>
+              <h3>决策全靠拍脑袋</h3>
+            </div>
             <p>该进什么货？进多少？该给谁促销？库存怎么处理？每次决策都像一场赌博，心里没底。</p>
+            <div class="value-impact">
+              <span class="impact-label">影响：</span>
+              <span class="impact-text">库存积压，资金浪费</span>
+            </div>
           </div>
+          
           <div class="value-card" v-motion-slide-visible-once-bottom>
-            <h3>
-              <BoltIcon class="value-title-icon" />
-              效率太低忙不过来
-            </h3>
+            <div class="value-card-header">
+              <div class="value-icon-wrapper">
+                <BoltIcon class="value-icon" />
+              </div>
+              <h3>效率太低忙不过来</h3>
+            </div>
             <p>每天时间都耗在琐事上：查数据、算利润、盯库存，根本没空思考发展、拜访客户。</p>
-        </div>
+            <div class="value-impact">
+              <span class="impact-label">影响：</span>
+              <span class="impact-text">精力分散，发展受限</span>
+            </div>
           </div>
+        </div>
+        
         <div class="solution-box">
-          <h3>「茶智云」如何解决？</h3>
-          <p><strong>核心就一点：</strong>把您从"操作软件"中解放出来，直接"享用结果"。您动嘴，它动手。它不是新工具，是您大脑和双手的延伸。</p>
+          <div class="solution-content">
+            <h3>「茶智云」如何解决？</h3>
+            <p><strong>核心就一点：</strong>把您从"操作软件"中解放出来，直接"享用结果"。您动嘴，它动手。它不是新工具，是您大脑和双手的延伸。</p>
+            <div class="solution-highlight">
+              <SparklesIcon class="highlight-icon" />
+              <span>让数据说话，让决策有据可依</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -750,12 +781,16 @@ onMounted(() => {
   background: #f8fafc;
 }
 
+.value-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
 .section-title {
   font-size: 3rem;
   font-weight: 700;
-  text-align: center;
   color: #1e293b;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   position: relative;
 }
 
@@ -771,50 +806,90 @@ onMounted(() => {
   border-radius: 2px;
 }
 
+.section-subtitle {
+  font-size: 1.2rem;
+  color: #64748b;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .value-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
   margin-bottom: 4rem;
 }
 
 .value-card {
   background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   border: 1px solid #f1f5f9;
   transition: all 0.3s ease;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .value-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+.value-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: #059669;
+}
+
+.value-icon-wrapper {
+  background: #e0f2fe;
+  border-radius: 15px;
+  padding: 10px;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.value-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #059669;
 }
 
 .value-card h3 {
-  display: flex;
-  align-items: center;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #1e293b;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   line-height: 1.4;
-}
-
-.value-title-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: #059669;
-  margin-right: 0.75rem;
-  flex-shrink: 0;
 }
 
 .value-card p {
   color: #64748b;
   line-height: 1.6;
-  margin: 0;
+  margin-bottom: 1.5rem;
+}
+
+.value-impact {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 1rem;
+}
+
+.impact-label {
+  margin-right: 8px;
+  font-weight: 500;
+}
+
+.impact-text {
+  font-weight: 600;
+  color: #059669;
 }
 
 .solution-box {
@@ -823,19 +898,46 @@ onMounted(() => {
   border-radius: 20px;
   text-align: center;
   border: 1px solid #e0f2fe;
+  margin-top: 4rem;
 }
 
-.solution-box h3 {
+.solution-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.solution-content h3 {
   font-size: 1.8rem;
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 1rem;
 }
 
-.solution-box p {
+.solution-content p {
   font-size: 1.1rem;
   color: #475569;
   line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.solution-highlight {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, #fef3c7, #fbbf24);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #92400e;
+  box-shadow: 0 4px 15px rgba(254, 243, 199, 0.5);
+}
+
+.highlight-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #92400e;
+  margin-right: 8px;
+  flex-shrink: 0;
 }
 
 /* 功能模块区域 */
@@ -1721,6 +1823,53 @@ onMounted(() => {
     width: 100%;
     max-width: 200px;
     justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+  }
+  
+  .value-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .value-card {
+    padding: 1.5rem;
+  }
+  
+  .value-card-header {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .value-icon-wrapper {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+  
+  .value-card h3 {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+  
+  .value-impact {
+    justify-content: center;
+  }
+  
+  .solution-content h3 {
+    font-size: 1.5rem;
+  }
+  
+  .solution-content p {
+    font-size: 1rem;
   }
 }
 </style>
