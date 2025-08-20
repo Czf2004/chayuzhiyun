@@ -4,7 +4,7 @@
     <section class="hero-section">
       <div class="hero-background" :style="{ backgroundImage: `url(${images.hero.main})` }"></div>
       <div class="hero-container">
-        <div class="hero-content">
+      <div class="hero-content">
           <div class="hero-badge">
             <RocketLaunchIcon class="hero-badge-icon" />
             <span>用全网数据做决策，用AI搞推广</span>
@@ -16,11 +16,11 @@
           <p class="hero-subtitle">
             我们为您监控全网平台、各大渠道的精准行业数据，并基于数据，自动执行朋友圈种草、客户跟进、沉默唤醒，让您再也不愁卖货。
           </p>
-          <div class="hero-buttons">
+        <div class="hero-buttons">
             <button class="primary-btn">获取我的行业数据报告</button>
             <button class="secondary-btn">观看私域自动化演示</button>
-          </div>
         </div>
+      </div>
       </div>
     </section>
 
@@ -37,7 +37,7 @@
             <div class="value-card-header">
               <div class="value-icon-wrapper">
                 <ChartBarIcon class="value-icon" />
-              </div>
+      </div>
               <h3>闭门造车，决策失灵</h3>
             </div>
             <p>不知道别家什么价、什么好卖。盲目定价，要么利润流失，要么直接滞销。缺乏行业数据，决策全靠猜。</p>
@@ -51,7 +51,7 @@
             <div class="value-card-header">
               <div class="value-icon-wrapper">
                 <FlagIcon class="value-icon" />
-              </div>
+          </div>
               <h3>私域死寂，推广低效</h3>
             </div>
             <p>微信加了人，但朋友圈不会发，群也活跃不起来。营销全靠群发刷屏，客户反感，员工效率低下，成本极高。</p>
@@ -65,9 +65,9 @@
             <div class="value-card-header">
               <div class="value-icon-wrapper">
                 <BoltIcon class="value-icon" />
-              </div>
+        </div>
               <h3>手工操作，规模瓶颈</h3>
-            </div>
+          </div>
             <p>老板个人IP无法复制，销售流程全靠人工盯。客户一多就管不过来，服务标准下降，规模永远做不大。</p>
             <div class="value-impact">
               <span class="impact-label">后果：</span>
@@ -154,7 +154,7 @@
       <div class="container">
         <h2 class="section-title">四大系统，打通“行业数据”到“自动成交”的闭环</h2>
         <p class="section-subtitle">数据指导策略，系统自动化执行，规模化提升业绩</p>
-
+        
         <div class="features-nav">
           <button 
             v-for="(feature, index) in features" 
@@ -165,7 +165,7 @@
             <component :is="feature.icon" class="feature-nav-icon" />
             {{ feature.title }}
           </button>
-        </div>
+          </div>
 
         <div class="features-content">
           <div class="feature-details" v-motion-slide-visible-once-left>
@@ -179,7 +179,7 @@
               <h4>行业数据如何驱动本模块：</h4>
               <ul>
                 <li v-for="(item, idx) in features[activeFeature].dataApplication" :key="idx">{{ item }}</li>
-              </ul>
+            </ul>
             </div>
 
             <!-- 【保留并强化】AI交互示例 -->
@@ -224,9 +224,9 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
         </div>
+      </div>
+      </div>
       </div>
     </section>
 
@@ -275,22 +275,27 @@
     <section class="stats-section">
       <div class="container">
         <h2 class="section-title">用数据说话，效果看得见</h2>
+        <p class="section-subtitle">以近30天真实运营数据为基础，持续优化策略与ROI</p>
         <div class="stats-grid">
           <div class="stat-card" v-motion-slide-visible-once-bottom>
             <div class="stat-number">{{ stats.growth }}%</div>
             <p>平均利润提升</p>
-          </div>
+            <div class="stat-extra"><ArrowTrendingUpIcon class="stat-extra-icon" /><span>同比上月 +12%</span></div>
+      </div>
           <div class="stat-card" v-motion-slide-visible-once-bottom>
             <div class="stat-number">{{ stats.cost }}%</div>
             <p>决策失误减少</p>
+            <div class="stat-extra"><ArrowTrendingUpIcon class="stat-extra-icon" /><span>同比上月 +18%</span></div>
           </div>
           <div class="stat-card" v-motion-slide-visible-once-bottom>
             <div class="stat-number">{{ stats.efficiency }}%</div>
             <p>管理效率提升</p>
-          </div>
+            <div class="stat-extra"><ArrowTrendingUpIcon class="stat-extra-icon" /><span>同比上月 +22%</span></div>
+        </div>
           <div class="stat-card" v-motion-slide-visible-once-bottom>
             <div class="stat-number">{{ stats.satisfaction }}%</div>
             <p>客户满意度</p>
+            <div class="stat-extra"><ArrowTrendingUpIcon class="stat-extra-icon" /><span>同比上月 +8%</span></div>
           </div>
         </div>
       </div>
@@ -394,7 +399,7 @@
               </div>
             </div>
             
-            <div class="cta-buttons">
+        <div class="cta-buttons">
               <button class="cta-primary-btn">
                 <span class="btn-icon">🎯</span>
                 立即免费试用
@@ -839,7 +844,7 @@ onMounted(() => {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -881,7 +886,7 @@ onMounted(() => {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -1015,7 +1020,7 @@ onMounted(() => {
   font-size: 3rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   position: relative;
   text-align: center;
 }
@@ -1038,6 +1043,8 @@ onMounted(() => {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 0.75rem;
+  margin-bottom: 2.5rem;
 }
 
 .value-grid {
@@ -1149,7 +1156,7 @@ onMounted(() => {
   font-size: 2rem;
   font-weight: 600;
   color: #1e293b;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
   text-align: center;
 }
 
@@ -1157,7 +1164,7 @@ onMounted(() => {
   font-size: 1.1rem;
   color: #475569;
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
 }
 
 .solution-features {
@@ -1216,7 +1223,7 @@ onMounted(() => {
 
 .solution-image {
   width: 100%;
-  height: 400px;
+  height: 460px;
   object-fit: cover;
 }
 
@@ -1422,7 +1429,7 @@ onMounted(() => {
   font-size: 2.5rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
@@ -1438,7 +1445,7 @@ onMounted(() => {
   font-size: 1.1rem;
   color: #64748b;
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
 }
 
 .feature-points {
@@ -1474,7 +1481,7 @@ onMounted(() => {
 
 .feature-visual img {
   width: 100%;
-  height: 400px;
+  height: 460px;
   object-fit: cover;
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
@@ -1489,7 +1496,7 @@ onMounted(() => {
 
 .feature-image-container img {
   width: 100%;
-  height: 400px;
+  height: 460px;
   object-fit: cover;
 }
 
@@ -1503,21 +1510,23 @@ onMounted(() => {
 }
 
 /* 行业数据来源 */
+.data-advantage-section { padding: 120px 0; margin-top: 40px; }
 .data-sources { margin-top: 2rem; }
-.sources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
-.source-card { display: flex; gap: 12px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
+.sources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.source-card { display: flex; gap: 12px; padding: 20px; min-height: 140px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
 .source-icon { width: 40px; height: 40px; border-radius: 10px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .source-icon-svg { width: 22px; height: 22px; color: #059669; }
-.source-title { font-weight: 600; color: #1f2937; margin: 0 0 4px 0; }
-.source-desc { margin: 0 0 8px 0; color: #64748b; font-size: 0.9rem; }
+.source-title { font-weight: 600; color: #1f2937; margin: 0 0 6px 0; }
+.source-desc { margin: 0 0 10px 0; color: #64748b; font-size: 0.95rem; line-height: 1.6; }
 .source-badges { display: flex; flex-wrap: wrap; gap: 6px; }
 .badge { padding: 2px 8px; font-size: 12px; border-radius: 999px; background: #ecfeff; color: #0ea5e9; border: 1px solid #e0f2fe; }
 
 /* 私域自动化案例 */
 .automation-case-section { padding: 80px 0; background: #ffffff; }
 .case-studies { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-.case-study { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center; }
-.case-content h3 { font-size: 1.5rem; color: #1e293b; margin-bottom: 1rem; }
+.case-study { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.case-content { display: flex; flex-direction: column; justify-content: center; }
+.case-content h3 { font-size: 1.5rem; color: #1e293b; margin-bottom: 1rem; text-align: center; }
 .case-content h4 { font-size: 1.1rem; color: #0f172a; margin: 1rem 0 0.5rem; text-align: center; }
 .case-content p { color: #475569; line-height: 1.6; }
 .case-content ol { padding-left: 1.1rem; color: #475569; }
@@ -1527,11 +1536,11 @@ onMounted(() => {
 .result-value { font-size: 1.25rem; font-weight: 800; color: #059669; }
 .result-label { font-size: 0.9rem; color: #64748b; }
 .case-visual { display: flex; align-items: center; justify-content: center; }
-.case-visual img { width: 100%; height: 320px; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+.case-visual img { width: 100%; height: 420px; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
 
 /* 数据统计区域 */
 .stats-section {
-  padding: 100px 0;
+  padding: 120px 0;
   background: linear-gradient(135deg, #1e293b, #334155);
   color: white;
 }
@@ -1540,19 +1549,31 @@ onMounted(() => {
   color: white;
 }
 
+.stats-section .section-subtitle {
+  color: #cbd5e1;
+  margin-top: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  gap: 2.5rem;
+  align-items: stretch;
 }
 
 .stat-card {
   text-align: center;
   padding: 3rem 2rem;
-  background: rgba(255, 255, 255, 0.1);
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.14);
   border-radius: 20px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -1562,18 +1583,22 @@ onMounted(() => {
 }
 
 .stat-number {
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 800;
   color: #10b981;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   line-height: 1;
 }
 
 .stat-card p {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #e2e8f0;
   font-weight: 500;
+  letter-spacing: 0.02em;
 }
+
+.stat-extra { margin-top: 0.75rem; display: inline-flex; align-items: center; gap: 6px; color: #bae6fd; font-size: 0.9rem; }
+.stat-extra-icon { width: 16px; height: 16px; color: #34d399; }
 
 /* 对比表格区域 */
 .comparison-section {
@@ -1786,13 +1811,13 @@ onMounted(() => {
   font-size: 3rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .cta-subtitle {
   font-size: 1.3rem;
   color: #64748b;
-  margin-bottom: 3rem;
+  margin-bottom: 3.25rem;
 }
 
 .cta-benefits {
@@ -1911,7 +1936,7 @@ onMounted(() => {
 .cta-image-container {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 440px;
 }
 
 .cta-image-container img {
@@ -1989,34 +2014,44 @@ onMounted(() => {
 }
 
 .trust-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, max-content));
+  gap: 1rem 1.25rem;
   justify-content: center;
+  justify-items: center;
+  align-items: center;
   margin-top: 2rem;
 }
 
 .trust-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  padding: 0.5rem 1rem;
-  background: #f8fafc;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.625rem 1.125rem;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  color: #475569;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  color: #0f172a;
+  min-height: 44px;
+  width: auto;
+  max-width: 260px;
+  transition: background .25s ease, border-color .25s ease, transform .2s ease, box-shadow .25s ease;
 }
 
 .trust-badge:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.15);
+  border-color: #059669;
+  background: #ecfeff;
 }
 
 .badge-icon {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
   color: #059669;
-  margin-right: 0.5rem;
+  margin-right: 0;
   flex-shrink: 0;
 }
 
@@ -2172,12 +2207,12 @@ onMounted(() => {
     margin-bottom: 0.75rem;
     padding: 0.75rem 1.25rem;
   }
-
+  
   .features-content {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-
+  
   .feature-details {
     padding-right: 0;
   }
@@ -2359,7 +2394,7 @@ onMounted(() => {
   .solution-cta h3 {
     font-size: 2rem;
   }
-
+  
   .solution-cta p {
     font-size: 1.2rem;
   }

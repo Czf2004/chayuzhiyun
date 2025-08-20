@@ -8,7 +8,7 @@ export const images = {
   
   // 解决方案与示意图
   solutions: {
-    aiChat: 'https://images.unsplash.com/photo-1556742400-b5b7c5121f90?w=800&h=500&fit=crop&crop=center'
+    aiChat: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=center'
   },
   
   // 功能图标
