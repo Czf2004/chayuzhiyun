@@ -46,50 +46,60 @@
         <div class="hero-background"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-          <!-- 头像上传区域 -->
-          <div class="hero-avatar">
-            <img :src="userInfo.avatar || defaultAvatar" alt="用户头像" class="user-avatar-large"
-              @error="handleAvatarError" />
-            <div class="avatar-status" :class="userInfo.onlineStatus"></div>
-            <label class="avatar-upload-btn">
-              <input type="file" accept="image/*" class="avatar-upload-input" @change="handleAvatarSelect" />
-              <span class="upload-icon">📷</span>
-            </label>
-          </div>
-
-          <!-- 用户信息与角色切换 -->
-          <div class="hero-info">
-            <h1 class="hero-name">{{ userInfo.nickname || '用户' }}</h1>
-            <p class="hero-title">{{ roleMap[userInfo.currentRole] || '用户' }}</p>
-            <p class="hero-subtitle">@{{ userInfo.username }}</p>
-
-            <!-- 多角色切换 -->
-            <div class="role-switcher" v-if="userInfo.roles && userInfo.roles.length > 1">
-              <select v-model="userInfo.currentRole" @change="handleRoleChange">
-                <option v-for="role in userInfo.roles" :key="role.code" :value="role.code">{{ role.name }}</option>
-              </select>
-            </div>
-
-            <div class="hero-stats">
-              <div class="stat-item">
-                <span class="stat-number">{{ userInfo.plantations.length }}</span>
-                <span class="stat-label">种植园</span>
+          <div class="hero-card">
+            <div class="hero-left">
+              <!-- 头像上传区域 -->
+              <div class="hero-avatar">
+                <img :src="userInfo.avatar || defaultAvatar" alt="用户头像" class="user-avatar-large"
+                  @error="handleAvatarError" />
+                <div class="avatar-status" :class="userInfo.onlineStatus"></div>
+                <label class="avatar-upload-btn">
+                  <input type="file" accept="image/*" class="avatar-upload-input" @change="handleAvatarSelect" />
+                  <span class="upload-icon">📷</span>
+                </label>
               </div>
-              <div class="stat-item">
-                <span class="stat-number">{{ totalDrones }}</span>
-                <span class="stat-label">无人机</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">{{ totalSensors }}</span>
-                <span class="stat-label">传感器</span>
+
+              <!-- 用户信息与角色切换 -->
+              <div class="hero-info">
+                <h1 class="hero-name">{{ userInfo.nickname || '用户' }}</h1>
+                <p class="hero-title">{{ roleMap[userInfo.currentRole] || '用户' }}</p>
+                <p class="hero-subtitle">@{{ userInfo.username }}</p>
+
+                <!-- 多角色切换 -->
+                <div class="role-switcher" v-if="userInfo.roles && userInfo.roles.length > 1">
+                  <select v-model="userInfo.currentRole" @change="handleRoleChange">
+                    <option v-for="role in userInfo.roles" :key="role.code" :value="role.code">{{ role.name }}</option>
+                  </select>
+                </div>
+
+                <div class="hero-actions">
+                  <button class="btn-primary" @click="handleGoDeviceManagement">设备管理</button>
+                  <button class="btn-secondary">编辑资料</button>
+                  <button class="btn-secondary" @click="handleExport">导出数据</button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="hero-actions">
-            <button class="btn-primary" @click="handleGoDeviceManagement">设备管理</button>
-            <button class="btn-secondary">编辑资料</button>
-            <button class="btn-secondary" @click="handleExport">导出数据</button>
+            <div class="hero-right">
+              <div class="mini-stats-grid">
+                <div class="mini-stat-card">
+                  <div class="mini-stat-number">{{ userInfo.plantations.length }}</div>
+                  <div class="mini-stat-label">种植园</div>
+                </div>
+                <div class="mini-stat-card">
+                  <div class="mini-stat-number">{{ totalDrones }}</div>
+                  <div class="mini-stat-label">无人机</div>
+                </div>
+                <div class="mini-stat-card">
+                  <div class="mini-stat-number">{{ totalSensors }}</div>
+                  <div class="mini-stat-label">传感器</div>
+                </div>
+                <div class="mini-stat-card">
+                  <div class="mini-stat-number">{{ todayWorkArea }}</div>
+                  <div class="mini-stat-label">今日作业亩数</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -760,11 +770,11 @@ export default {
 /* ======  高级感配色重制版（仅变量区） ====== */
 .profile-container {
   /* --- 主色（茶园绿色系） --- */
-  --primary: #2f7a59;
+  --primary: #059669;
   /* 主按钮、关键文字 */
-  --primary-dark: #215e44;
+  --primary-dark: #0d9488;
   /* hover/pressed */
-  --primary-light: #e6f4ef;
+  --primary-light: #ecfdf5;
   /* 选中态、浅提示背景 */
 
   /* --- 功能色（莫兰迪绿、橙、红） --- */
@@ -804,7 +814,9 @@ export default {
   --shadow: 0 4px 14px rgba(0, 0, 0, .06);
   --shadow-hover: 0 8px 20px rgba(0, 0, 0, .12);
   --shadow-lg: 0 12px 30px rgba(0, 0, 0, .16);
+  --trans: all .25s ease;
 
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
 /* ====== 基础样式 ====== */
@@ -861,7 +873,7 @@ export default {
   align-items: center;
   gap: 32px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1320px;
   padding: 0 24px;
 }
 
@@ -916,7 +928,7 @@ export default {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 24px;
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -995,37 +1007,51 @@ export default {
 /* ====== Hero Section ====== */
 .hero-section {
   position: relative;
-  height: 320px;
+  height: auto;
+  padding: 48px 0;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
-  background: var(--primary);
+  background: var(--bg);
 }
 
-.hero-background {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-}
+.hero-background { display: none; }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
+.hero-overlay { display: none; }
 
 .hero-content {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 32px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1320px;
   padding: 0 24px;
 }
+
+.hero-card {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 6px 14px rgba(17,24,39,0.06);
+}
+
+.hero-left { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; }
+.hero-right { width: 100%; }
+.mini-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.mini-stat-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; text-align: center; }
+.mini-stat-number { font-size: 20px; font-weight: 700; color: #111827; }
+.mini-stat-label { font-size: 12px; color: #6b7280; }
 
 .hero-avatar {
   position: relative;
@@ -1095,21 +1121,21 @@ export default {
 .hero-name {
   font-size: 28px;
   font-weight: 600;
-  color: var(--bg);
+  color: var(--text);
   margin: 0 0 8px;
   line-height: 1.2;
 }
 
 .hero-title {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-light);
   margin: 0 0 4px;
   font-weight: 400;
 }
 
 .hero-subtitle {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-lighter);
   margin: 0 0 16px;
 }
 
@@ -1118,13 +1144,12 @@ export default {
 }
 
 .role-switcher select {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--bg);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  color: var(--text);
+  border: 1px solid #e5e7eb;
   border-radius: var(--radius);
   padding: 8px 12px;
   font-size: 14px;
-  backdrop-filter: blur(4px);
   cursor: pointer;
 }
 
@@ -1134,8 +1159,8 @@ export default {
 }
 
 .role-switcher select option {
-  background: var(--primary);
-  color: var(--bg);
+  background: #ffffff;
+  color: var(--text);
 }
 
 .hero-stats {
@@ -1145,22 +1170,22 @@ export default {
 
 .stat-item {
   text-align: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: #f9fafb;
   padding: 12px 16px;
   border-radius: var(--radius);
-  backdrop-filter: blur(4px);
+  border: 1px solid #e5e7eb;
 }
 
 .stat-number {
   display: block;
   font-size: 20px;
   font-weight: 600;
-  color: var(--bg);
+  color: var(--text);
 }
 
 .stat-label {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
 }
 
 .hero-actions {
@@ -1180,24 +1205,23 @@ export default {
 }
 
 .btn-primary {
-  background: #ffffff;
-  color: var(--primary);
-  box-shadow: 0 2px 6px rgba(47, 122, 89, 0.15);
+  background: #111827;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
 .btn-primary:hover {
-  background: #f5f9f7;
+  opacity: .92;
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(6px);
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #f9fafb;
 }
 
 /* ====== Main Layout ====== */
@@ -1205,7 +1229,7 @@ export default {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 24px;
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 0 24px 40px;
 }
@@ -1382,7 +1406,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .section-title {
@@ -1394,24 +1418,24 @@ export default {
 
 /* ====== Stats Section ====== */
 .stats-section {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 14px rgba(17,24,39,0.06);
+  border: 1px solid #e5e7eb;
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
 .stat-card {
   border-radius: 14px;
   padding: 16px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 52px 1fr;
   align-items: center;
   gap: 16px;
   transition: var(--trans);
@@ -1475,12 +1499,11 @@ export default {
 
 /* ====== Plantations Section ====== */
 .plantations-section {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 14px rgba(17,24,39,0.06);
+  border: 1px solid #e5e7eb;
 }
 
 .header-actions {
@@ -1540,7 +1563,7 @@ export default {
 
 .card-image {
   position: relative;
-  height: 140px;
+  height: 160px;
   background: var(--primary-light);
   overflow: hidden;
 }
@@ -1817,11 +1840,11 @@ export default {
 
 /* ====== 图表样式 ====== */
 .chart-section {
-  background: var(--bg);
-  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  box-shadow: 0 6px 14px rgba(17,24,39,0.06);
+  border: 1px solid #e5e7eb;
   margin-bottom: 24px;
 }
 
@@ -1838,46 +1861,51 @@ export default {
 
 /* ====== 设备池样式 ====== */
 .devices-section {
-  background: var(--bg);
-  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  box-shadow: 0 6px 14px rgba(17,24,39,0.06);
+  border: 1px solid #e5e7eb;
   margin-bottom: 24px;
 }
 
 .devices-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
 }
 
 .device-card {
-  background: var(--bg-light);
-  border-radius: var(--radius);
-  padding: 16px;
-  border: 1px solid var(--border-light);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgba(17,24,39,0.04);
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  grid-template-areas: 'type name status' 'type firmware status';
+  column-gap: 12px;
+  row-gap: 6px;
+  align-items: center;
+  transition: var(--trans);
 }
+
+.device-card:hover { border-color: #d1d5db; box-shadow: 0 2px 6px rgba(17,24,39,0.06); }
 
 .device-type {
+  grid-area: type;
   font-size: 12px;
-  color: var(--text-light);
-  margin-bottom: 8px;
+  color: #374151;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  padding: 4px 10px;
+  border-radius: 999px;
+  justify-self: start;
 }
 
-.device-name {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
+.device-name { grid-area: name; font-size: 14px; font-weight: 600; color: #111827; }
 
-.device-status {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-bottom: 8px;
-}
+.device-status { grid-area: status; font-size: 12px; padding: 2px 8px; border-radius: 4px; display: inline-block; justify-self: end; }
 
 .device-status.online {
   background: rgba(16, 185, 129, 0.1);
@@ -1889,13 +1917,7 @@ export default {
   color: var(--danger);
 }
 
-.device-firmware {
-  font-size: 12px;
-  color: var(--text-light);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+.device-firmware { grid-area: firmware; font-size: 12px; color: #6b7280; display: flex; justify-content: space-between; align-items: center; }
 
 .upgrade-btn {
   padding: 2px 8px;
@@ -1909,40 +1931,45 @@ export default {
 
 /* ====== 库存样式 ====== */
 .inventory-section {
-  background: var(--bg);
-  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  box-shadow: 0 6px 14px rgba(17,24,39,0.06);
+  border: 1px solid #e5e7eb;
 }
 
 .inventory-table {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
   overflow: hidden;
 }
 
 .inventory-header {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  background: var(--bg-light);
-  padding: 12px;
+  background: #f9fafb;
+  padding: 12px 16px;
   font-weight: 600;
   font-size: 14px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #e5e7eb;
+  align-items: center;
 }
 
 .inventory-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  padding: 12px;
-  border-bottom: 1px solid var(--border-light);
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
   font-size: 14px;
+  align-items: center;
+  min-height: 48px;
 }
 
 .inventory-row:last-child {
   border-bottom: none;
 }
+
+.inventory-row:hover { background: #fafafa; }
 
 .inventory-row .warning {
   color: var(--warning);
