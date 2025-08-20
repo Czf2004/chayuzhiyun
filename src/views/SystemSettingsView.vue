@@ -79,6 +79,14 @@
           </div>
           <el-button type="primary" :loading="seedingDevices" @click="seedDevices">生成设备</el-button>
         </div>
+        <div class="seed-block">
+          <div class="seed-title">茶园造数</div>
+          <div class="seed-row">
+            <span>数量</span>
+            <el-input-number v-model="plantationCount" :min="1" :max="100" />
+          </div>
+          <el-button type="primary" :loading="seedingPlantations" @click="seedPlantations">生成茶园</el-button>
+        </div>
       </div>
       <div class="hint">将调用后端创建接口持久化到数据库，字段与真实一致。</div>
     </el-card>
@@ -92,6 +100,7 @@ import { useUiSettingsStore } from '@/stores/uiSettingsStore'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { createUser } from '@/api/admin'
 import { createDevice } from '@/api/devices'
+import { createPlantation } from '@/api/plantations'
 
 const ui = useUiSettingsStore()
 const form = reactive({ ...ui.settings })
@@ -117,8 +126,10 @@ onMounted(() => ui.load())
 // ============== 造数逻辑 ==============
 const userCount = ref(20)
 const deviceCount = ref(20)
+const plantationCount = ref(10)
 const seedingUsers = ref(false)
 const seedingDevices = ref(false)
+const seedingPlantations = ref(false)
 
 const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 const pad2 = (n) => String(n).padStart(2, '0')
@@ -198,6 +209,59 @@ const seedUsers = async () => {
 
 const deviceTypes = ['drone','soil_sensor','weather_station','irrigation_controller']
 const statuses = ['active','inactive','maintenance','offline']
+
+// 茶园相关数据
+const plantationNames = ['西湖龙井茶园','碧螺春茶园','铁观音茶园','普洱古茶园','黄山毛峰茶园','武夷岩茶园','安溪铁观音茶园','信阳毛尖茶园','六安瓜片茶园','太平猴魁茶园']
+const teaVarieties = ['西湖龙井','碧螺春','铁观音','普洱','黄山毛峰','武夷岩茶','信阳毛尖','六安瓜片','太平猴魁','白毫银针']
+const soilTypes = ['红壤','黄壤','棕壤','紫色土','水稻土','潮土']
+const climates = ['亚热带季风气候','温带季风气候','高原气候','山地气候']
+const altitudes = [200, 300, 500, 800, 1000, 1200, 1500, 1800]
+const areas = [50, 80, 120, 200, 300, 500, 800, 1000, 1500, 2000]
+const statusesPlantation = ['active','inactive','maintenance','harvesting','planting']
+
+const seedPlantations = async () => {
+  try {
+    await ElMessageBox.confirm(`确定创建 ${plantationCount.value} 个虚拟茶园并写入数据库吗？`, '确认', { type: 'warning' })
+  } catch { return }
+  try {
+    seedingPlantations.value = true
+    const tasks = []
+    const now = new Date(); const ym = `${now.getFullYear()}${pad2(now.getMonth()+1)}${pad2(now.getDate())}`
+    for (let i = 0; i < plantationCount.value; i++) {
+      const name = sample(plantationNames)
+      const variety = sample(teaVarieties)
+      const area = sample(areas)
+      const altitude = sample(altitudes)
+      const payload = {
+        name: `${name}-${i+1}`,
+        location: `${sample(cities)}${sample(['区','县','市'])}${sample(['镇','乡','街道'])}`,
+        tea_variety: variety,
+        area_size: area,
+        altitude: altitude,
+        soil_type: sample(soilTypes),
+        climate: sample(climates),
+        planting_date: `${rand(2010, 2023)}-${pad2(rand(1,12))}-${pad2(rand(1,28))}`,
+        expected_harvest_date: `${rand(2024, 2025)}-${pad2(rand(3,11))}-${pad2(rand(1,28))}`,
+        status: sample(statusesPlantation),
+        description: `${name}位于海拔${altitude}米，面积${area}亩，主要种植${variety}。土壤类型为${sample(soilTypes)}，气候条件适宜茶叶生长。`,
+        contact_person: sample(cnNames),
+        contact_phone: genPhone(),
+        annual_production: rand(area * 0.5, area * 2),
+        quality_grade: sample(['特级','一级','二级','三级']),
+        certification: sample(['有机认证','绿色食品','地理标志','无公害']),
+        irrigation_system: sample(['滴灌','喷灌','沟灌','自然灌溉']),
+        pest_control: sample(['生物防治','化学防治','综合防治','有机防治'])
+      }
+      tasks.push(createPlantation(payload))
+    }
+    const results = await Promise.allSettled(tasks)
+    const ok = results.filter(r => r.status === 'fulfilled').length
+    ElMessage.success(`茶园创建完成：成功 ${ok} / 共 ${results.length}`)
+  } catch (e) {
+    ElMessage.error('茶园造数失败')
+  } finally { seedingPlantations.value = false }
+}
+
 const seedDevices = async () => {
   try {
     await ElMessageBox.confirm(`确定创建 ${deviceCount.value} 台虚拟设备并写入数据库吗？`, '确认', { type: 'warning' })
