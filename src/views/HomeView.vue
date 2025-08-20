@@ -75,14 +75,82 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- 解决方案区域 -->
+    <section class="solution-section">
+      <div class="container">
+        <div class="solution-header">
+          <h2 class="section-title">「茶智云」如何解决？</h2>
+          <p class="section-subtitle">不是简单的工具，而是您的智能商业伙伴</p>
+        </div>
         
-        <div class="solution-box">
-          <div class="solution-content">
-            <h3>「茶智云」如何解决？</h3>
-            <p><strong>核心就一点：</strong>把您从"操作软件"中解放出来，直接"享用结果"。您动嘴，它动手。它不是新工具，是您大脑和双手的延伸。</p>
-            <div class="solution-highlight">
-              <SparklesIcon class="highlight-icon" />
-              <span>让数据说话，让决策有据可依</span>
+        <div class="solution-content">
+          <div class="solution-main">
+            <div class="solution-text">
+              <h3>核心就一点：让数据为您工作</h3>
+              <p>把您从"操作软件"中解放出来，直接"享用结果"。您动嘴，它动手。它不是新工具，是您大脑和双手的延伸。</p>
+              
+              <div class="solution-features">
+                <div class="solution-feature">
+                  <div class="feature-icon">
+                    <SparklesIcon class="feature-svg" />
+                  </div>
+                  <div class="feature-content">
+                    <h4>智能决策</h4>
+                    <p>AI分析海量数据，为您提供精准的商业洞察</p>
+                  </div>
+                </div>
+                
+                <div class="solution-feature">
+                  <div class="feature-icon">
+                    <BoltIcon class="feature-svg" />
+                  </div>
+                  <div class="feature-content">
+                    <h4>自动化运营</h4>
+                    <p>减少重复性工作，让您专注于核心业务</p>
+                  </div>
+                </div>
+                
+                <div class="solution-feature">
+                  <div class="feature-icon">
+                    <ArrowTrendingUpIcon class="feature-svg" />
+                  </div>
+                  <div class="feature-content">
+                    <h4>持续增长</h4>
+                    <p>数据驱动的增长策略，让利润持续提升</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="solution-visual">
+              <div class="solution-image-container">
+                <img :src="images.hero.main" alt="茶智云解决方案" class="solution-image" />
+                <div class="solution-overlay"></div>
+                <div class="floating-stats">
+                  <div class="stat-item">
+                    <div class="stat-number">85%</div>
+                    <div class="stat-label">决策效率提升</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-number">60%</div>
+                    <div class="stat-label">运营成本降低</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="solution-cta">
+            <div class="cta-content">
+              <h3>准备好让您的茶园生意更上一层楼了吗？</h3>
+              <p>立即体验茶智云，开启智能经营新时代</p>
+              <div class="cta-buttons">
+                <button class="primary-btn">免费试用</button>
+                <button class="secondary-btn">预约演示</button>
+              </div>
             </div>
           </div>
         </div>
@@ -892,55 +960,213 @@ onMounted(() => {
   color: #059669;
 }
 
-.solution-box {
-  background: linear-gradient(135deg, #eff6ff, #f0f9ff);
-  padding: 3rem;
-  border-radius: 20px;
+/* 解决方案区域 */
+.solution-section {
+  padding: 100px 0;
+  background: #f8fafc;
+}
+
+.solution-header {
   text-align: center;
-  border: 1px solid #e0f2fe;
-  margin-top: 4rem;
+  margin-bottom: 4rem;
 }
 
 .solution-content {
-  max-width: 800px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 }
 
-.solution-content h3 {
-  font-size: 1.8rem;
+.solution-main {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+}
+
+.solution-text {
+  flex: 1;
+}
+
+.solution-text h3 {
+  font-size: 2rem;
   font-weight: 600;
   color: #1e293b;
-  margin-bottom: 1rem;
-}
-
-.solution-content p {
-  font-size: 1.1rem;
-  color: #475569;
-  line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 
-.solution-highlight {
-  display: inline-flex;
-  align-items: center;
-  background: linear-gradient(135deg, #fef3c7, #fbbf24);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #92400e;
-  box-shadow: 0 4px 15px rgba(254, 243, 199, 0.5);
+.solution-text p {
+  font-size: 1.1rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 2rem;
 }
 
-.highlight-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: #92400e;
-  margin-right: 8px;
+.solution-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.solution-feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  background: #e0f2fe;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-/* 功能模块区域 */
+.feature-svg {
+  width: 24px;
+  height: 24px;
+  color: #059669;
+}
+
+.feature-content h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.feature-content p {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.solution-visual {
+  flex: 1;
+  position: relative;
+}
+
+.solution-image-container {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.solution-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.solution-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(13, 148, 136, 0.1));
+}
+
+.floating-stats {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 15px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #10b981;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 0.5rem;
+}
+
+.solution-cta {
+  background: linear-gradient(135deg, #059669, #0d9488);
+  padding: 3rem;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+}
+
+.solution-cta h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.solution-cta p {
+  font-size: 1.3rem;
+  margin-bottom: 3rem;
+}
+
+.solution-cta .cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.solution-cta .primary-btn, .solution-cta .secondary-btn {
+  padding: 18px 36px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.solution-cta .primary-btn {
+  background: white;
+  color: #059669;
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3);
+}
+
+.solution-cta .primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.4);
+}
+
+.solution-cta .secondary-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.solution-cta .secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.solution-cta .btn-icon {
+  font-size: 1.2rem;
+}
+
+/* 四大功能模块展示区 */
 .features-section {
   padding: 100px 0;
   background: white;
@@ -1827,6 +2053,14 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .gradient-text {
+    font-size: 1.8rem;
+  }
+  
   .section-title {
     font-size: 2rem;
   }
@@ -1864,12 +2098,66 @@ onMounted(() => {
     justify-content: center;
   }
   
-  .solution-content h3 {
-    font-size: 1.5rem;
+  .solution-main {
+    flex-direction: column;
+    gap: 2rem;
   }
-  
-  .solution-content p {
-    font-size: 1rem;
+
+  .solution-text {
+    text-align: center;
+  }
+
+  .solution-features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .solution-feature {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .feature-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .solution-visual {
+    width: 100%;
+    height: 300px; /* Adjust height for smaller screens */
+  }
+
+  .solution-image-container img {
+    height: 100%;
+  }
+
+  .solution-cta {
+    padding: 2rem;
+  }
+
+  .solution-cta h3 {
+    font-size: 2rem;
+  }
+
+  .solution-cta p {
+    font-size: 1.2rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cta-buttons .primary-btn, .cta-buttons .secondary-btn {
+    width: 100%;
+    max-width: 300px;
   }
 }
 </style>
