@@ -82,7 +82,7 @@
     <section class="data-advantage-section">
       <div class="container">
         <div class="solution-header">
-          <h2 class="section-title">「茶参谋」解决方案：用行业数据指挥，让AI自动执行</h2>
+          <h2 class="section-title">「茶参谋」 ：用行业数据指挥，让AI自动执行</h2>
           <p class="section-subtitle">第一，给您一双看清行业的“天眼”。第二，给您一个自动赚钱的“私域机器”</p>
         </div>
 
@@ -1017,6 +1017,7 @@ onMounted(() => {
   color: #1e293b;
   margin-bottom: 1rem;
   position: relative;
+  text-align: center;
 }
 
 .section-title::after {
@@ -1149,6 +1150,7 @@ onMounted(() => {
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .solution-text p {
@@ -1421,6 +1423,7 @@ onMounted(() => {
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .feature-slogan {
@@ -1428,6 +1431,7 @@ onMounted(() => {
   color: #059669;
   font-weight: 600;
   margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .feature-description {
@@ -1463,6 +1467,17 @@ onMounted(() => {
 
 .feature-visual {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-visual img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
 .feature-image-container {
@@ -1503,7 +1518,7 @@ onMounted(() => {
 .case-studies { display: grid; grid-template-columns: 1fr; gap: 2rem; }
 .case-study { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center; }
 .case-content h3 { font-size: 1.5rem; color: #1e293b; margin-bottom: 1rem; }
-.case-content h4 { font-size: 1.1rem; color: #0f172a; margin: 1rem 0 0.5rem; }
+.case-content h4 { font-size: 1.1rem; color: #0f172a; margin: 1rem 0 0.5rem; text-align: center; }
 .case-content p { color: #475569; line-height: 1.6; }
 .case-content ol { padding-left: 1.1rem; color: #475569; }
 .case-content ol li { margin: 0.3rem 0; }
@@ -1511,7 +1526,8 @@ onMounted(() => {
 .result-item { text-align: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; }
 .result-value { font-size: 1.25rem; font-weight: 800; color: #059669; }
 .result-label { font-size: 0.9rem; color: #64748b; }
-.case-visual img { width: 100%; height: 100%; max-height: 320px; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+.case-visual { display: flex; align-items: center; justify-content: center; }
+.case-visual img { width: 100%; height: 320px; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
 
 /* 数据统计区域 */
 .stats-section {
