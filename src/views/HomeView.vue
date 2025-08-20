@@ -6,7 +6,8 @@
       <div class="hero-container">
       <div class="hero-content">
           <div class="hero-badge">
-            <span>🚀 一句话，让AI替你打理茶园生意</span>
+            <RocketLaunchIcon class="hero-badge-icon" />
+            <span>一句话，让AI替你打理茶园生意</span>
           </div>
           <h1 class="hero-title">
             茶智云
@@ -29,18 +30,24 @@
         <h2 class="section-title">老板，您是否也曾为这些事头疼？</h2>
         <div class="value-grid">
           <div class="value-card" v-motion-slide-visible-once-bottom>
-            <div class="value-icon">📊</div>
-            <h3>报表太多看不懂</h3>
+            <h3>
+              <ChartBarIcon class="value-title-icon" />
+              报表太多看不懂
+            </h3>
             <p>采购、销售、库存报表一大堆，数据冰冷，看不出门道，更不知道下一步该干啥。</p>
       </div>
           <div class="value-card" v-motion-slide-visible-once-bottom>
-            <div class="value-icon">🎯</div>
-            <h3>决策全靠拍脑袋</h3>
+            <h3>
+              <FlagIcon class="value-title-icon" />
+              决策全靠拍脑袋
+            </h3>
             <p>该进什么货？进多少？该给谁促销？库存怎么处理？每次决策都像一场赌博，心里没底。</p>
           </div>
           <div class="value-card" v-motion-slide-visible-once-bottom>
-            <div class="value-icon">⚡</div>
-            <h3>效率太低忙不过来</h3>
+            <h3>
+              <BoltIcon class="value-title-icon" />
+              效率太低忙不过来
+            </h3>
             <p>每天时间都耗在琐事上：查数据、算利润、盯库存，根本没空思考发展、拜访客户。</p>
         </div>
           </div>
@@ -64,6 +71,7 @@
             :class="['feature-nav-btn', { active: activeFeature === index }]"
             @click="activeFeature = index"
           >
+            <component :is="feature.icon" class="feature-nav-icon" />
             {{ feature.title }}
           </button>
         </div>
@@ -76,7 +84,7 @@
             <p class="feature-description">{{ features[activeFeature].description }}</p>
             <ul class="feature-points">
               <li v-for="point in features[activeFeature].points" :key="point">
-                <span class="point-icon">✓</span>
+                <CheckCircleIcon class="point-icon" />
                 {{ point }}
               </li>
             </ul>
@@ -158,7 +166,11 @@
                 <h4 class="testimonial-name">{{ testimonial.name }}</h4>
                 <p class="testimonial-title">{{ testimonial.title }}</p>
                 <div class="testimonial-rating">
-                  <span v-for="n in 5" :key="n" class="star">⭐</span>
+                  <StarIcon class="star-icon filled" />
+                  <StarIcon class="star-icon filled" />
+                  <StarIcon class="star-icon filled" />
+                  <StarIcon class="star-icon filled" />
+                  <StarIcon class="star-icon filled" />
                 </div>
               </div>
             </div>
@@ -259,6 +271,26 @@
             </div>
           </div>
         </div>
+        <div class="cta-bottom">
+          <div class="trust-badges">
+            <div class="trust-badge">
+              <ShieldCheckIcon class="badge-icon" />
+              <span>数据安全</span>
+            </div>
+            <div class="trust-badge">
+              <BoltIcon class="badge-icon" />
+              <span>快速部署</span>
+            </div>
+            <div class="trust-badge">
+              <FlagIcon class="badge-icon" />
+              <span>精准服务</span>
+            </div>
+            <div class="trust-badge">
+              <StarIcon class="badge-icon" />
+              <span>品质保证</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -317,9 +349,9 @@
           <div class="footer-section">
             <h4>联系我们</h4>
             <div class="contact-info">
-              <p>📞 400-888-8888</p>
-              <p>📧 contact@chayuzhiyun.com</p>
-              <p>📍 杭州市西湖区文三路</p>
+              <p><PhoneIcon class="contact-icon" /> 400-888-8888</p>
+              <p><EnvelopeIcon class="contact-icon" /> contact@chayuzhiyun.com</p>
+              <p><MapPinIcon class="contact-icon" /> 杭州市西湖区文三路</p>
             </div>
           </div>
         </div>
@@ -342,6 +374,23 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { images } from '@/assets/images.js'
+import { 
+  RocketLaunchIcon, 
+  ChartBarIcon, 
+  FlagIcon, 
+  BoltIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  EyeIcon,
+  UserGroupIcon,
+  ArrowTrendingUpIcon,
+  CpuChipIcon,
+  CheckCircleIcon,
+  StarIcon,
+  PhoneIcon,
+  EnvelopeIcon,
+  MapPinIcon
+} from '@heroicons/vue/24/outline'
 
 const activeFeature = ref(0)
 const liveConsultationCount = ref(3)
@@ -392,7 +441,8 @@ const features = [
       "原料行情预警，采购时机精准把控",
       "爆品拆解报告，成功模式快速复制"
     ],
-    image: images.products.monitoring
+    image: images.products.monitoring,
+    icon: EyeIcon
   },
   {
     title: "客户印钞机",
@@ -406,7 +456,8 @@ const features = [
       "利润看板，客户价值数字化",
       "沉默客户激活流水线，唤醒沉睡资产"
     ],
-    image: images.products.irrigation
+    image: images.products.irrigation,
+    icon: UserGroupIcon
   },
   {
     title: "利润加速器",
@@ -420,7 +471,8 @@ const features = [
       "高客单价SOP，销售话术标准化",
       "动态利润看板，盈利状况实时监控"
     ],
-    image: images.products.growth
+    image: images.products.growth,
+    icon: ArrowTrendingUpIcon
   },
   {
     title: "智慧茶园轻量版",
@@ -433,7 +485,8 @@ const features = [
       "采茶最优规划，人力成本最小化",
       "农资成本分析，投入产出比优化"
     ],
-    image: images.products.platform
+    image: images.products.platform,
+    icon: CpuChipIcon
   }
 ]
 
@@ -584,24 +637,39 @@ onMounted(() => {
 }
 
 .hero-badge {
-  margin-bottom: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #059669;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  cursor: default;
+  line-height: 1;
+}
+
+.hero-badge-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #059669;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .hero-badge span {
-  display: inline-flex;
-  align-items: center;
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #059669, #0d9488);
-  border-radius: 50px;
-  font-size: 14px;
+  color: #059669;
   font-weight: 500;
-  box-shadow: 0 8px 32px rgba(5, 150, 105, 0.3);
-  transition: all 0.3s ease;
-}
-
-.hero-badge span:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(5, 150, 105, 0.4);
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .hero-title {
@@ -712,33 +780,41 @@ onMounted(() => {
 
 .value-card {
   background: white;
-  padding: 3rem 2rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  text-align: center;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
   transition: all 0.3s ease;
+  text-align: left;
 }
 
 .value-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-}
-
-.value-icon {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
 }
 
 .value-card h3 {
-  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.value-title-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #059669;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
 }
 
 .value-card p {
   color: #64748b;
   line-height: 1.6;
+  margin: 0;
 }
 
 .solution-box {
@@ -780,37 +856,45 @@ onMounted(() => {
 
 .features-nav {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 4rem;
   flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+  justify-content: center;
 }
 
 .feature-nav-btn {
-  padding: 16px 32px;
-  border-radius: 50px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #64748b;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: #f8fafc;
-  color: #1e293b;
-  border: 1px solid #e0f2fe;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }
 
 .feature-nav-btn:hover {
-  background: #e0f2fe;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  background: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
 .feature-nav-btn.active {
   background: #059669;
+  border-color: #059669;
   color: white;
-  border: none;
-  box-shadow: 0 15px 50px rgba(5, 150, 105, 0.2);
+}
+
+.feature-nav-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+  color: currentColor;
+  flex-shrink: 0;
 }
 
 .features-content {
@@ -858,29 +942,24 @@ onMounted(() => {
 .feature-points {
   list-style: none;
   padding: 0;
-  margin-bottom: 2rem;
+  margin: 1.5rem 0;
 }
 
 .feature-points li {
   display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  font-size: 1rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: #475569;
 }
 
 .point-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  background: #059669;
-  color: white;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: bold;
-  margin-right: 12px;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #059669;
+  margin-right: 0.75rem;
+  margin-top: 0.125rem;
   flex-shrink: 0;
 }
 
@@ -1079,11 +1158,15 @@ onMounted(() => {
 
 .testimonial-rating {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  margin-top: 0.5rem;
 }
 
-.star {
-  color: #fbbf24; /* Gold color for stars */
+.star-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #fbbf24;
+  margin-right: 0.125rem;
 }
 
 .testimonial-content {
@@ -1367,23 +1450,21 @@ onMounted(() => {
 
 .trust-badges {
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
   flex-wrap: wrap;
-  margin-top: 3rem;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
 .trust-badge {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-size: 14px;
-  font-weight: 500;
-  color: white;
-  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #475569;
 }
 
 .trust-badge:hover {
@@ -1392,7 +1473,11 @@ onMounted(() => {
 }
 
 .badge-icon {
-  font-size: 1.2rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  color: #059669;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
 }
 
 /* 页脚 */
@@ -1474,6 +1559,22 @@ onMounted(() => {
   line-height: 1.6;
 }
 
+.contact-info p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.contact-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #64748b;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
 .footer-bottom {
   text-align: center;
   padding-top: 2rem;
@@ -1522,12 +1623,12 @@ onMounted(() => {
   .features-nav {
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
   }
-
+  
   .feature-nav-btn {
     width: 100%;
-    text-align: center;
+    max-width: 300px;
+    margin-right: 0;
   }
 
   .features-content {
@@ -1607,6 +1708,18 @@ onMounted(() => {
   }
 
   .footer-bottom-links {
+    justify-content: center;
+  }
+
+  .trust-badges {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .trust-badge {
+    width: 100%;
+    max-width: 200px;
     justify-content: center;
   }
 }
