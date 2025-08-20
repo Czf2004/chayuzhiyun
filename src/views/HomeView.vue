@@ -2,7 +2,7 @@
   <div class="home-view">
     <!-- Hero区域 -->
     <section class="hero-section">
-      <div class="hero-background"></div>
+      <div class="hero-background" :style="{ backgroundImage: `url(${images.hero.main})` }"></div>
       <div class="hero-container">
       <div class="hero-content">
           <div class="hero-badge">
@@ -252,31 +252,10 @@
                   </div>
                   <div class="floating-card-text">
                     <p class="floating-title">实时咨询中</p>
-                    <p class="floating-subtitle">3位客户正在咨询</p>
+                    <p class="floating-subtitle"><span class="count-number">{{ liveConsultationCount }}</span>位客户正在咨询</p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="cta-bottom">
-          <div class="trust-badges">
-            <div class="trust-badge">
-              <span class="badge-icon">🔒</span>
-              <span>数据安全</span>
-            </div>
-            <div class="trust-badge">
-              <span class="badge-icon">⚡</span>
-              <span>快速部署</span>
-            </div>
-            <div class="trust-badge">
-              <span class="badge-icon">🎯</span>
-              <span>精准服务</span>
-            </div>
-            <div class="trust-badge">
-              <span class="badge-icon">💎</span>
-              <span>品质保证</span>
             </div>
           </div>
         </div>
@@ -347,7 +326,7 @@
         
         <div class="footer-bottom">
           <div class="footer-bottom-content">
-            <p>&copy; 2024 茶智云. 保留所有权利.</p>
+            <p>&copy; 2025 茶智云. 保留所有权利.</p>
             <div class="footer-bottom-links">
               <a href="#">隐私政策</a>
               <a href="#">服务条款</a>
@@ -361,10 +340,44 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { images } from '@/assets/images.js'
 
 const activeFeature = ref(0)
+const liveConsultationCount = ref(3)
+
+// 实时咨询数字随机变化
+let consultationTimer = null
+
+const updateConsultationCount = () => {
+  // 在2-8之间随机变化
+  const min = 2
+  const max = 8
+  const newCount = Math.floor(Math.random() * (max - min + 1)) + min
+  
+  // 避免连续相同的数字
+  if (newCount !== liveConsultationCount.value) {
+    liveConsultationCount.value = newCount
+  }
+}
+
+onMounted(() => {
+  // 每3-8秒随机更新一次数字
+  const startTimer = () => {
+    consultationTimer = setTimeout(() => {
+      updateConsultationCount()
+      startTimer() // 递归调用，确保每次间隔都不同
+    }, Math.random() * 5000 + 3000) // 3-8秒随机间隔
+  }
+  
+  startTimer()
+})
+
+onUnmounted(() => {
+  if (consultationTimer) {
+    clearInterval(consultationTimer)
+  }
+})
 
 const features = [
   {
@@ -379,7 +392,7 @@ const features = [
       "原料行情预警，采购时机精准把控",
       "爆品拆解报告，成功模式快速复制"
     ],
-    image: "https://placehold.co/600x400/0ea5e9/ffffff?text=茶界天眼Pro"
+    image: images.products.monitoring
   },
   {
     title: "客户印钞机",
@@ -393,7 +406,7 @@ const features = [
       "利润看板，客户价值数字化",
       "沉默客户激活流水线，唤醒沉睡资产"
     ],
-    image: "https://placehold.co/600x400/10b981/ffffff?text=客户印钞机"
+    image: images.products.irrigation
   },
   {
     title: "利润加速器",
@@ -407,7 +420,7 @@ const features = [
       "高客单价SOP，销售话术标准化",
       "动态利润看板，盈利状况实时监控"
     ],
-    image: "https://placehold.co/600x400/f59e0b/ffffff?text=利润加速器"
+    image: images.products.growth
   },
   {
     title: "智慧茶园轻量版",
@@ -420,7 +433,7 @@ const features = [
       "采茶最优规划，人力成本最小化",
       "农资成本分析，投入产出比优化"
     ],
-    image: "https://placehold.co/600x400/8b5cf6/ffffff?text=智慧茶园"
+    image: images.products.platform
   }
 ]
 
@@ -540,7 +553,8 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  /* background: url('https://placehold.co/1600x900/1e293b/ffffff?text=茶智云') center/cover; */
+  background-size: cover;
+  background-position: center;
   opacity: 0.3;
 }
 
@@ -1335,8 +1349,16 @@ onMounted(() => {
 }
 
 .floating-subtitle {
-  font-size: 0.7rem;
+  font-size: 0.875rem;
   color: #64748b;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.floating-subtitle .count-number {
+  font-weight: 600;
+  color: #3b82f6;
+  transition: all 0.3s ease;
 }
 
 .cta-bottom {
