@@ -1,54 +1,33 @@
 <script setup>
 import { useGardenStore } from '@/stores/gardenStore';
-import { ElLoading,ElMessageBox,ElMessage } from 'element-plus';
-import { ref,onMounted } from 'vue';
-const gardenStore=useGardenStore()
-const gardenForm=ref(null);
+import { ElLoading, ElMessageBox, ElMessage } from 'element-plus';
+import { Plus, Refresh, Check } from '@element-plus/icons-vue';
+import { ref, onMounted } from 'vue';
 
-onMounted(() => {
-  gardenStore.loadData();
-});
-// 地理验证
-const verifyLocation = async () => {
-  const loading = ElLoading.service({
-    lock: true,
-    text: '正在验证地址准确性...',
-    background: 'rgba(0, 0, 0, 0.7)'
-  });
+const gardenStore = useGardenStore()
+const gardenForm = ref(null);
+
+onMounted(async () => {
   try {
-    const result = await gardenStore.verifyLocation();
-    if (!result.success && result.suggestedLat && result.suggestedLng) {
-      // 正确处理 ElMessageBox.confirm 的异步返回值
-      const action = await ElMessageBox.confirm(
-        `${result.message}，是否使用地址解析的经纬度？(经度:${result.suggestedLat},纬度:${result.suggestedLng})`,
-        '地址验证提示',
-        {
-          confirmButtonText: '使用解析值',
-          cancelButtonText: '保留原值',
-          type: result.warning ? 'warning' : 'error',
-        }
-      );
-      // 根据用户点击的 action 处理
-      if (action === 'confirm') {
-        gardenStore.$patch(state => {
-          state.formData.latitude = result.suggestedLat;
-          state.formData.longitude = result.suggestedLng;
-        });
-      }
-    } else if (result.success) {
-      ElMessage.success(result.message);
-    } else {
-      ElMessage.error(result.message);
-    }
+    await gardenStore.loadData();
   } catch (error) {
-    // 这里可以处理 ElMessageBox.confirm 取消等错误情况
-    console.error('验证地址或弹窗交互出错：', error);
-  } finally {
-    loading.close();
+    console.error('加载数据失败:', error);
+    // 不显示错误消息，因为loadData已经处理了错误情况
   }
+});
+
+// 获取部署状态文本
+const getDeploymentStatusText = (status) => {
+  const statusMap = {
+    0: '未部署',
+    1: '部署中',
+    2: '已部署'
+  };
+  return statusMap[status] || '未设置';
 };
+
 // 处理删除确认
-const handleDeleteConfirm = () => {
+const handleDeleteConfirm = (row) => {
   ElMessageBox.confirm(
     '删除后相关生产记录将受影响，是否确认删除？',
     '警告',
@@ -58,90 +37,147 @@ const handleDeleteConfirm = () => {
       type: 'warning'
     }
   )
-    .then(() => {
+    .then(async () => {
       const loading = ElLoading.service({
         lock: true,
         text: '正在删除数据...',
         background: 'rgba(0, 0, 0, 0.7)'
       });
 
-      setTimeout(() => {
+      try {
+        const result = await gardenStore.handleDelete(row.plantation_id);
+        if (result.success) {
+          ElMessage.success(result.message);
+        } else {
+          ElMessage.error(result.message);
+        }
+      } catch (error) {
+        console.error('删除失败:', error);
+        ElMessage.error('删除失败');
+      } finally {
         loading.close();
-        const result = gardenStore.handleDelete()
-        ElMessage.success(result.message)
-      }, 1000);
+      }
     })
     .catch(() => {
       ElMessage.info('已取消删除');
     });
 };
+
 // 提交表单
-const handleSubmit=()=>{
-  gardenForm.value.validate((valid)=>{
-    if(!valid){
+const handleSubmit = async () => {
+  gardenForm.value.validate(async (valid) => {
+    if (!valid) {
       return false;
     }
+    
     const loading = ElLoading.service({
-      lock:true,
-      text:'正在保存数据...',
-      background:'rgba(0,0,0,0.7)'
+      lock: true,
+      text: '正在保存数据...',
+      background: 'rgba(0, 0, 0, 0.7)'
     });
 
-    setTimeout(()=>{
-      loading.close();
-      const result = gardenStore.submitForm()
-      if(result.success){
-        ElMessage.success(result.message)
-      }else{
-        ElMessage.error('请检查无误后重新保存')
+    try {
+      const result = await gardenStore.submitForm();
+      if (result.success) {
+        ElMessage.success(result.message);
+        gardenStore.closeDialog();
+      } else {
+        ElMessage.error(result.message || '请检查无误后重新保存');
       }
-      gardenStore.closeDialog()
-    },1000)
-  })
-}
+    } catch (error) {
+      console.error('保存失败:', error);
+      ElMessage.error('保存失败');
+    } finally {
+      loading.close();
+    }
+  });
+};
+
 // 分页
-const currentPage = ref(1);
-const handleCurrentChange = (val) => {
-  currentPage.value = val;
+const handleCurrentChange = async (val) => {
+  try {
+    await gardenStore.handlePageChange(val);
+  } catch (error) {
+    console.error('分页切换失败:', error);
+    ElMessage.error('分页切换失败');
+  }
 };
 </script>
 
 <template>
   <div class="gardenform">
     <el-card title="茶园信息管理">
+      <!-- 工具栏 -->
+      <div style="margin-bottom: 20px;">
+        <el-button type="primary" @click="gardenStore.openAddForm">
+          <el-icon><Plus /></el-icon>
+          新增茶园
+        </el-button>
+      </div>
     <el-table
-    :data="gardenStore.gardenList.slice((currentPage - 1) * 10, currentPage * 10)"
+    :data="gardenStore.gardenList"
     border
     :loading="gardenStore.tableLoading"
     stripe
-    style="width: 1300px;"
+    style="width: 100%; min-width: 1600px;"
     >
-    <el-table-column label="编号" width="70">
+    <el-table-column label="编号" width="80">
       <template #default="scope">
-        {{ (currentPage - 1) * 10 + scope.$index + 1 }}
+        {{ (gardenStore.pagination.current - 1) * gardenStore.pagination.pageSize + scope.$index + 1 }}
       </template>
     </el-table-column>
-    <el-table-column prop="name" label="茶园名称" width="120" />
-    <el-table-column prop="address" label="详细地址" width="250" />
-    <el-table-column prop="status" label="生产状态" width="120">
+    <el-table-column prop="plantation_name" label="茶园名称" min-width="150" />
+    <el-table-column label="地址信息" min-width="200">
+      <template #default="scope">
+        <div>{{ scope.row.country || '未设置' }} {{ scope.row.province || '未设置' }} {{ scope.row.city || '未设置' }} {{ scope.row.district || '' }}</div>
+        <div style="color: #666; font-size: 12px;">{{ scope.row.detail_address || '详细地址未填写' }}</div>
+      </template>
+    </el-table-column>
+    <el-table-column label="地理坐标" min-width="150">
+      <template #default="scope">
+        <div>纬度: {{ scope.row.latitude === 0 ? '未设置' : scope.row.latitude || '未设置' }}</div>
+        <div>经度: {{ scope.row.longitude === 0 ? '未设置' : scope.row.longitude || '未设置' }}</div>
+        <div>海拔: {{ scope.row.altitude === 0 ? '未设置' : scope.row.altitude || '未设置' }}m</div>
+      </template>
+    </el-table-column>
+    <el-table-column prop="deployment_status" label="部署状态" width="100">
       <template #default="scope">
         <el-tag
-        :type="scope.row.status==='正常生产'?'success':scope.row.status==='休耕'?'info':'warning'">
-        {{scope.row.status}}
+        :type="scope.row.deployment_status === 2 ? 'success' : scope.row.deployment_status === 1 ? 'warning' : scope.row.deployment_status === 0 ? 'info' : 'info'">
+        {{ getDeploymentStatusText(scope.row.deployment_status) }}
         </el-tag>
       </template>
     </el-table-column>
-     <el-table-column prop="latitude" label="纬度(°N)"/>
-    <el-table-column prop="longitude" label="经度(°E)"/>
-    <el-table-column prop="area" label="面积(亩)"/>
-    <el-table-column prop="variety" label="茶叶品种" />
-    <el-table-column prop="plantingYear" label="种植年份"/>
-    <el-table-column prop="owner" label="所属单位" width="180" />
-    <el-table-column label="操作" width="100">
+    <el-table-column label="设备信息" min-width="160">
       <template #default="scope">
-        <el-button size="small" type="primary" @click="gardenStore.openEditForm(scope.row)">
-          编辑
-        </el-button>
+        <div>无人机: {{ scope.row.drone_count === 0 ? '未设置' : scope.row.drone_count || '未设置' }}台 
+          (运行: {{ scope.row.drone_running === 0 ? '未设置' : scope.row.drone_running || '未设置' }}台)</div>
+        <div>土壤传感器: {{ scope.row.soil_sensors_count === 0 ? '未设置' : scope.row.soil_sensors_count || '未设置' }}个 
+          (运行: {{ scope.row.soil_sensors_running === 0 ? '未设置' : scope.row.soil_sensors_running || '未设置' }}个)</div>
+      </template>
+    </el-table-column>
+    <el-table-column label="病虫害状态" width="100">
+      <template #default="scope">
+        <el-tag :type="scope.row.insect_pests_status === 0 ? 'success' : scope.row.insect_pests_status === null || scope.row.insect_pests_status === undefined ? 'info' : 'danger'">
+          {{ scope.row.insect_pests_status === 0 ? '正常' : scope.row.insect_pests_status === null || scope.row.insect_pests_status === undefined ? '未设置' : '异常' }}
+        </el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column label="创建时间" min-width="140">
+      <template #default="scope">
+        {{ scope.row.created_at ? new Date(scope.row.created_at).toLocaleString('zh-CN') : '未设置' }}
+      </template>
+    </el-table-column>
+    <el-table-column label="操作" width="150">
+      <template #default="scope">
+        <div style="display: flex; gap: 8px;">
+          <el-button size="small" type="primary" @click="gardenStore.openEditForm(scope.row)">
+            编辑
+          </el-button>
+          <el-button size="small" type="danger" @click="handleDeleteConfirm(scope.row)">
+            删除
+          </el-button>
+        </div>
       </template>
     </el-table-column>
     </el-table>
@@ -149,129 +185,154 @@ const handleCurrentChange = (val) => {
      <el-dialog
      :title="gardenStore.dialogTitle"
      v-model="gardenStore.dialogvisible"
-     width="600px"
+     width="800px"
      :before-close="gardenStore.closeDialog"
      >
      <el-form
      ref="gardenForm"
      :model="gardenStore.formData"
      :rules="gardenStore.formRules"
-     label-width="120px"
+     label-width="140px"
      >
-     <el-form-item label="茶园名称" prop="name">
+     <el-form-item label="茶园名称" prop="plantation_name">
         <el-input
-        v-model="gardenStore.formData.name"
+        v-model="gardenStore.formData.plantation_name"
         placeholder="请输入茶园名称"
         maxlength="30"
         />
      </el-form-item>
-     <el-form-item label="茶园地址" prop="address">
+     <el-form-item label="国家" prop="country">
+        <el-input
+        v-model="gardenStore.formData.country"
+        placeholder="请输入国家"
+        />
+     </el-form-item>
+     <el-form-item label="省份" prop="province">
+        <el-input
+        v-model="gardenStore.formData.province"
+        placeholder="请输入省份"
+        />
+     </el-form-item>
+     <el-form-item label="城市" prop="city">
+        <el-input
+        v-model="gardenStore.formData.city"
+        placeholder="请输入城市"
+        />
+     </el-form-item>
+     <el-form-item label="详细地址" prop="detail_address">
       <el-input
-      v-model="gardenStore.formData.address"
+      v-model="gardenStore.formData.detail_address"
       placeholder="请输入详细地址"
-      maxlength="60"
+      maxlength="100"
       />
      </el-form-item>
-     <el-form-item label="生产状态" prop="status">
-        <el-select v-model="gardenStore.formData.status" placeholder="请选择生产状态">
+     <el-form-item label="区县" prop="district">
+      <el-input
+      v-model="gardenStore.formData.district"
+      placeholder="请输入区县"
+      />
+     </el-form-item>
+           <el-form-item label="纬度" prop="latitude">
+        <el-input-number
+          v-model="gardenStore.formData.latitude"
+          :precision="6"
+          :step="0.000001"
+          placeholder="请输入纬度"
+          controls-position="right"
+          :min="-90"
+          :max="90"
+          :clearable="true"
+        />
+      </el-form-item>
+      <el-form-item label="经度" prop="longitude">
+        <el-input-number
+          v-model="gardenStore.formData.longitude"
+          :precision="6"
+          :step="0.000001"
+          placeholder="请输入经度"
+          controls-position="right"
+          :min="-180"
+          :max="180"
+          :clearable="true"
+        />
+      </el-form-item>
+      <el-form-item label="海拔(米)" prop="altitude">
+        <el-input-number
+          v-model="gardenStore.formData.altitude"
+          :precision="2"
+          :step="0.01"
+          placeholder="请输入海拔"
+          controls-position="right"
+          :min="-1000"
+          :max="10000"
+          :clearable="true"
+        />
+      </el-form-item>
+     <el-form-item label="无人机数量" prop="drone_count">
+        <el-input-number
+          v-model="gardenStore.formData.drone_count"
+          :min="0"
+          :max="100"
+          :step="1"
+          placeholder="请输入无人机数量"
+          controls-position="right"
+          :clearable="true"
+        />
+      </el-form-item>
+      <el-form-item label="土壤传感器数量" prop="soil_sensors_count">
+        <el-input-number
+          v-model="gardenStore.formData.soil_sensors_count"
+          :min="0"
+          :max="100"
+          :step="1"
+          placeholder="请输入土壤传感器数量"
+          controls-position="right"
+          :clearable="true"
+        />
+      </el-form-item>
+      <el-form-item label="运行中无人机" prop="drone_running">
+        <el-input-number
+          v-model="gardenStore.formData.drone_running"
+          :min="0"
+          :max="100"
+          :step="1"
+          placeholder="请输入运行中无人机数量"
+          controls-position="right"
+          :clearable="true"
+        />
+      </el-form-item>
+      <el-form-item label="运行中传感器" prop="soil_sensors_running">
+        <el-input-number
+          v-model="gardenStore.formData.soil_sensors_running"
+          :min="0"
+          :max="100"
+          :step="1"
+          placeholder="请输入运行中传感器数量"
+          controls-position="right"
+          :clearable="true"
+        />
+      </el-form-item>
+      <el-form-item label="病虫害状态" prop="insect_pests_status">
+        <el-select v-model="gardenStore.formData.insect_pests_status" placeholder="请选择病虫害状态">
+          <el-option label="正常" :value="0" />
+          <el-option label="异常" :value="1" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="部署状态" prop="deployment_status">
+        <el-select v-model="gardenStore.formData.deployment_status" placeholder="请选择部署状态">
           <el-option
-          v-for="item in gardenStore.statusOption"
+          v-for="item in gardenStore.deploymentStatusOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value"
           ></el-option>
         </el-select>
      </el-form-item>
-     <el-form-item label="经纬度" prop="coordinates">
-        <div class="coordinates-input">
-          <el-input-number
-            v-model="gardenStore.formData.latitude"
-            :min="-90"
-            :max="90"
-            :step="0.000001"
-            placeholder="纬度"
-            style="width: 48%"
-            controls-position="right"
-          />
-          <el-input-number
-            v-model="gardenStore.formData.longitude"
-            :min="-180"
-            :max="180"
-            :step="0.000001"
-            placeholder="经度"
-            style="width: 48%"
-            controls-position="right"
-          />
-        </div>
-        <el-button
-          type="primary"
-          size="small"
-          @click="verifyLocation"
-        >
-          <el-icon><Location /></el-icon>
-          验证地址准确性
-        </el-button>
-      </el-form-item>
-
-      <el-form-item label="面积(亩)" prop="area">
-        <el-input-number
-          v-model="gardenStore.formData.area"
-          :min="0.1"
-          :max="10000"
-          :step="0.1"
-          placeholder="请输入茶园面积"
-          controls-position="right"
-        />
-      </el-form-item>
-
-      <el-form-item label="茶叶品种" prop="variety">
-        <el-select
-          v-model="gardenStore.formData.variety"
-          placeholder="请选择或输入茶叶品种"
-          filterable
-          allow-create
-        >
-          <el-option
-            v-for="item in gardenStore.teaVarieties"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="种植年份" prop="plantingYear">
-        <el-input-number
-          v-model="gardenStore.formData.plantingYear"
-          :min="1950"
-          :max="new Date().getFullYear()"
-          placeholder="请输入种植年份"
-          controls-position="right"
-        />
-      </el-form-item>
-
-      <el-form-item label="所属单位" prop="owner">
-        <el-input
-          v-model="gardenStore.formData.owner"
-          placeholder="请输入所属公司或农户"
-          maxlength="100"
-        />
-      </el-form-item>
      </el-form>
      <template #footer>
      <el-button @click="gardenStore.closeDialog">取消</el-button>
-     <!-- 删除按钮 -->
-     <template v-if="gardenStore.isEditMode">
-      <el-button
-      type="danger"
-      @click="handleDeleteConfirm"
-      >
-        <el-icon><Delete /></el-icon>
-        删除
-      </el-button>
-     </template>
      <!-- 重置按钮 -->
-     <template v-else>
+     <template v-if="!gardenStore.isEditMode">
       <el-button
       type="info"
       @click="gardenStore.resetForm"
@@ -291,11 +352,11 @@ const handleCurrentChange = (val) => {
     <!-- 分页 -->
   <el-pagination
   layout="prev, pager, next, jumper, total"
-  :page-size="10"
-  :current-page="currentPage"
-  :total="gardenStore.gardenList.length"
+  :page-size="gardenStore.pagination.pageSize"
+  :current-page="gardenStore.pagination.current"
+  :total="gardenStore.pagination.total"
   @current-change="handleCurrentChange"
-  :locale="paginationLocale"    />
+  />
   </div>
 </template>
 

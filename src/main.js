@@ -1,6 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+// 引入Tailwind CSS
+import './assets/main.css'
+// 引入VueUse Motion
+import { MotionPlugin } from '@vueuse/motion'
 // 引入Element Plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -21,9 +25,10 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
-// .use() 顺序：pinia → router → ElementPlus
+// .use() 顺序：pinia → router → motion → ElementPlus
 app.use(pinia)
 app.use(router)
+app.use(MotionPlugin)
 app.use(ElementPlus, {
   locale: zhCn // 配置中文
 })
