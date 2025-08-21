@@ -14,6 +14,7 @@ import OpsDashboard from '../views/ops/Dashboard.vue'
 import ProductManagement from '../views/ops/ProductManagement.vue'
 import QuotationCreation from '../views/ops/QuotationCreation.vue'
 import { ElMessage } from 'element-plus'
+const QuoteDetail = () => import('../views/ops/QuoteDetail.vue')
 import ToolkitView from '../views/ToolkitView.vue'
 import ToolkitDocView from '../views/ToolkitDocView.vue'
 
@@ -53,6 +54,12 @@ const routes = [
     name: 'ops-quotations',
     component: QuotationCreation,
     meta: { showNavbar: true, requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: '/quote/:code',
+    name: 'quote-detail',
+    component: QuoteDetail,
+    meta: { showNavbar: false, requiresAuth: false }
   },
   {
     path: '/auth',

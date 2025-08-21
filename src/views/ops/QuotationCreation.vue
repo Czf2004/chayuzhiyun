@@ -149,9 +149,34 @@
 
       <!-- 总计与操作区 -->
       <div class="quote-summary">
+        <div class="quote-controls">
+          <div class="control-item">
+            <span class="control-label">折扣</span>
+            <el-input-number v-model="discountPercent" :min="0" :max="100" :step="1" />
+            <span class="control-suffix">%</span>
+          </div>
+          <div class="control-item">
+            <span class="control-label">税率</span>
+            <el-input-number v-model="taxRate" :min="0" :max="50" :step="1" />
+            <span class="control-suffix">%</span>
+          </div>
+          <div class="control-item">
+            <span class="control-label">运费</span>
+            <el-input-number v-model="shippingFee" :min="0" :step="10" :precision="2" />
+            <span class="control-suffix">¥</span>
+          </div>
+          <div class="control-item wide">
+            <span class="control-label">有效期</span>
+            <el-date-picker v-model="validUntil" type="date" placeholder="选择日期" />
+          </div>
+          <div class="control-item wide">
+            <span class="control-label">付款条款</span>
+            <el-input v-model="paymentTerms" placeholder="例如：30天内付款，支持对公转账" />
+          </div>
+        </div>
         <div class="total-amount">
           <span class="total-label">报价总计：</span>
-          <span class="total-value">¥{{ total.toFixed(2) }}</span>
+          <span class="total-value">¥{{ grandTotal.toFixed(2) }}</span>
           <span v-if="hasDiscount" class="discount-badge">含折扣</span>
         </div>
         
@@ -188,7 +213,13 @@
           <p><span class="info-label">客户：</span>{{ currentCustomerName }}</p>
           <p><span class="info-label">报价单号：</span>{{ quoteId }}</p>
           <p><span class="info-label">生成时间：</span>{{ new Date().toLocaleString() }}</p>
-          <p><span class="info-label">总金额：</span><span class="info-value">¥{{ total.toFixed(2) }}</span></p>
+          <p><span class="info-label">小计：</span>¥{{ total.toFixed(2) }}</p>
+          <p v-if="Number(discountPercent) > 0"><span class="info-label">折扣（{{ Number(discountPercent) }}%）：</span>-¥{{ discountAmount.toFixed(2) }}</p>
+          <p v-if="Number(taxRate) > 0"><span class="info-label">税费（{{ Number(taxRate) }}%）：</span>¥{{ taxAmount.toFixed(2) }}</p>
+          <p v-if="Number(shippingFee) > 0"><span class="info-label">运费：</span>¥{{ Number(shippingFee).toFixed(2) }}</p>
+          <p><span class="info-label">总金额：</span><span class="info-value">¥{{ grandTotal.toFixed(2) }}</span></p>
+          <p v-if="validUntil"><span class="info-label">有效期：</span>{{ new Date(validUntil).toLocaleDateString() }}</p>
+          <p v-if="paymentTerms"><span class="info-label">付款条款：</span>{{ paymentTerms }}</p>
         </div>
         
         <div class="qrcode-section">
@@ -212,6 +243,9 @@
         >
           <el-icon :size="16"><CopyDocument /></el-icon> 复制链接
         </el-button>
+        <el-button @click="copyBreakdown" class="copy-button">
+          复制明细
+        </el-button>
       </div>
       
       <template #footer>
@@ -228,12 +262,14 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useOpsStore } from '@/stores/opsStore'
 import { ElMessage, ElLoading, ElMessageBox } from 'element-plus'
 import QrcodeVue from 'qrcode.vue'
 import { Plus, Delete, Refresh, Document, CopyDocument, Download } from '@element-plus/icons-vue'
 
 const opsStore = useOpsStore()
+const router = useRouter()
 
 // 基础数据
 const customers = computed(() => opsStore.customers || [])
@@ -247,6 +283,15 @@ const items = ref([])
 const showDialog = ref(false)
 const shareLink = ref('')
 const quoteId = ref('')
+const lastQuoteCode = ref('')
+
+// 结算与条款
+const discountPercent = ref(0)
+const taxRate = ref(0)
+const shippingFee = ref(0)
+const validUntil = ref('')
+const paymentTerms = ref('30天内付款，支持对公转账')
+const notes = ref('此报价包含售后支持与技术对接服务。')
 
 // 当前客户名称
 const currentCustomerName = computed(() => {
@@ -315,12 +360,14 @@ const handlePriceChange = (row) => {
   }
 }
 
-// 计算总计
-const total = computed(() => {
-  return items.value.reduce((sum, item) => {
-    return sum + (item.quantity * item.unitPrice)
-  }, 0)
+// 小计与总计
+const total = computed(() => { // 小计
+  return items.value.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0)
 })
+const discountAmount = computed(() => total.value * (Number(discountPercent.value || 0) / 100))
+const taxableAmount = computed(() => Math.max(total.value - discountAmount.value, 0))
+const taxAmount = computed(() => taxableAmount.value * (Number(taxRate.value || 0) / 100))
+const grandTotal = computed(() => taxableAmount.value + taxAmount.value + Number(shippingFee.value || 0))
 
 // 重置报价单
 const resetQuote = () => {
@@ -370,15 +417,25 @@ const generate = () => {
     
     const res = opsStore.createQuotation({
       customerId: selectedCustomerId.value,
-      items: payloadItems
+      items: payloadItems,
+      discountPercent: Number(discountPercent.value || 0),
+      taxRate: Number(taxRate.value || 0),
+      shippingFee: Number(shippingFee.value || 0),
+      validUntil: validUntil.value,
+      paymentTerms: paymentTerms.value,
+      notes: notes.value,
+      subtotal: total.value,
+      discountAmount: discountAmount.value,
+      taxAmount: taxAmount.value,
+      grandTotal: grandTotal.value
     })
     
     // 生成报价单号（实际项目中由后端返回）
     quoteId.value = `QUOTE-${Date.now().toString().slice(-6)}`
-    shareLink.value = `${window.location.origin}/#/quote/${res.uniqueCode || quoteId.value}`
-    showDialog.value = true
+    lastQuoteCode.value = res.uniqueCode || quoteId.value
+    shareLink.value = `${window.location.origin}/#/quote/${lastQuoteCode.value}`
     loading.close()
-    ElMessage.success('报价单生成成功')
+    router.push({ name: 'quote-detail', params: { code: lastQuoteCode.value } })
   }, 1200)
 }
 
@@ -396,11 +453,33 @@ const copy = async (text) => {
 
 // 下载报价单
 const downloadQuote = () => {
-  ElMessage.info('正在准备下载报价单PDF...')
-  // 实际项目中调用下载接口
-  setTimeout(() => {
-    ElMessage.success('报价单已下载')
-  }, 1000)
+  if (!lastQuoteCode.value) {
+    ElMessage.info('请先生成报价单')
+    return
+  }
+  const url = `${window.location.origin}/#/quote/${lastQuoteCode.value}?print=1`
+  window.open(url, '_blank')
+}
+
+// 复制价格明细
+const copyBreakdown = () => {
+  const lines = [
+    `客户：${currentCustomerName.value}`,
+    `报价单号：${quoteId.value || '(未生成)'}`,
+    `小计：¥${total.value.toFixed(2)}`,
+    `折扣(${Number(discountPercent.value)}%)：-¥${discountAmount.value.toFixed(2)}`,
+    `应税金额：¥${taxableAmount.value.toFixed(2)}`,
+    `税费(${Number(taxRate.value)}%)：¥${taxAmount.value.toFixed(2)}`,
+    `运费：¥${Number(shippingFee.value).toFixed(2)}`,
+    `总计：¥${grandTotal.value.toFixed(2)}`,
+    validUntil.value ? `有效期至：${new Date(validUntil.value).toLocaleDateString()}` : '',
+    paymentTerms.value ? `付款条款：${paymentTerms.value}` : '',
+  ].filter(Boolean)
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    ElMessage.success('已复制价格明细')
+  }).catch(() => {
+    ElMessage.error('复制失败，请手动复制')
+  })
 }
 
 // 监听客户变更
@@ -555,6 +634,20 @@ watch(selectedCustomerId, (newVal) => {
   margin-top: 12px;
   border-top: 1px solid #f3f4f6;
 }
+
+.quote-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 12px 16px;
+  align-items: center;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.control-item { display: flex; align-items: center; gap: 8px; }
+.control-item.wide { grid-column: span 2; }
+.control-label { font-size: 13px; color: #6b7280; }
+.control-suffix { font-size: 12px; color: #9ca3af; }
 
 .total-amount {
   display: flex;
