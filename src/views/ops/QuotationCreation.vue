@@ -262,12 +262,14 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useOpsStore } from '@/stores/opsStore'
 import { ElMessage, ElLoading, ElMessageBox } from 'element-plus'
 import QrcodeVue from 'qrcode.vue'
 import { Plus, Delete, Refresh, Document, CopyDocument, Download } from '@element-plus/icons-vue'
 
 const opsStore = useOpsStore()
+const router = useRouter()
 
 // 基础数据
 const customers = computed(() => opsStore.customers || [])
@@ -432,9 +434,8 @@ const generate = () => {
     quoteId.value = `QUOTE-${Date.now().toString().slice(-6)}`
     lastQuoteCode.value = res.uniqueCode || quoteId.value
     shareLink.value = `${window.location.origin}/#/quote/${lastQuoteCode.value}`
-    showDialog.value = true
     loading.close()
-    ElMessage.success('报价单生成成功')
+    router.push({ name: 'quote-detail', params: { code: lastQuoteCode.value } })
   }, 1200)
 }
 
