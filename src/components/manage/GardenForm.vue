@@ -1,7 +1,7 @@
 <script setup>
 import { useGardenStore } from '@/stores/gardenStore';
 import { ElLoading, ElMessageBox, ElMessage } from 'element-plus';
-import { Plus, Refresh, Check } from '@element-plus/icons-vue';
+import {  Refresh, Check } from '@element-plus/icons-vue';
 import { ref, onMounted } from 'vue';
 
 const gardenStore = useGardenStore()
@@ -10,11 +10,13 @@ const gardenForm = ref(null);
 onMounted(async () => {
   try {
     await gardenStore.loadData();
+    await gardenStore.getProvinces();
   } catch (error) {
     console.error('加载数据失败:', error);
     // 不显示错误消息，因为loadData已经处理了错误情况
   }
 });
+
 
 // 获取部署状态文本
 const getDeploymentStatusText = (status) => {
@@ -69,7 +71,7 @@ const handleSubmit = async () => {
     if (!valid) {
       return false;
     }
-    
+
     const loading = ElLoading.service({
       lock: true,
       text: '正在保存数据...',
@@ -102,41 +104,65 @@ const handleCurrentChange = async (val) => {
     ElMessage.error('分页切换失败');
   }
 };
+
+// 省份变化时，同步省份名称并加载城市
+const handleProvinceChange = async (provinceAdcode) => {
+  gardenStore.formData.cityCode = '';
+  gardenStore.formData.cityName = '';
+
+  if (provinceAdcode) {
+    const selectedProvince = gardenStore.provinces.find(prov => prov.value === provinceAdcode);
+    if (selectedProvince) {
+      gardenStore.formData.provinceName = selectedProvince.label; // 同步省份名称
+    }
+    await gardenStore.getCities(provinceAdcode);
+  } else {
+    gardenStore.cities = [];
+    gardenStore.formData.provinceName = ''; // 清空省份名称
+  }
+};
+
+const handleCityChange = (cityAdcode) => {
+  if (cityAdcode) {
+    const selectedCity = gardenStore.cities.find(city => city.value === cityAdcode);
+    if (selectedCity) {
+      gardenStore.formData.cityName = selectedCity.label; // 同步城市名称
+    }
+  } else {
+    gardenStore.formData.cityName = ''; // 清空城市名称
+  }
+};
 </script>
 
 <template>
   <div class="gardenform">
     <el-card title="茶园信息管理">
       <!-- 工具栏 -->
-      <div style="margin-bottom: 20px;">
-        <el-button type="primary" @click="gardenStore.openAddForm">
-          <el-icon><Plus /></el-icon>
-          新增茶园
-        </el-button>
-      </div>
+
     <el-table
     :data="gardenStore.gardenList"
     border
     :loading="gardenStore.tableLoading"
     stripe
     style="width: 100%; min-width: 1600px;"
+    class="form"
     >
     <el-table-column label="编号" width="80">
       <template #default="scope">
-        {{ (gardenStore.pagination.current - 1) * gardenStore.pagination.pageSize + scope.$index + 1 }}
+        {{ scope.$index + 1 }}
       </template>
     </el-table-column>
-    <el-table-column prop="plantation_name" label="茶园名称" min-width="150" />
-    <el-table-column label="地址信息" min-width="200">
+    <el-table-column prop="plantation_name" label="茶园名称" min-width="80" />
+    <el-table-column label="地址信息" min-width="80">
       <template #default="scope">
         <div>{{ scope.row.country || '未设置' }} {{ scope.row.province || '未设置' }} {{ scope.row.city || '未设置' }} {{ scope.row.district || '' }}</div>
         <div style="color: #666; font-size: 12px;">{{ scope.row.detail_address || '详细地址未填写' }}</div>
       </template>
-    </el-table-column>
-    <el-table-column label="地理坐标" min-width="150">
+    </el-table-column>N
+    <el-table-column label="地理坐标" min-width="60">
       <template #default="scope">
-        <div>纬度: {{ scope.row.latitude === 0 ? '未设置' : scope.row.latitude || '未设置' }}</div>
-        <div>经度: {{ scope.row.longitude === 0 ? '未设置' : scope.row.longitude || '未设置' }}</div>
+        <div>纬度: {{ scope.row.latitude === 0 ? '未设置' : scope.row.latitude || '未设置' }} °N</div>
+        <div>经度: {{ scope.row.longitude === 0 ? '未设置' : scope.row.longitude || '未设置' }} °E</div>
         <div>海拔: {{ scope.row.altitude === 0 ? '未设置' : scope.row.altitude || '未设置' }}m</div>
       </template>
     </el-table-column>
@@ -148,11 +174,11 @@ const handleCurrentChange = async (val) => {
         </el-tag>
       </template>
     </el-table-column>
-    <el-table-column label="设备信息" min-width="160">
+    <el-table-column label="设备信息" min-width="90">
       <template #default="scope">
-        <div>无人机: {{ scope.row.drone_count === 0 ? '未设置' : scope.row.drone_count || '未设置' }}台 
+        <div>无人机: {{ scope.row.drone_count === 0 ? '未设置' : scope.row.drone_count || '未设置' }}台
           (运行: {{ scope.row.drone_running === 0 ? '未设置' : scope.row.drone_running || '未设置' }}台)</div>
-        <div>土壤传感器: {{ scope.row.soil_sensors_count === 0 ? '未设置' : scope.row.soil_sensors_count || '未设置' }}个 
+        <div>土壤传感器: {{ scope.row.soil_sensors_count === 0 ? '未设置' : scope.row.soil_sensors_count || '未设置' }}个
           (运行: {{ scope.row.soil_sensors_running === 0 ? '未设置' : scope.row.soil_sensors_running || '未设置' }}个)</div>
       </template>
     </el-table-column>
@@ -163,7 +189,7 @@ const handleCurrentChange = async (val) => {
         </el-tag>
       </template>
     </el-table-column>
-    <el-table-column label="创建时间" min-width="140">
+    <el-table-column label="创建时间" min-width="40">
       <template #default="scope">
         {{ scope.row.created_at ? new Date(scope.row.created_at).toLocaleString('zh-CN') : '未设置' }}
       </template>
@@ -207,18 +233,38 @@ const handleCurrentChange = async (val) => {
         placeholder="请输入国家"
         />
      </el-form-item>
-     <el-form-item label="省份" prop="province">
-        <el-input
-        v-model="gardenStore.formData.province"
-        placeholder="请输入省份"
-        />
-     </el-form-item>
-     <el-form-item label="城市" prop="city">
-        <el-input
-        v-model="gardenStore.formData.city"
-        placeholder="请输入城市"
-        />
-     </el-form-item>
+     <!-- 省份选择 -->
+      <el-form-item label="省份" prop="provinceCode">
+        <el-select
+          v-model="gardenStore.formData.provinceCode"
+          placeholder="请选择省份"
+          @change="handleProvinceChange"
+        >
+          <el-option
+            v-for="prov in gardenStore.provinces"
+            :key="prov.value"
+            :label="prov.label"
+            :value="prov.value"
+          />
+        </el-select>
+      </el-form-item>
+
+      <!-- 城市选择 -->
+      <el-form-item label="城市" prop="cityCode">
+        <el-select
+          v-model="gardenStore.formData.cityCode"
+          placeholder="请先选择省份"
+          :disabled="!gardenStore.formData.provinceCode"
+          @change="handleCityChange"
+        >
+          <el-option
+            v-for="city in gardenStore.cities"
+            :key="city.value"
+            :label="city.label"
+            :value="city.value"
+          />
+        </el-select>
+      </el-form-item>
      <el-form-item label="详细地址" prop="detail_address">
       <el-input
       v-model="gardenStore.formData.detail_address"
@@ -361,6 +407,10 @@ const handleCurrentChange = async (val) => {
 </template>
 
 <style scoped>
+
+.form{
+  width: 900px;
+}
 .gardenform{
 position: relative;
 left: -60px;
