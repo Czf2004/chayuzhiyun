@@ -17,6 +17,7 @@ import { ElMessage } from 'element-plus'
 const QuoteDetail = () => import('../views/ops/QuoteDetail.vue')
 import ToolkitView from '../views/ToolkitView.vue'
 import ToolkitDocView from '../views/ToolkitDocView.vue'
+import AiChatView from '../views/aiChatView.vue'
 
 const routes = [
   {
@@ -71,6 +72,13 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomeView,
+    meta: { showNavbar: true, requiresAuth: true }
+  },
+  //添加ai聊天路由
+  {
+    path: '/aichat',
+    name: 'aichat',
+    component: AiChatView,
     meta: { showNavbar: true, requiresAuth: true }
   },
   // 添加茶园管理路由

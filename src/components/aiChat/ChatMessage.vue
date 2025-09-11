@@ -70,11 +70,12 @@ display: inline-block;
 
 .user-message p{
   line-height: 1.5;
-  background-color: #7bd900;
+  /* background-color: #7bd900; */
+  background-color: #E8F5F2;
   padding: 5px;
   border-radius: 10px;
   border-top-right-radius: 0;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 @keyframes fadeUp{
@@ -111,10 +112,12 @@ display: inline-block;
 
 .ai-message p{
   line-height: 1.5;
-  background-color: #f1f1f1;
+  /* background-color: #ffffff; */
   padding: 5px;
   border-radius: 10px;
   border-top-left-radius: 0;
   color: rgb(0, 0, 0);
 }
+
+
 </style>
